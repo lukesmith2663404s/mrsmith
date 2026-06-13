@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Maths Mini Games</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/home.css" />
+
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <main class="game-grid" aria-label="Mini game menu">
+    <a class="game-tile active haunted-tile" href="pages/haunted-calculator/settings.html" data-ghost-hover>
+      <img class="tile-ghost-preview" src="" alt="" aria-hidden="true" />
+      <h2>Haunted Calculator</h2>
+    </a>
+
+    <a class="game-tile active treasure-tile" href="pages/treasure-tracker/settings.html">
+      <svg class="tile-map-path" viewBox="0 0 320 220" aria-hidden="true" focusable="false">
+        <defs>
+          <mask id="treasure-route-reveal-mask">
+            <path
+              class="tile-map-path-reveal"
+              pathLength="100"
+              d="M18 178 C48 96, 86 196, 126 116 C162 42, 204 52, 230 96 C258 146, 288 116, 306 42"
+            />
+          </mask>
+        </defs>
+
+        <path
+          class="tile-map-path-dashes"
+          pathLength="100"
+          mask="url(#treasure-route-reveal-mask)"
+          d="M18 178 C48 96, 86 196, 126 116 C162 42, 204 52, 230 96 C258 146, 288 116, 306 42"
+        />
+      </svg>
+
+      <h2>Treasure Tracker</h2>
+    </a>
+
+    <a class="game-tile active" href="pages/kims-game/settings.html">
+      <h2>Kim’s Game</h2>
+    </a>
+
+    <a class="game-tile active" href="pages/countdown/settings.html">
+      <h2>Countdown</h2>
+    </a>
+
+    <a class="game-tile active" href="pages/codenames/settings.html">
+      <h2>Codenames</h2>
+    </a>
+
+    <div class="game-tile coming-soon"><h2></h2></div>
+    <div class="game-tile coming-soon"><h2></h2></div>
+    <div class="game-tile coming-soon"><h2></h2></div>
+    <div class="game-tile coming-soon"><h2></h2></div>
+    <div class="game-tile coming-soon"><h2></h2></div>
+    <div class="game-tile coming-soon"><h2></h2></div>
+    <div class="game-tile coming-soon"><h2></h2></div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,464 @@
+.treasure-page {
+  --sea-dark: #062436;
+  --sea-mid: #0d5870;
+  --sea-light: #40a7b7;
+
+  --map-bg-dark: #3f2817;
+  --map-bg-mid: #8d663c;
+  --map-bg-light: #d8bd82;
+  --map-paper: #cfae6c;
+  --map-paper-light: #e2c98d;
+  --map-paper-cell: rgba(232, 207, 150, 0.72);
+  --map-paper-target: rgba(184, 139, 72, 0.86);
+  --map-paper-start: rgba(142, 101, 55, 0.86);
+  --map-ink: #2d2118;
+  --map-ink-soft: #4a3828;
+  --map-border: #5a341d;
+  --map-red: #a3221e;
+  --map-green: #245c2f;
+  --map-line: #21160f;
+  --map-solution: #a3221e;
+
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  color: var(--map-ink);
+  background:
+    radial-gradient(circle at top left, rgba(105, 210, 220, 0.55) 0%, transparent 34%),
+    radial-gradient(circle at bottom right, rgba(2, 23, 39, 0.9) 0%, transparent 48%),
+    linear-gradient(135deg, var(--sea-light) 0%, var(--sea-mid) 48%, var(--sea-dark) 100%);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.treasure-settings-wrapper,
+.treasure-game-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.5rem, 1.5vw, 1.25rem);
+}
+
+.treasure-settings-card,
+.treasure-game-panel {
+  width: min(1050px, 96vw);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(226, 201, 141, 0.96),
+      rgba(198, 159, 93, 0.96)
+    );
+  border: 4px double var(--map-border);
+  border-radius: 24px;
+  padding: clamp(0.8rem, 1.8vw, 1.5rem);
+  box-shadow:
+    0 24px 60px rgba(2, 17, 29, 0.48),
+    inset 0 0 70px rgba(80, 42, 17, 0.22);
+}
+
+.treasure-settings-card {
+  width: min(760px, 94vw);
+}
+
+.treasure-game-panel {
+  height: calc(100vh - clamp(1rem, 3vw, 2.5rem));
+  max-height: 96vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.treasure-game-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex: 0 0 auto;
+}
+
+.treasure-back-link {
+  color: var(--map-ink);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.treasure-back-link:hover {
+  text-decoration: underline;
+}
+
+.treasure-settings-card h1,
+.treasure-game-panel h1 {
+  margin: 0.15rem 0 0.45rem;
+  text-align: center;
+  color: var(--map-ink);
+  font-size: clamp(2rem, 4.8vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-shadow: 1px 1px 0 rgba(255, 241, 196, 0.55);
+  flex: 0 0 auto;
+}
+
+.treasure-intro {
+  max-width: 620px;
+  margin: 0 auto 1.5rem;
+  text-align: center;
+  color: var(--map-ink-soft);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+#treasureTrackerSettingsForm {
+  display: grid;
+  gap: 1rem;
+}
+
+#treasureTrackerSettingsForm label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--map-ink);
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+#treasureTrackerSettingsForm select {
+  font: inherit;
+  padding: 0.75rem;
+  border: 2px solid var(--map-border);
+  border-radius: 12px;
+  background: var(--map-paper-light);
+  color: var(--map-ink);
+  font-weight: 800;
+}
+
+.treasure-checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 0.75rem !important;
+}
+
+.treasure-checkbox-label input {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--map-border);
+}
+
+.treasure-primary-button,
+.treasure-secondary-button {
+  font: inherit;
+  font-weight: 900;
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.treasure-primary-button {
+  border: 3px solid var(--map-border);
+  background: var(--map-ink);
+  color: var(--map-paper-light);
+}
+
+.treasure-secondary-button {
+  border: 3px solid var(--map-border);
+  background: var(--map-paper-light);
+  color: var(--map-ink);
+}
+
+.treasure-primary-button:hover,
+.treasure-secondary-button:hover {
+  filter: brightness(0.95);
+}
+
+.treasure-info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr;
+  gap: 0.55rem;
+  margin: 0.5rem 0 0.65rem;
+  flex: 0 0 auto;
+}
+
+.treasure-info-row div {
+  background: rgba(255, 236, 174, 0.42);
+  border: 2px solid rgba(90, 52, 29, 0.65);
+  border-radius: 14px;
+  padding: 0.5rem 0.65rem;
+  text-align: center;
+  box-shadow: inset 0 0 20px rgba(68, 38, 16, 0.12);
+}
+
+.treasure-info-row span {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 900;
+  color: var(--map-ink-soft);
+}
+
+.treasure-info-row strong {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: clamp(0.95rem, 2.4vw, 1.45rem);
+  color: var(--map-ink);
+  line-height: 1.05;
+}
+
+.map-section {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+
+.map-board {
+  --grid-size: 5;
+
+  position: relative;
+  width: min(100%, 54vh, 720px);
+  aspect-ratio: 1 / 1;
+
+  display: grid;
+  grid-template-columns: repeat(var(--grid-size), 1fr);
+  grid-template-rows: repeat(var(--grid-size), 1fr);
+
+  border: 5px double var(--map-border);
+  border-radius: 20px;
+  overflow: hidden;
+
+  background:
+    linear-gradient(rgba(71, 43, 20, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(71, 43, 20, 0.18) 1px, transparent 1px),
+    radial-gradient(circle at 30% 20%, rgba(255, 240, 183, 0.35), transparent 34%),
+    linear-gradient(135deg, #d8bd82, #b4874f);
+
+  box-shadow:
+    0 18px 45px rgba(46, 26, 11, 0.35),
+    inset 0 0 60px rgba(58, 33, 14, 0.22);
+}
+
+.map-line-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.player-path-line,
+.solution-path-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.player-path-line {
+  stroke: var(--map-line);
+  stroke-width: 2.2;
+  opacity: 0.92;
+}
+
+.solution-path-line {
+  stroke: var(--map-solution);
+  stroke-width: 1.8;
+  stroke-dasharray: 3 3;
+  opacity: 0.82;
+}
+
+.map-cell {
+  position: relative;
+  z-index: 2;
+
+  border: 1px solid rgba(76, 45, 20, 0.42);
+  background: var(--map-paper-cell);
+  color: var(--map-ink);
+
+  font: inherit;
+  font-size: clamp(1.05rem, calc(13vmin / var(--grid-size)), 2.35rem);
+  line-height: 1;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+  text-align: center;
+
+  transition:
+    background-color 0.16s ease,
+    color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.16s ease;
+}
+
+.cell-main-text {
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.map-cell:hover:not(:disabled) {
+  background: rgba(255, 236, 174, 0.82);
+  box-shadow: inset 0 0 0 3px rgba(90, 52, 29, 0.45);
+}
+
+.map-cell:disabled {
+  cursor: default;
+}
+
+.edge-cell {
+  background: var(--map-paper-cell);
+}
+
+.start-cell {
+  background: var(--map-paper-start);
+}
+
+.start-label {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+
+  transform: translateX(-50%);
+
+  color: rgba(45, 33, 24, 0.38);
+  font-size: clamp(0.48rem, calc(4vmin / var(--grid-size)), 0.9rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+
+  pointer-events: none;
+}
+
+.selected-cell {
+  background: rgba(74, 50, 29, 0.7);
+  color: #f3dfac;
+}
+
+.selected-cell .start-label {
+  color: rgba(243, 223, 172, 0.36);
+}
+
+.current-cell {
+  box-shadow:
+    inset 0 0 0 4px rgba(35, 24, 16, 0.8),
+    inset 0 0 26px rgba(255, 232, 153, 0.25);
+}
+
+.solution-cell {
+  box-shadow:
+    inset 0 0 0 4px rgba(163, 34, 30, 0.75),
+    inset 0 0 20px rgba(163, 34, 30, 0.18);
+}
+
+.target-cell {
+  color: var(--map-red);
+  font-size: clamp(0.9rem, calc(9.5vmin / var(--grid-size)), 1.75rem);
+  background: var(--map-paper-target);
+  white-space: nowrap;
+}
+
+.map-board.correct .target-cell {
+  background: rgba(167, 139, 83, 0.9);
+  color: var(--map-green);
+}
+
+.map-board.wrong .target-cell {
+  background: rgba(167, 139, 83, 0.9);
+  color: var(--map-red);
+}
+
+.treasure-expression-card {
+  margin-top: 0.6rem;
+  background: rgba(255, 236, 174, 0.45);
+  border: 2px solid rgba(90, 52, 29, 0.62);
+  border-radius: 16px;
+  padding: 0.55rem 0.8rem;
+  box-shadow: inset 0 0 20px rgba(68, 38, 16, 0.12);
+  flex: 0 0 auto;
+}
+
+.treasure-expression-label {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 900;
+  color: var(--map-ink-soft);
+}
+
+.treasure-expression {
+  min-height: 1.7rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  color: var(--map-ink);
+  font-size: clamp(1rem, 2.4vw, 1.65rem);
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+.treasure-action-row {
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  margin-top: 0.65rem;
+  flex: 0 0 auto;
+}
+
+.treasure-action-row button {
+  flex: 1;
+  min-width: 130px;
+}
+
+@media (max-width: 750px) {
+  .treasure-settings-wrapper,
+  .treasure-game-wrapper {
+    padding: 0.5rem;
+  }
+
+  .treasure-settings-card,
+  .treasure-game-panel {
+    padding: 0.8rem;
+    border-radius: 18px;
+  }
+
+  .treasure-info-row {
+    grid-template-columns: 1fr;
+  }
+
+  .map-board {
+    width: min(100%, 48vh, 720px);
+  }
+
+  .treasure-action-row button {
+    min-width: 110px;
+  }
+}
+
+@media (max-height: 700px) {
+  .treasure-game-panel h1 {
+    font-size: clamp(1.7rem, 4vw, 3rem);
+    margin-bottom: 0.25rem;
+  }
+
+  .treasure-info-row {
+    margin: 0.35rem 0 0.45rem;
+  }
+
+  .treasure-info-row div {
+    padding: 0.35rem 0.5rem;
+  }
+
+  .map-board {
+    width: min(100%, 48vh, 680px);
+  }
+
+  .treasure-expression-card {
+    margin-top: 0.45rem;
+    padding: 0.45rem 0.65rem;
+  }
+
+  .treasure-action-row {
+    margin-top: 0.45rem;
+  }
+}

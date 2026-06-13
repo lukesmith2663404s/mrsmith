@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Kim’s Game Settings</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/kims-game.css" />
+
+  <script src="../../js/question-generator.js" defer></script>
+  <script src="settings.js" defer></script>
+</head>
+<body class="kims-page">
+  <main class="kims-settings-wrapper">
+    <section class="kims-settings-card">
+      <a class="kims-back-link" href="../../index.html">
+        ← Back to games
+      </a>
+
+      <h1>Kim’s Game</h1>
+
+      <p class="kims-intro">
+        Memorise the answer cards. When they disappear, match each new
+        question to its answer and work out which original answer is missing.
+      </p>
+
+      <form id="kimsSettingsForm">
+        <section class="basic-settings-grid">
+          <label>
+            Number of cards
+
+            <input
+              id="cardCount"
+              name="cardCount"
+              type="number"
+              min="4"
+              max="20"
+              value="4"
+            />
+          </label>
+
+          <div class="timer-setting-group">
+            <label class="timer-toggle-row">
+              <input
+                id="timerEnabled"
+                name="timerEnabled"
+                type="checkbox"
+              />
+
+              <span>Use answer timer</span>
+            </label>
+
+            <label class="timer-duration-row" for="timerDuration">
+              <span>Duration</span>
+
+              <input
+                id="timerDuration"
+                name="timerDuration"
+                type="number"
+                min="1"
+                max="600"
+                step="1"
+                value="20"
+                disabled
+              />
+
+              <span>seconds</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="question-selection-section">
+          <div class="question-selection-heading">
+            <div>
+              <h2>Question types</h2>
+              <p>Select one or more types to include in the game.</p>
+            </div>
+
+            <div class="selection-shortcuts">
+              <button id="selectAllButton" type="button">
+                Select all
+              </button>
+
+              <button id="clearAllButton" type="button">
+                Clear all
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="questionTypeChecklist"
+            class="question-type-checklist"
+          ></div>
+
+          <p
+            id="settingsError"
+            class="settings-error"
+            aria-live="polite"
+          ></p>
+        </section>
+
+        <button class="kims-primary-button" type="submit">
+          Start Game
+        </button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Haunted Calculator</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/haunted-calculator.css" />
+
+  <script src="generator.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body class="haunted-page">
+  <main class="game-wrapper">
+    <section class="game-panel">
+      <header class="game-header">
+        <a class="back-link" href="../../index.html">← Back to games</a>
+        <a class="back-link" href="settings.html">Settings</a>
+      </header>
+
+      <h1>Haunted Calculator</h1>
+
+      <section class="target-card">
+        <p>Make this number:</p>
+        <div id="targetDisplay" class="target-number">?</div>
+      </section>
+
+      <section class="calculator-area">
+        <div id="calculatorScreen" class="calculator-screen">
+          <div class="screen-row">
+            <span class="screen-label">Expression</span>
+            <div id="calculatorDisplay" class="calculator-display">0</div>
+          </div>
+
+          <div class="screen-row">
+            <span class="screen-label">Value</span>
+            <div id="evaluationDisplay" class="evaluation-display"></div>
+          </div>
+        </div>
+
+        <div id="calculatorButtons" class="calculator-grid"></div>
+
+        <div class="action-row">
+          <button id="newButton" class="secondary-button" type="button">New</button>
+          <button id="solutionButton" class="secondary-button" type="button">Show Solutions</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="solutionModal" class="solution-modal hidden" role="dialog" aria-modal="true" aria-labelledby="solutionModalTitle">
+    <div class="solution-modal-backdrop" data-close-modal></div>
+
+    <section class="solution-modal-card">
+      <button id="closeSolutionsButton" class="modal-close-button" type="button" aria-label="Close solutions">
+        ×
+      </button>
+
+      <h2 id="solutionModalTitle">Solutions</h2>
+      <p id="solutionSummary" class="solution-summary"></p>
+
+      <ol id="solutionsList" class="solutions-list"></ol>
+    </section>
+  </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Haunted Calculator Settings</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/haunted-calculator.css" />
+
+  <script src="settings.js" defer></script>
+</head>
+<body class="haunted-page">
+  <main class="settings-wrapper">
+    <section class="settings-card">
+      <a class="back-link" href="../../index.html">← Back to games</a>
+
+      <h1>Haunted Calculator</h1>
+
+      <p class="intro">
+        Make the target number using a cursed calculator. Some buttons are missing,
+        and every number or operation button has a limited number of uses.
+      </p>
+
+      <form id="settingsForm">
+        <label>
+          Difficulty
+          <select id="difficulty" name="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </label>
+
+        <label>
+          Maximum target number
+          <input id="maxTarget" name="maxTarget" type="number" min="10" max="99999" value="999" />
+        </label>
+
+        <label class="checkbox-label">
+          <input id="allowMultiplyDivide" name="allowMultiplyDivide" type="checkbox" checked />
+          Allow × and ÷
+        </label>
+
+        <label class="checkbox-label">
+          <input id="liveEvaluation" name="liveEvaluation" type="checkbox" />
+          Show live evaluation while typing
+        </label>
+
+        <button class="primary-button" type="submit">Start Game</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

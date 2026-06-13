@@ -1,0 +1,29 @@
+:root {
+  --background: #F6F0FE;
+  --accent: #7030A0;
+  --accent-light: #E7D6F5;
+  --text: #2D1B3D;
+  --white: #FFFFFF;
+  --border: #D9C5EB;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3 {
+  margin-top: 0;
+}

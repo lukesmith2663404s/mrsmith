@@ -1,0 +1,256 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.game-grid {
+  width: 100vw;
+  height: 100vh;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
+.game-tile {
+  position: relative;
+
+  background: var(--background);
+  border: 2px solid var(--border);
+
+  min-height: 0;
+  padding: 1rem;
+
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.game-tile h2 {
+  position: relative;
+  z-index: 4;
+
+  color: var(--accent);
+  font-size: clamp(1.3rem, 3vw, 3rem);
+  text-align: center;
+  margin: 0;
+
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease,
+    text-shadow 0.18s ease;
+}
+
+.game-tile.active:hover {
+  cursor: pointer;
+}
+
+.game-tile.active:active {
+  transform: scale(0.985);
+}
+
+.game-tile.coming-soon {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.game-tile.coming-soon h2 {
+  color: #8b65af;
+}
+
+/* Haunted Calculator hover */
+
+.haunted-tile {
+  background: var(--background);
+}
+
+.haunted-tile:hover,
+.haunted-tile:focus-visible {
+  background:
+    radial-gradient(circle at top, #5d5d66 0%, #2b2b32 45%, #08080a 100%);
+  border-color: #ffd84d;
+  box-shadow:
+    inset 0 0 0 4px #ffd84d,
+    0 0 32px rgba(255, 216, 77, 0.45);
+}
+
+.haunted-tile:hover h2,
+.haunted-tile:focus-visible h2 {
+  color: #ffffff;
+  transform: translateY(20%);
+}
+
+.tile-ghost-preview {
+  position: absolute;
+  z-index: 1;
+
+  top: 8%;
+  left: 50%;
+
+  width: 78%;
+  height: 38%;
+
+  object-fit: contain;
+
+  opacity: 0;
+  transform: translateX(-50%) translateY(-8px);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.haunted-tile:hover .tile-ghost-preview,
+.haunted-tile:focus-visible .tile-ghost-preview {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Treasure Tracker hover */
+
+.treasure-tile {
+  background: var(--background);
+}
+
+.treasure-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 236, 174, 0.5) 0%, transparent 32%),
+    linear-gradient(
+      135deg,
+      rgba(226, 201, 141, 0.98),
+      rgba(198, 159, 93, 0.98)
+    );
+
+  opacity: 0;
+
+  transition: opacity 0.22s ease;
+}
+
+.treasure-tile:hover,
+.treasure-tile:focus-visible {
+  border: 4px double #5a341d;
+  box-shadow: 0 0 28px rgba(90, 52, 29, 0.35);
+}
+
+.treasure-tile:hover::before,
+.treasure-tile:focus-visible::before {
+  opacity: 1;
+}
+
+.treasure-tile:hover h2,
+.treasure-tile:focus-visible h2 {
+  color: #a3221e;
+  text-shadow:
+    1px 1px 0 rgba(255, 241, 196, 0.75),
+    0 0 10px rgba(255, 236, 174, 0.45);
+}
+
+.tile-map-path {
+  position: absolute;
+  z-index: 2;
+
+  inset: 4% 3% 3% 3%;
+
+  width: 94%;
+  height: 93%;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+
+  transform: scale(1.02);
+}
+
+.tile-map-path-dashes {
+  fill: none;
+  stroke: #21160f;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  stroke-dasharray: 4 7;
+  stroke-dashoffset: 0;
+}
+
+.tile-map-path-reveal {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 18;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  stroke-dasharray: 100;
+  stroke-dashoffset: 96;
+}
+
+.treasure-tile:hover .tile-map-path,
+.treasure-tile:focus-visible .tile-map-path {
+  opacity: 0.9;
+  transform: scale(1);
+}
+
+.treasure-tile:hover .tile-map-path-reveal,
+.treasure-tile:focus-visible .tile-map-path-reveal {
+  animation: reveal-map-route 3.2s steps(22, end) forwards;
+}
+
+@keyframes reveal-map-route {
+  from {
+    stroke-dashoffset: 96;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Wide screens: 6 across, 2 down */
+@media (min-aspect-ratio: 16/9) {
+  .game-grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+
+/* More square screens: 4 across, 3 down */
+@media (max-aspect-ratio: 16/9) {
+  .game-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+}
+
+/* Narrow screens: 3 across, 4 down */
+@media (max-aspect-ratio: 4/5) {
+  .game-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+}

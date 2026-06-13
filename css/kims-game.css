@@ -1,0 +1,777 @@
+.kims-page {
+  --felt-dark: #063d24;
+  --felt-mid: #0d6b3c;
+  --felt-light: #16844a;
+  --felt-line: rgba(255, 255, 255, 0.06);
+
+  --card-paper: #fffdf5;
+  --card-paper-dark: #eee8d8;
+  --card-ink: #171717;
+  --card-red: #a11f2b;
+  --card-border: #c7c1b1;
+
+  --card-back: #5c2b91;
+  --card-back-dark: #321254;
+  --card-back-light: #8c5abb;
+
+  min-height: 100vh;
+  margin: 0;
+
+  color: #ffffff;
+
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 3px,
+      var(--felt-line) 4px,
+      transparent 5px
+    ),
+    radial-gradient(
+      circle at center,
+      var(--felt-light),
+      var(--felt-mid) 55%,
+      var(--felt-dark)
+    );
+
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+/* Settings */
+
+.kims-settings-wrapper {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.kims-settings-card {
+  width: min(1000px, 95vw);
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+
+  color: #24211b;
+  background: rgba(255, 253, 245, 0.97);
+
+  border: 4px solid #d7cfba;
+  border-radius: 28px;
+
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.45),
+    inset 0 0 40px rgba(80, 64, 34, 0.08);
+}
+
+.kims-back-link {
+  color: inherit;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.kims-back-link:hover {
+  text-decoration: underline;
+}
+
+.kims-settings-card h1 {
+  margin: 0.5rem 0;
+  text-align: center;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+}
+
+.kims-intro {
+  max-width: 760px;
+  margin: 0 auto 2rem;
+
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+#kimsSettingsForm {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.basic-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.basic-settings-grid > label,
+.timer-setting-group {
+  min-height: 120px;
+  padding: 1rem;
+
+  background: #f4f0e6;
+  border: 2px solid #c8bfab;
+  border-radius: 16px;
+}
+
+.basic-settings-grid > label {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+
+  font-weight: 800;
+}
+
+.basic-settings-grid input[type="number"] {
+  width: 100%;
+  padding: 0.8rem;
+
+  color: #24211b;
+  background: #ffffff;
+
+  border: 2px solid #a9a08c;
+  border-radius: 12px;
+
+  font: inherit;
+  font-weight: 700;
+}
+
+.timer-setting-group {
+  display: grid;
+  align-content: center;
+  gap: 0.8rem;
+}
+
+.timer-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.timer-toggle-row input {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex: 0 0 auto;
+
+  accent-color: #17683b;
+}
+
+.timer-duration-row {
+  display: grid;
+  grid-template-columns: auto minmax(80px, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+
+  font-weight: 800;
+}
+
+.timer-duration-row input {
+  min-width: 0;
+}
+
+.timer-duration-row input:disabled {
+  color: #777268;
+  background: #ddd8cc;
+  cursor: not-allowed;
+}
+
+.question-selection-section {
+  display: grid;
+  gap: 1rem;
+}
+
+.question-selection-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.question-selection-heading h2 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.question-selection-heading p {
+  margin: 0.25rem 0 0;
+}
+
+.selection-shortcuts,
+.subcategory-shortcuts {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.selection-shortcuts button,
+.subcategory-shortcuts button {
+  color: #24211b;
+  background: #eee9dd;
+
+  border: 2px solid #a9a08c;
+  border-radius: 9px;
+
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.selection-shortcuts button {
+  padding: 0.5rem 0.75rem;
+}
+
+.subcategory-shortcuts button {
+  padding: 0.32rem 0.55rem;
+  font-size: 0.82rem;
+}
+
+.selection-shortcuts button:hover,
+.subcategory-shortcuts button:hover {
+  background: #ded7c7;
+}
+
+.question-type-checklist {
+  display: grid;
+  gap: 1rem;
+}
+
+.question-category {
+  padding: 1rem;
+
+  background: #f4f0e6;
+  border: 2px solid #c8bfab;
+  border-radius: 18px;
+}
+
+.question-category > h3 {
+  margin: 0 0 1rem;
+  font-size: 1.6rem;
+}
+
+.question-subcategory {
+  margin-top: 1rem;
+}
+
+.question-subcategory-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+
+  margin-bottom: 0.55rem;
+  padding-bottom: 0.35rem;
+
+  border-bottom: 2px solid #d5cebe;
+}
+
+.question-subcategory-heading h4 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.question-type-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.55rem;
+}
+
+.question-type-option {
+  min-height: 74px;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+
+  padding: 0.75rem;
+
+  background: #ffffff;
+  border: 2px solid #d5cebe;
+  border-radius: 13px;
+
+  cursor: pointer;
+}
+
+.question-type-option:has(input:checked) {
+  background: #e5f2e8;
+  border-color: #39734c;
+}
+
+.question-type-option input {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: 0.15rem;
+  flex: 0 0 auto;
+
+  accent-color: #17683b;
+}
+
+.question-type-description {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.55rem;
+}
+
+.question-type-description strong {
+  width: 100%;
+}
+
+.question-type-expression {
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.question-type-condition {
+  color: #625c50;
+  font-size: 0.9rem;
+}
+
+.settings-error {
+  min-height: 1.3rem;
+  margin: 0;
+
+  color: #a11f2b;
+  font-weight: 800;
+}
+
+.kims-primary-button,
+.kims-secondary-button {
+  padding: 0.8rem 1.2rem;
+
+  border-radius: 13px;
+
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.kims-primary-button {
+  color: #ffffff;
+  background: #5c2b91;
+  border: 3px solid #321254;
+}
+
+.kims-secondary-button {
+  color: #211d17;
+  background: #fffdf5;
+  border: 3px solid #c7c1b1;
+}
+
+.kims-primary-button:hover,
+.kims-secondary-button:hover {
+  filter: brightness(0.93);
+}
+
+/* Full-screen game */
+
+.kims-game-page {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.kims-game {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: clamp(0.55rem, 1.3vw, 1rem);
+}
+
+.kims-game-header {
+  flex: 0 0 auto;
+  min-height: 70px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 0.3rem 0.6rem 0.55rem;
+}
+
+.kims-header-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.kims-game-header h1 {
+  margin: 0;
+
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+
+  text-shadow: 0 3px 5px rgba(0, 0, 0, 0.35);
+}
+
+.timer-display {
+  min-height: 1.5rem;
+  justify-self: end;
+
+  text-align: right;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 900;
+}
+
+/* Balanced card layout */
+
+.card-table {
+  --card-width: 130px;
+  --card-height: 182px;
+
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: clamp(0.45rem, 1.25vw, 1rem);
+  padding: clamp(0.35rem, 1vw, 0.8rem);
+
+  overflow: hidden;
+}
+
+.card-row {
+  flex: 0 0 auto;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: clamp(0.45rem, 1.25vw, 1rem);
+}
+
+/* Cards */
+
+.kim-card {
+  appearance: none;
+  box-sizing: border-box;
+
+  position: relative;
+  flex: 0 0 var(--card-width);
+
+  width: var(--card-width);
+  min-width: var(--card-width);
+  max-width: var(--card-width);
+
+  height: var(--card-height);
+  min-height: var(--card-height);
+  max-height: var(--card-height);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+
+  color: var(--card-ink);
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      var(--card-paper)
+    );
+
+  border:
+    clamp(2px, 0.25vw, 4px)
+    solid var(--card-border);
+
+  border-radius: calc(var(--card-width) * 0.075);
+
+  box-shadow:
+    0 calc(var(--card-width) * 0.06)
+      calc(var(--card-width) * 0.14)
+      rgba(0, 0, 0, 0.38),
+    inset 0 0
+      calc(var(--card-width) * 0.08)
+      rgba(110, 96, 65, 0.08);
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  transition:
+    filter 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+button.kim-card {
+  cursor: pointer;
+}
+
+button.kim-card:hover {
+  filter: brightness(0.84);
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 calc(var(--card-width) * 0.08)
+      calc(var(--card-width) * 0.18)
+      rgba(0, 0, 0, 0.48),
+    inset 0 0
+      calc(var(--card-width) * 0.08)
+      rgba(110, 96, 65, 0.12);
+}
+
+button.kim-card:focus-visible {
+  outline: 4px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.answer-card-value,
+.revealed-answer {
+  width: 88%;
+  height: 44%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  text-align: center;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.question-card {
+  flex-direction: column;
+}
+
+.question-card-text {
+  width: 88%;
+  height: 42%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  text-align: center;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.question-card.revealed {
+  background:
+    radial-gradient(
+      circle at center,
+      #ffffff,
+      #e9f2e9
+    );
+
+  border-color: #63876b;
+}
+
+.revealed-question {
+  position: absolute;
+  top: 8%;
+  left: 6%;
+
+  width: 88%;
+  height: 16%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  color: #514d45;
+
+  text-align: center;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.revealed-answer {
+  position: absolute;
+  top: 32%;
+  left: 6%;
+
+  width: 88%;
+  height: 44%;
+}
+
+/* Face-down card */
+
+.missing-card {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      45deg,
+      transparent 47%,
+      rgba(255, 255, 255, 0.12) 49%,
+      rgba(255, 255, 255, 0.12) 51%,
+      transparent 53%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 47%,
+      rgba(255, 255, 255, 0.12) 49%,
+      rgba(255, 255, 255, 0.12) 51%,
+      transparent 53%
+    ),
+    radial-gradient(
+      circle at center,
+      var(--card-back-light),
+      var(--card-back),
+      var(--card-back-dark)
+    );
+
+  border-color: #b99bd5;
+}
+
+.card-back-pattern {
+  width: 82%;
+  height: 87%;
+
+  border:
+    max(2px, calc(var(--card-width) * 0.025))
+    solid rgba(255, 255, 255, 0.62);
+
+  border-radius: calc(var(--card-width) * 0.045);
+
+  background:
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0,
+      transparent 7px,
+      rgba(255, 255, 255, 0.14) 8px,
+      transparent 10px
+    );
+}
+
+.missing-card.revealed {
+  color: var(--card-red);
+
+  background:
+    radial-gradient(
+      circle at center,
+      #fffdf5,
+      #eadfe9
+    );
+
+  border-color: var(--card-back);
+}
+
+/* Controls */
+
+.kims-game-controls {
+  flex: 0 0 auto;
+  min-height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+
+  padding-top: 0.5rem;
+}
+
+.kims-game-controls button {
+  min-width: 150px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.kims-game-message {
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  bottom: 5rem;
+
+  width: min(650px, 90vw);
+
+  transform: translateX(-50%);
+
+  padding: 1rem 1.25rem;
+
+  color: #ffffff;
+  background: #951e2a;
+
+  border: 3px solid #ffffff;
+  border-radius: 16px;
+
+  text-align: center;
+  font-weight: 900;
+
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 760px) {
+  .kims-settings-wrapper {
+    padding: 1rem;
+  }
+
+  .basic-settings-grid,
+  .question-type-list {
+    grid-template-columns: 1fr;
+  }
+
+  .question-selection-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .question-subcategory-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .kims-game-header {
+    min-height: 100px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .kims-game-header h1 {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .kims-header-links {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .timer-display {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .kims-game-controls button {
+    min-width: 110px;
+  }
+}
+
+@media (max-height: 650px) {
+  .kims-game-header {
+    min-height: 54px;
+  }
+
+  .kims-game-header h1 {
+    font-size: clamp(1.7rem, 4vw, 2.7rem);
+  }
+
+  .kims-game-controls {
+    min-height: 48px;
+  }
+
+  .kims-game-controls button {
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+  }
+}

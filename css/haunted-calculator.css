@@ -1,0 +1,485 @@
+.haunted-page {
+  --haunt-bg: #0d0d0f;
+  --haunt-panel: #1a1a1f;
+  --haunt-panel-soft: #24242b;
+  --haunt-panel-light: #303038;
+  --haunt-text: #f4f4f5;
+  --haunt-muted: #b8b8c2;
+  --haunt-border: #555565;
+  --haunt-white: #ffffff;
+  --haunt-black: #050506;
+  --haunt-green: #15803d;
+  --haunt-red: #b91c1c;
+  --haunt-yellow: #ffd84d;
+  --haunt-yellow-soft: #fff2a3;
+  --haunt-ghost-bg: #8b8b95;
+  --haunt-ghost-bg-hover: #9a9aa4;
+
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #34343d 0%, #17171c 42%, #050506 100%);
+  color: var(--haunt-text);
+  transition:
+    background 0.45s ease,
+    color 0.25s ease;
+}
+
+.haunted-page.win-glow {
+  background:
+    radial-gradient(circle at top, #fff7bd 0%, #ffd84d 18%, #5a4b16 48%, #050506 100%);
+}
+
+.haunted-page.win-glow .game-panel {
+  border-color: var(--haunt-yellow);
+  box-shadow:
+    0 0 55px rgba(255, 216, 77, 0.5),
+    0 18px 45px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.haunted-page.win-glow .target-card {
+  background: var(--haunt-yellow-soft);
+  box-shadow: 0 0 36px rgba(255, 216, 77, 0.55);
+}
+
+.settings-wrapper,
+.game-wrapper {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.settings-card,
+.game-panel {
+  width: min(900px, 95vw);
+  background: rgba(26, 26, 31, 0.96);
+  border: 3px solid var(--haunt-border);
+  border-radius: 28px;
+  padding: 2rem;
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.settings-card h1,
+.game-panel h1 {
+  color: var(--haunt-white);
+  font-size: clamp(2rem, 5vw, 4rem);
+  text-align: center;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.14);
+}
+
+.intro {
+  max-width: 650px;
+  margin: 0 auto 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--haunt-muted);
+}
+
+.back-link {
+  color: var(--haunt-white);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+form {
+  display: grid;
+  gap: 1rem;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 700;
+  color: var(--haunt-text);
+}
+
+input,
+select {
+  font: inherit;
+  padding: 0.75rem;
+  border: 2px solid var(--haunt-border);
+  border-radius: 12px;
+  background: var(--haunt-panel-soft);
+  color: var(--haunt-text);
+}
+
+input:focus,
+select:focus {
+  outline: 3px solid rgba(255, 255, 255, 0.18);
+  border-color: var(--haunt-white);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.checkbox-label input {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.primary-button,
+.secondary-button {
+  font: inherit;
+  font-weight: 800;
+  border: none;
+  border-radius: 14px;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: var(--haunt-white);
+  color: var(--haunt-black);
+}
+
+.secondary-button {
+  background: var(--haunt-panel-light);
+  color: var(--haunt-white);
+  border: 2px solid var(--haunt-border);
+}
+
+.primary-button:hover,
+.secondary-button:hover {
+  filter: brightness(0.92);
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.target-card {
+  text-align: center;
+  background: var(--haunt-white);
+  color: var(--haunt-black);
+  border-radius: 24px;
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.08);
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.target-card p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.target-number {
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.calculator-area {
+  display: grid;
+  gap: 1rem;
+}
+
+.calculator-screen {
+  background: var(--haunt-black);
+  color: var(--haunt-white);
+  border: 2px solid var(--haunt-border);
+  border-radius: 18px;
+  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.04),
+    0 0 24px rgba(0, 0, 0, 0.4);
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.calculator-screen.won {
+  background: #111111;
+  border-color: var(--haunt-yellow);
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 216, 77, 0.22),
+    0 0 38px rgba(255, 216, 77, 0.5);
+}
+
+.calculator-screen.wrong {
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.08),
+    0 0 26px rgba(185, 28, 28, 0.55);
+}
+
+.calculator-screen.solution-shown {
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.08),
+    0 0 26px rgba(255, 255, 255, 0.2);
+}
+
+.screen-row {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.screen-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--haunt-muted);
+}
+
+.calculator-display,
+.evaluation-display {
+  min-height: 58px;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  text-align: right;
+  overflow-x: auto;
+}
+
+.calculator-display {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--haunt-white);
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+}
+
+.evaluation-display {
+  background: var(--haunt-white);
+  color: var(--haunt-black);
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 900;
+}
+
+.evaluation-display:empty::after {
+  content: "";
+}
+
+.evaluation-valid {
+  color: var(--haunt-black);
+}
+
+.evaluation-invalid {
+  color: var(--haunt-red);
+}
+
+.evaluation-correct {
+  color: var(--haunt-green);
+}
+
+.calculator-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.7rem;
+}
+
+.calc-button {
+  position: relative;
+  isolation: isolate;
+  min-height: 70px;
+  border: 3px solid var(--haunt-border);
+  border-radius: 18px;
+  background: var(--haunt-white);
+  color: var(--haunt-black);
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  font-weight: 900;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.calc-button:hover:not(:disabled) {
+  border-color: var(--haunt-white);
+  background: #e9e9ee;
+}
+
+.calc-button:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.calc-button > span {
+  position: relative;
+  z-index: 3;
+}
+
+.calc-button small {
+  position: absolute;
+  z-index: 5;
+  top: 6px;
+  right: 8px;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--haunt-black);
+  color: var(--haunt-white);
+  border: 1px solid var(--haunt-white);
+  font-size: 0.8rem;
+}
+
+.ghost-image {
+  position: absolute;
+  z-index: 2;
+  inset: 8%;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.calc-button.ghosted {
+  background: var(--haunt-ghost-bg);
+  border-color: var(--haunt-border);
+}
+
+.calc-button.ghosted > span {
+  opacity: 0;
+}
+
+.calc-button.solved-disabled {
+  background: #77777f;
+  border-color: #5d5d66;
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.calc-button.solved-disabled small {
+  background: #33333a;
+  color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.action-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.action-row button {
+  flex: 1;
+  min-width: 150px;
+}
+
+.solution-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.solution-modal.hidden {
+  display: none;
+}
+
+.solution-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.solution-modal-card {
+  position: relative;
+  z-index: 101;
+  width: min(650px, 94vw);
+  max-height: min(75vh, 700px);
+  overflow-y: auto;
+  background: var(--haunt-panel);
+  color: var(--haunt-text);
+  border: 3px solid var(--haunt-border);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+}
+
+.solution-modal-card h2 {
+  margin-bottom: 0.5rem;
+  color: var(--haunt-white);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+}
+
+.solution-summary {
+  margin-top: 0;
+  font-weight: 700;
+  color: var(--haunt-muted);
+}
+
+.solutions-list {
+  display: grid;
+  gap: 0.6rem;
+  margin: 1rem 0 0;
+  padding-left: 1.5rem;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 800;
+  color: var(--haunt-text);
+}
+
+.solutions-list li::marker {
+  color: var(--haunt-white);
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.9rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--haunt-white);
+  color: var(--haunt-black);
+  font-size: 1.6rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.modal-close-button:hover {
+  filter: brightness(0.86);
+}
+
+@media (max-width: 700px) {
+  .settings-wrapper,
+  .game-wrapper {
+    padding: 1rem;
+  }
+
+  .settings-card,
+  .game-panel {
+    padding: 1.25rem;
+    border-radius: 20px;
+  }
+
+  .calc-button {
+    min-height: 60px;
+  }
+
+  .solution-modal-card {
+    padding: 1.5rem;
+  }
+}

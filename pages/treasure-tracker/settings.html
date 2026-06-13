@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Treasure Tracker Settings</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/treasure-tracker.css" />
+
+  <script src="settings.js" defer></script>
+</head>
+<body class="treasure-page">
+  <main class="treasure-settings-wrapper">
+    <section class="treasure-settings-card">
+      <a class="treasure-back-link" href="../../index.html">← Back to games</a>
+
+      <h1>Treasure Tracker</h1>
+
+      <p class="treasure-intro">
+        Start at zero, choose a route across the old map, and reach the treasure in the centre with the correct value.
+      </p>
+
+      <form id="treasureTrackerSettingsForm">
+        <label>
+          Grid size
+          <select id="gridSize" name="gridSize">
+            <option value="3">3 × 3</option>
+            <option value="5" selected>5 × 5</option>
+            <option value="7">7 × 7</option>
+            <option value="9">9 × 9</option>
+          </select>
+        </label>
+
+        <label class="treasure-checkbox-label">
+          <input id="allowNegativeTargets" name="allowNegativeTargets" type="checkbox" checked />
+          Allow negative targets
+        </label>
+
+        <label class="treasure-checkbox-label">
+          <input id="allowFractionTargets" name="allowFractionTargets" type="checkbox" />
+          Allow fraction targets
+        </label>
+
+        <label class="treasure-checkbox-label">
+          <input id="useStartSquare" name="useStartSquare" type="checkbox" />
+          Use a fixed START square
+        </label>
+
+        <button class="treasure-primary-button" type="submit">Start Game</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

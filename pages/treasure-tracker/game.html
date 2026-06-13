@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Treasure Tracker</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/treasure-tracker.css" />
+
+  <script src="generator.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body class="treasure-page">
+  <main class="treasure-game-wrapper">
+    <section class="treasure-game-panel">
+      <header class="treasure-game-header">
+        <a class="treasure-back-link" href="../../index.html">← Back to games</a>
+        <a class="treasure-back-link" href="settings.html">Settings</a>
+      </header>
+
+      <h1>Treasure Tracker</h1>
+
+      <section class="treasure-info-row">
+        <div>
+          <span>Target</span>
+          <strong id="targetDisplay">?</strong>
+        </div>
+
+        <div>
+          <span>Current</span>
+          <strong id="currentValueDisplay">0</strong>
+        </div>
+
+        <div>
+          <span>Status</span>
+          <strong id="statusDisplay">Start on an edge</strong>
+        </div>
+      </section>
+
+      <section class="map-section">
+        <div id="mapBoard" class="map-board" aria-label="Treasure Tracker map grid">
+          <svg id="pathLayer" class="map-line-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polyline id="solutionPathLine" class="solution-path-line" points=""></polyline>
+            <polyline id="playerPathLine" class="player-path-line" points=""></polyline>
+          </svg>
+        </div>
+      </section>
+
+      <section class="treasure-expression-card">
+        <span class="treasure-expression-label">Route calculation</span>
+        <div id="expressionDisplay" class="treasure-expression">0</div>
+      </section>
+
+      <section class="treasure-action-row">
+        <button id="resetButton" class="treasure-secondary-button" type="button">Reset</button>
+        <button id="newButton" class="treasure-secondary-button" type="button">New</button>
+        <button id="solutionButton" class="treasure-secondary-button" type="button">Show Solution</button>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
