@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Pairs</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/pairs.css" />
+
+  <script src="../../js/pairs-generator.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body class="pairs-page pairs-game-page">
+  <main class="pairs-game">
+    <header class="pairs-game-header">
+      <nav class="pairs-header-links" aria-label="Game navigation">
+        <a class="pairs-back-link" href="../../index.html">
+          ← Games
+        </a>
+
+        <a class="pairs-back-link" href="settings.html">
+          Settings
+        </a>
+      </nav>
+
+      <h1>Pairs</h1>
+
+      <div id="soloStats" class="solo-stats">
+        Turns:
+        <strong id="turnCount">0</strong>
+      </div>
+
+      <div id="teamTurn" class="team-turn hidden">
+        Team 1’s turn
+      </div>
+    </header>
+
+    <section
+      id="scoreboard"
+      class="pairs-scoreboard hidden"
+      aria-label="Team scores"
+    ></section>
+
+    <p id="statusDisplay" class="pairs-status">
+      Find a matching pair.
+    </p>
+
+    <section
+      id="cardTable"
+      class="pairs-card-table"
+      aria-label="Pairs cards"
+    ></section>
+
+    <footer class="pairs-controls">
+      <button
+        id="newRoundButton"
+        class="pairs-primary-button"
+        type="button"
+      >
+        New Round
+      </button>
+    </footer>
+
+    <div
+      id="gameMessage"
+      class="pairs-game-message hidden"
+      role="alert"
+    ></div>
+  </main>
+</body>
+</html>

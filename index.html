@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Maths Mini Games</title>
 
@@ -13,13 +16,31 @@
 </head>
 <body>
   <main class="game-grid" aria-label="Mini game menu">
-    <a class="game-tile active haunted-tile" href="pages/haunted-calculator/settings.html" data-ghost-hover>
-      <img class="tile-ghost-preview" src="" alt="" aria-hidden="true" />
+    <a
+      class="game-tile active haunted-tile"
+      href="pages/haunted-calculator/settings.html"
+      data-ghost-hover
+    >
+      <img
+        class="tile-ghost-preview"
+        src=""
+        alt=""
+        aria-hidden="true"
+      />
+
       <h2>Haunted Calculator</h2>
     </a>
 
-    <a class="game-tile active treasure-tile" href="pages/treasure-tracker/settings.html">
-      <svg class="tile-map-path" viewBox="0 0 320 220" aria-hidden="true" focusable="false">
+    <a
+      class="game-tile active treasure-tile"
+      href="pages/treasure-tracker/settings.html"
+    >
+      <svg
+        class="tile-map-path"
+        viewBox="0 0 320 220"
+        aria-hidden="true"
+        focusable="false"
+      >
         <defs>
           <mask id="treasure-route-reveal-mask">
             <path
@@ -41,25 +62,142 @@
       <h2>Treasure Tracker</h2>
     </a>
 
-    <a class="game-tile active" href="pages/kims-game/settings.html">
+    <a
+      class="game-tile active card-table-tile kims-tile"
+      href="pages/kims-game/settings.html"
+    >
+      <div
+        class="tile-card-preview kims-card-preview"
+        aria-hidden="true"
+      >
+        <div
+          class="preview-card kims-preview-card preview-top-left preview-face-up"
+        >
+          <span>1</span>
+        </div>
+
+        <div
+          class="preview-card kims-preview-card preview-top-right preview-face-up"
+        >
+          <span>2</span>
+        </div>
+
+        <div
+          class="preview-card kims-preview-card preview-bottom-left preview-face-up"
+        >
+          <span>3</span>
+        </div>
+
+        <div
+          class="preview-card kims-preview-card preview-bottom-right preview-face-down"
+        ></div>
+      </div>
+
       <h2>Kim’s Game</h2>
     </a>
 
-    <a class="game-tile active" href="pages/countdown/settings.html">
+    <a
+      class="game-tile active card-table-tile pairs-tile"
+      href="pages/pairs/settings.html"
+      data-pairs-preview
+    >
+      <div
+        class="tile-card-preview pairs-card-preview"
+        aria-hidden="true"
+      >
+        <div
+          class="preview-card pairs-preview-card preview-top-left"
+          data-pairs-card
+        >
+          <div class="preview-card-inner">
+            <div class="preview-card-side preview-card-back"></div>
+
+            <div class="preview-card-side preview-card-front">
+              <span data-pair-value></span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="preview-card pairs-preview-card preview-top-right"
+          data-pairs-card
+        >
+          <div class="preview-card-inner">
+            <div class="preview-card-side preview-card-back"></div>
+
+            <div class="preview-card-side preview-card-front">
+              <span data-pair-value></span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="preview-card pairs-preview-card preview-bottom-left"
+          data-pairs-card
+        >
+          <div class="preview-card-inner">
+            <div class="preview-card-side preview-card-back"></div>
+
+            <div class="preview-card-side preview-card-front">
+              <span data-pair-value></span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="preview-card pairs-preview-card preview-bottom-right"
+          data-pairs-card
+        >
+          <div class="preview-card-inner">
+            <div class="preview-card-side preview-card-back"></div>
+
+            <div class="preview-card-side preview-card-front">
+              <span data-pair-value></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Pairs</h2>
+    </a>
+
+    <a
+      class="game-tile active"
+      href="pages/countdown/settings.html"
+    >
       <h2>Countdown</h2>
     </a>
 
-    <a class="game-tile active" href="pages/codenames/settings.html">
+    <a
+      class="game-tile active"
+      href="pages/codenames/settings.html"
+    >
       <h2>Codenames</h2>
     </a>
 
-    <div class="game-tile coming-soon"><h2></h2></div>
-    <div class="game-tile coming-soon"><h2></h2></div>
-    <div class="game-tile coming-soon"><h2></h2></div>
-    <div class="game-tile coming-soon"><h2></h2></div>
-    <div class="game-tile coming-soon"><h2></h2></div>
-    <div class="game-tile coming-soon"><h2></h2></div>
-    <div class="game-tile coming-soon"><h2></h2></div>
+    <div class="game-tile coming-soon">
+      <h2></h2>
+    </div>
+
+    <div class="game-tile coming-soon">
+      <h2></h2>
+    </div>
+
+    <div class="game-tile coming-soon">
+      <h2></h2>
+    </div>
+
+    <div class="game-tile coming-soon">
+      <h2></h2>
+    </div>
+
+    <div class="game-tile coming-soon">
+      <h2></h2>
+    </div>
+
+    <div class="game-tile coming-soon">
+      <h2></h2>
+    </div>
   </main>
 </body>
 </html>
