@@ -11,8 +11,6 @@
   --card-border: #c7c1b1;
 
   --card-back: #5c2b91;
-  --card-back-dark: #321254;
-  --card-back-light: #8c5abb;
 
   min-height: 100vh;
   margin: 0;
@@ -444,7 +442,7 @@
   gap: clamp(0.45rem, 1.25vw, 1rem);
 }
 
-/* Cards */
+/* All cards use the exact 750 × 1050 ratio */
 
 .kim-card {
   appearance: none;
@@ -460,6 +458,8 @@
   height: var(--card-height);
   min-height: var(--card-height);
   max-height: var(--card-height);
+
+  aspect-ratio: 750 / 1050;
 
   display: flex;
   align-items: center;
@@ -602,55 +602,26 @@ button.kim-card:focus-visible {
   height: 44%;
 }
 
-/* Face-down card */
+/* Face-down card uses assets/images/cardback.jpeg */
 
 .missing-card {
   color: #ffffff;
 
-  background:
-    linear-gradient(
-      45deg,
-      transparent 47%,
-      rgba(255, 255, 255, 0.12) 49%,
-      rgba(255, 255, 255, 0.12) 51%,
-      transparent 53%
-    ),
-    linear-gradient(
-      -45deg,
-      transparent 47%,
-      rgba(255, 255, 255, 0.12) 49%,
-      rgba(255, 255, 255, 0.12) 51%,
-      transparent 53%
-    ),
-    radial-gradient(
-      circle at center,
-      var(--card-back-light),
-      var(--card-back),
-      var(--card-back-dark)
-    );
+  background-image: url("../assets/images/cardback.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   border-color: #b99bd5;
 }
 
+/* The old generated card-back pattern is no longer displayed */
+
 .card-back-pattern {
-  width: 82%;
-  height: 87%;
-
-  border:
-    max(2px, calc(var(--card-width) * 0.025))
-    solid rgba(255, 255, 255, 0.62);
-
-  border-radius: calc(var(--card-width) * 0.045);
-
-  background:
-    repeating-radial-gradient(
-      circle at center,
-      transparent 0,
-      transparent 7px,
-      rgba(255, 255, 255, 0.14) 8px,
-      transparent 10px
-    );
+  display: none;
 }
+
+/* Revealing the missing card turns it back into an answer card */
 
 .missing-card.revealed {
   color: var(--card-red);
