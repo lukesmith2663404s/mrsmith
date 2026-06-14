@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>The Wheel</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/the-wheel.css" />
+
+<script src="../../js/question-generator.js"></script>
+<script src="game.js" defer></script>
+</head>
+
+<body class="wheel-page wheel-game-page">
+  <main class="wheel-game">
+    <header class="wheel-game-header">
+      <nav
+        class="wheel-header-links"
+        aria-label="Game navigation"
+      >
+        <a
+          class="wheel-back-link"
+          href="../../index.html"
+        >
+          ← Games
+        </a>
+
+        <a
+          class="wheel-back-link"
+          href="settings.html"
+        >
+          Settings
+        </a>
+
+        <button
+          id="newGameButton"
+          class="wheel-nav-button"
+          type="button"
+        >
+          New Game
+        </button>
+      </nav>
+
+      <h1>The Wheel</h1>
+
+      <div
+        id="roundDisplay"
+        class="wheel-round-display"
+      >
+        Round 1
+      </div>
+    </header>
+
+    <section
+      id="scoreboard"
+      class="wheel-scoreboard"
+      aria-label="Scores"
+    ></section>
+
+    <section class="wheel-game-board">
+      <section class="wheel-question-panel">
+        <p
+          id="currentPlayerLabel"
+          class="wheel-current-player"
+        ></p>
+
+        <div
+          id="questionText"
+          class="wheel-question-text"
+        ></div>
+
+        <form
+          id="answerForm"
+          class="wheel-answer-form"
+        >
+          <label for="answerInput">
+            Answer
+          </label>
+
+          <div class="wheel-answer-row">
+            <div class="wheel-answer-entry">
+              <span
+                id="answerPrefix"
+                class="wheel-answer-affix hidden"
+              ></span>
+
+              <input
+                id="answerInput"
+                type="text"
+                inputmode="decimal"
+                autocomplete="off"
+              />
+
+              <span
+                id="answerSuffix"
+                class="wheel-answer-affix hidden"
+              ></span>
+            </div>
+
+            <button
+              id="submitAnswerButton"
+              class="wheel-primary-button"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+
+        <p
+          id="answerFeedback"
+          class="wheel-answer-feedback"
+          aria-live="polite"
+        ></p>
+
+        <div
+          id="finalResult"
+          class="wheel-final-result hidden"
+        ></div>
+      </section>
+
+      <section class="wheel-spinner-panel">
+        <div
+          id="wheelShell"
+          class="wheel-shell"
+        >
+          <div
+            class="wheel-pointer"
+            aria-hidden="true"
+          ></div>
+
+          <div
+            id="wheelSpinner"
+            class="wheel-spinner"
+          >
+            <svg
+              id="wheelSvg"
+              class="wheel-svg"
+              viewBox="0 0 500 500"
+              aria-label="Score wheel"
+            ></svg>
+          </div>
+
+          <div
+            id="wheelCentreDisplay"
+            class="wheel-centre-display"
+            aria-live="polite"
+          >
+            <span id="wheelCentreText">
+              SPIN
+            </span>
+          </div>
+        </div>
+
+        <div class="wheel-action-buttons">
+          <button
+            id="spinButton"
+            class="wheel-spin-button hidden"
+            type="button"
+          >
+            Spin the Wheel
+          </button>
+
+          <button
+            id="continueButton"
+            class="wheel-secondary-button hidden"
+            type="button"
+          >
+            Continue
+          </button>
+        </div>
+      </section>
+    </section>
+
+    <div
+      id="roundAnnouncement"
+      class="wheel-round-announcement hidden"
+      aria-live="assertive"
+    >
+      <div class="wheel-round-announcement-content">
+        <span
+          id="roundAnnouncementText"
+          class="wheel-round-announcement-text"
+        ></span>
+      </div>
+    </div>
+
+    <div
+      id="gameMessage"
+      class="wheel-game-message hidden"
+      role="alert"
+    ></div>
+  </main>
+</body>
+</html>

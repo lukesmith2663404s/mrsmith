@@ -1,4 +1,4 @@
-const QuestionGenerator = (() => {
+window.QuestionGenerator = (() => {
   function questionType(
     id,
     name,
@@ -402,6 +402,53 @@ const QuestionGenerator = (() => {
           ]
         }
       ]
+    },
+    {
+      id: "equations-and-inequations",
+      name: "Equations and Inequations",
+      subcategories: [
+        {
+          id: "one-step-equations",
+          name: "One Step Equations",
+          questionTypes: [
+            questionType(
+              "one-step-equation-addition",
+              "Addition Equations",
+              "x + a = b",
+              "positive integer solutions",
+              generateOneStepAdditionEquation
+            ),
+            questionType(
+              "one-step-equation-subtraction",
+              "Subtraction Equations",
+              "x − a = b",
+              "positive integer solutions",
+              generateOneStepSubtractionEquation
+            ),
+            questionType(
+              "one-step-equation-multiplication",
+              "Multiplication Equations",
+              "ax = b",
+              "2 ≤ a ≤ 12, positive integer solutions",
+              generateOneStepMultiplicationEquation
+            ),
+            questionType(
+              "one-step-equation-division",
+              "Division Equations",
+              "a ÷ x = b",
+              "2 ≤ x ≤ 12, positive integer solutions",
+              generateOneStepDivisionEquation
+            ),
+            questionType(
+              "mixed-one-step-equations",
+              "Mixed One Step Equations",
+              "x + a = b, x − a = b, ax = b or a ÷ x = b",
+              "positive integer solutions",
+              generateMixedOneStepEquation
+            )
+          ]
+        }
+      ]
     }
   ];
 
@@ -457,13 +504,52 @@ const QuestionGenerator = (() => {
     return value < 0 ? `(${value})` : String(value);
   }
 
-  function makeQuestion(question, answer) {
+  function makeQuestion(
+    question,
+    answer,
+    {
+      answerPrefix = "",
+      answerSuffix = ""
+    } = {}
+  ) {
+    const answerText = String(answer);
+    const displayAnswer =
+      `${answerPrefix}${answerText}${answerSuffix}`;
+
     return {
       question,
       answer,
-      answerText: String(answer),
-      answerKey: String(answer)
+      answerText,
+      answerPrefix,
+      answerSuffix,
+      displayAnswer,
+      answerKey: displayAnswer
     };
+  }
+
+  function formatAnswer(question) {
+    if (!question) {
+      return "";
+    }
+
+    const answerPrefix =
+      typeof question.answerPrefix === "string"
+        ? question.answerPrefix
+        : "";
+
+    const answerText =
+      question.answerText !== undefined
+        ? String(question.answerText)
+        : question.answer !== undefined
+          ? String(question.answer)
+          : "";
+
+    const answerSuffix =
+      typeof question.answerSuffix === "string"
+        ? question.answerSuffix
+        : "";
+
+    return `${answerPrefix}${answerText}${answerSuffix}`;
   }
 
   function generatePositiveAdditionUnder20() {
@@ -939,6 +1025,71 @@ const QuestionGenerator = (() => {
     ])();
   }
 
+  function generateOneStepAdditionEquation() {
+    const solution = randomInt(1, 50);
+    const amountAdded = randomInt(1, 30);
+    const result = solution + amountAdded;
+
+    return makeQuestion(
+      `x + ${amountAdded} = ${result}`,
+      solution,
+      {
+        answerPrefix: "x = "
+      }
+    );
+  }
+
+  function generateOneStepSubtractionEquation() {
+    const result = randomInt(1, 50);
+    const amountSubtracted = randomInt(1, 30);
+    const solution = result + amountSubtracted;
+
+    return makeQuestion(
+      `x − ${amountSubtracted} = ${result}`,
+      solution,
+      {
+        answerPrefix: "x = "
+      }
+    );
+  }
+
+  function generateOneStepMultiplicationEquation() {
+    const coefficient = randomInt(2, 12);
+    const solution = randomInt(1, 12);
+    const result = coefficient * solution;
+
+    return makeQuestion(
+      `${coefficient}x = ${result}`,
+      solution,
+      {
+        answerPrefix: "x = "
+      }
+    );
+  }
+
+  function generateOneStepDivisionEquation() {
+    const solution = randomInt(2, 12);
+    const result = randomInt(1, 12);
+    const dividend = solution * result;
+
+    return makeQuestion(
+      `${dividend} ÷ x = ${result}`,
+      solution,
+      {
+        answerPrefix: "x = "
+      }
+    );
+  }
+
+  function generateMixedOneStepEquation() {
+    return choice([
+      generateOneStepAdditionEquation,
+      generateOneStepSubtractionEquation,
+      generateOneStepMultiplicationEquation,
+      generateOneStepDivisionEquation
+    ])();
+  }
+
   function getCategories() {
     return QUESTION_CATEGORIES;
   }
@@ -970,8 +1121,35 @@ const QuestionGenerator = (() => {
       throw new Error(`Unknown question type: ${typeId}`);
     }
 
+    const generatedQuestion = type.generate();
+
+    const answerPrefix =
+      typeof generatedQuestion.answerPrefix === "string"
+        ? generatedQuestion.answerPrefix
+        : "";
+
+    const answerSuffix =
+      typeof generatedQuestion.answerSuffix === "string"
+        ? generatedQuestion.answerSuffix
+        : "";
+
+    const answerText =
+      generatedQuestion.answerText !== undefined
+        ? String(generatedQuestion.answerText)
+        : generatedQuestion.answer !== undefined
+          ? String(generatedQuestion.answer)
+          : "";
+
+    const displayAnswer =
+      `${answerPrefix}${answerText}${answerSuffix}`;
+
     return {
-      ...type.generate(),
+      ...generatedQuestion,
+      answerText,
+      answerPrefix,
+      answerSuffix,
+      displayAnswer,
+      answerKey: displayAnswer,
       typeId: type.id,
       typeName: type.name,
       categoryName: type.categoryName,
@@ -1031,6 +1209,7 @@ const QuestionGenerator = (() => {
     getAllQuestionTypes,
     getQuestionType,
     generateQuestion,
-    generateUniqueQuestions
+    generateUniqueQuestions,
+    formatAnswer
   };
 })();

@@ -12,7 +12,9 @@ const DEFAULT_KIMS_SETTINGS = {
   cardCount: 4,
   timerEnabled: false,
   timerDuration: 20,
-  selectedQuestionTypeIds: [...DEFAULT_KIMS_QUESTION_TYPE_IDS]
+  selectedQuestionTypeIds: [
+    ...DEFAULT_KIMS_QUESTION_TYPE_IDS
+  ]
 };
 
 let settings = loadSettings();
@@ -25,39 +27,81 @@ let timerRemaining = 0;
 let revealedCards = new Set();
 let layoutAnimationFrame = null;
 
-const cardTable = document.querySelector("#cardTable");
-const timerDisplay = document.querySelector("#timerDisplay");
-const continueButton = document.querySelector("#continueButton");
+const cardTable = document.querySelector(
+  "#cardTable"
+);
+
+const timerDisplay = document.querySelector(
+  "#timerDisplay"
+);
+
+const continueButton = document.querySelector(
+  "#continueButton"
+);
+
 const showAnswersAgainButton = document.querySelector(
   "#showAnswersAgainButton"
 );
-const revealAllButton = document.querySelector("#revealAllButton");
-const newRoundButton = document.querySelector("#newRoundButton");
-const gameMessage = document.querySelector("#gameMessage");
 
-continueButton.addEventListener("click", showQuestionPhase);
-showAnswersAgainButton.addEventListener("click", showAnswerPhase);
-revealAllButton.addEventListener("click", revealAllCards);
-newRoundButton.addEventListener("click", startNewRound);
+const revealAllButton = document.querySelector(
+  "#revealAllButton"
+);
 
-window.addEventListener("resize", scheduleCardLayout);
+const newRoundButton = document.querySelector(
+  "#newRoundButton"
+);
+
+const gameMessage = document.querySelector(
+  "#gameMessage"
+);
+
+continueButton.addEventListener(
+  "click",
+  showQuestionPhase
+);
+
+showAnswersAgainButton.addEventListener(
+  "click",
+  showAnswerPhase
+);
+
+revealAllButton.addEventListener(
+  "click",
+  revealAllCards
+);
+
+newRoundButton.addEventListener(
+  "click",
+  startNewRound
+);
+
+window.addEventListener(
+  "resize",
+  scheduleCardLayout
+);
 
 if ("ResizeObserver" in window) {
-  const cardTableResizeObserver = new ResizeObserver(() => {
-    scheduleCardLayout();
-  });
+  const cardTableResizeObserver =
+    new ResizeObserver(() => {
+      scheduleCardLayout();
+    });
 
-  cardTableResizeObserver.observe(cardTable);
+  cardTableResizeObserver.observe(
+    cardTable
+  );
 }
 
 startNewRound();
 
 function loadSettings() {
-  const savedSettings = localStorage.getItem(KIMS_SETTINGS_KEY);
+  const savedSettings = localStorage.getItem(
+    KIMS_SETTINGS_KEY
+  );
 
   if (!savedSettings) {
     return {
       ...DEFAULT_KIMS_SETTINGS,
+
       selectedQuestionTypeIds: [
         ...DEFAULT_KIMS_QUESTION_TYPE_IDS
       ]
@@ -65,7 +109,9 @@ function loadSettings() {
   }
 
   try {
-    const parsedSettings = JSON.parse(savedSettings);
+    const parsedSettings = JSON.parse(
+      savedSettings
+    );
 
     if (
       parsedSettings.settingsVersion !==
@@ -73,27 +119,33 @@ function loadSettings() {
     ) {
       return {
         ...DEFAULT_KIMS_SETTINGS,
+
         selectedQuestionTypeIds: [
           ...DEFAULT_KIMS_QUESTION_TYPE_IDS
         ]
       };
     }
 
-    const validSelectedIds = getValidQuestionTypeIds(
-      parsedSettings.selectedQuestionTypeIds
-    );
+    const validSelectedIds =
+      getValidQuestionTypeIds(
+        parsedSettings.selectedQuestionTypeIds
+      );
 
     return {
       ...DEFAULT_KIMS_SETTINGS,
       ...parsedSettings,
+
       selectedQuestionTypeIds:
         validSelectedIds.length > 0
           ? validSelectedIds
-          : [...DEFAULT_KIMS_QUESTION_TYPE_IDS]
+          : [
+              ...DEFAULT_KIMS_QUESTION_TYPE_IDS
+            ]
     };
   } catch {
     return {
       ...DEFAULT_KIMS_SETTINGS,
+
       selectedQuestionTypeIds: [
         ...DEFAULT_KIMS_QUESTION_TYPE_IDS
       ]
@@ -107,7 +159,11 @@ function getValidQuestionTypeIds(typeIds) {
   }
 
   return typeIds.filter((typeId) => {
-    return QuestionGenerator.getQuestionType(typeId) !== null;
+    return (
+      QuestionGenerator.getQuestionType(
+        typeId
+      ) !== null
+    );
   });
 }
 
@@ -116,10 +172,16 @@ function startNewRound() {
   hideGameMessage();
 
   try {
-    roundQuestions = QuestionGenerator.generateUniqueQuestions(
-      clampNumber(settings.cardCount, 4, 20),
-      settings.selectedQuestionTypeIds
-    );
+    roundQuestions =
+      QuestionGenerator.generateUniqueQuestions(
+        clampNumber(
+          settings.cardCount,
+          4,
+          20
+        ),
+
+        settings.selectedQuestionTypeIds
+      );
   } catch (error) {
     showGameMessage(error.message);
     return;
@@ -142,9 +204,17 @@ function showAnswerPhase() {
   phase = "answers";
   revealedCards = new Set();
 
-  continueButton.classList.remove("hidden");
-  showAnswersAgainButton.classList.add("hidden");
-  revealAllButton.classList.add("hidden");
+  continueButton.classList.remove(
+    "hidden"
+  );
+
+  showAnswersAgainButton.classList.add(
+    "hidden"
+  );
+
+  revealAllButton.classList.add(
+    "hidden"
+  );
 
   renderAnswerCards();
 
@@ -155,10 +225,14 @@ function showAnswerPhase() {
   );
 
   if (settings.timerEnabled === true) {
-    continueButton.textContent = "Hide Now";
+    continueButton.textContent =
+      "Hide Now";
+
     startTimer(timerDuration);
   } else {
-    continueButton.textContent = "Hide Answers";
+    continueButton.textContent =
+      "Hide Answers";
+
     timerDisplay.textContent = "";
   }
 }
@@ -172,121 +246,209 @@ function showQuestionPhase() {
 
   phase = "questions";
   revealedCards = new Set();
+
   timerDisplay.textContent = "";
 
-  continueButton.classList.add("hidden");
-  showAnswersAgainButton.classList.remove("hidden");
-  revealAllButton.classList.remove("hidden");
+  continueButton.classList.add(
+    "hidden"
+  );
+
+  showAnswersAgainButton.classList.remove(
+    "hidden"
+  );
+
+  revealAllButton.classList.remove(
+    "hidden"
+  );
 
   renderQuestionCards();
 }
 
 function startTimer(duration) {
   timerRemaining = duration;
+
   updateTimerDisplay();
 
-  timerInterval = window.setInterval(() => {
-    timerRemaining--;
-    updateTimerDisplay();
+  timerInterval = window.setInterval(
+    () => {
+      timerRemaining--;
 
-    if (timerRemaining <= 0) {
-      stopTimer();
-      showQuestionPhase();
-    }
-  }, 1000);
+      updateTimerDisplay();
+
+      if (timerRemaining <= 0) {
+        stopTimer();
+        showQuestionPhase();
+      }
+    },
+    1000
+  );
 }
 
 function stopTimer() {
   if (timerInterval !== null) {
-    window.clearInterval(timerInterval);
+    window.clearInterval(
+      timerInterval
+    );
+
     timerInterval = null;
   }
 }
 
 function updateTimerDisplay() {
   timerDisplay.textContent =
-    `${timerRemaining} second${timerRemaining === 1 ? "" : "s"}`;
+    `${timerRemaining} second` +
+    `${timerRemaining === 1 ? "" : "s"}`;
 }
 
 function renderAnswerCards() {
-  const cards = roundQuestions.map((question, index) => {
-    const card = createCard("answer-card");
-    card.dataset.originalIndex = index;
+  const cards = roundQuestions.map(
+    (question, index) => {
+      const card = createCard(
+        "answer-card"
+      );
 
-    const answer = document.createElement("span");
-    answer.className = "answer-card-value";
-    answer.textContent = question.answerText;
+      card.dataset.originalIndex =
+        index;
 
-    card.appendChild(answer);
+      const answer =
+        document.createElement("span");
 
-    return card;
-  });
+      answer.className =
+        "answer-card-value";
+
+      answer.textContent =
+        getDisplayAnswer(question);
+
+      card.appendChild(answer);
+
+      return card;
+    }
+  );
 
   renderCardsInBalancedRows(cards);
 }
 
 function renderQuestionCards() {
-  const cards = questionLayout.map((item, position) => {
-    if (item.kind === "missing") {
-      return createMissingCard(item, position);
-    }
+  const cards = questionLayout.map(
+    (item, position) => {
+      if (item.kind === "missing") {
+        return createMissingCard(
+          item,
+          position
+        );
+      }
 
-    return createQuestionCard(item, position);
-  });
+      return createQuestionCard(
+        item,
+        position
+      );
+    }
+  );
 
   renderCardsInBalancedRows(cards);
 }
 
-function createQuestionCard(item, position) {
-  const card = createCard("question-card", true);
+function createQuestionCard(
+  item,
+  position
+) {
+  const card = createCard(
+    "question-card",
+    true
+  );
+
   card.dataset.position = position;
 
-  const question = roundQuestions[item.questionIndex];
-  const isRevealed = revealedCards.has(position);
+  const question =
+    roundQuestions[item.questionIndex];
+
+  const displayAnswer =
+    getDisplayAnswer(question);
+
+  const isRevealed =
+    revealedCards.has(position);
 
   if (isRevealed) {
     card.classList.add("revealed");
 
-    const originalQuestion = document.createElement("span");
-    originalQuestion.className = "revealed-question";
-    originalQuestion.textContent = question.question;
+    const originalQuestion =
+      document.createElement("span");
 
-    const answer = document.createElement("span");
-    answer.className = "revealed-answer";
-    answer.textContent = question.answerText;
+    originalQuestion.className =
+      "revealed-question";
 
-    card.append(originalQuestion, answer);
+    originalQuestion.textContent =
+      question.question;
+
+    const answer =
+      document.createElement("span");
+
+    answer.className =
+      "revealed-answer";
+
+    answer.textContent =
+      displayAnswer;
+
+    card.append(
+      originalQuestion,
+      answer
+    );
 
     card.setAttribute(
       "aria-label",
-      `${question.question} equals ${question.answerText}. Click to hide.`
+      `${question.question} equals ` +
+      `${displayAnswer}. Click to hide.`
     );
   } else {
-    const questionText = document.createElement("span");
-    questionText.className = "question-card-text";
-    questionText.textContent = question.question;
+    const questionText =
+      document.createElement("span");
+
+    questionText.className =
+      "question-card-text";
+
+    questionText.textContent =
+      question.question;
 
     card.appendChild(questionText);
 
     card.setAttribute(
       "aria-label",
-      `${question.question}. Click to reveal the answer.`
+      `${question.question}. ` +
+      "Click to reveal the answer."
     );
   }
 
-  card.addEventListener("click", () => {
-    toggleCardReveal(position);
-  });
+  card.addEventListener(
+    "click",
+    () => {
+      toggleCardReveal(position);
+    }
+  );
 
   return card;
 }
 
-function createMissingCard(item, position) {
-  const card = createCard("missing-card", true);
+function createMissingCard(
+  item,
+  position
+) {
+  const card = createCard(
+    "missing-card",
+    true
+  );
+
   card.dataset.position = position;
 
-  const missingQuestion = roundQuestions[item.questionIndex];
-  const isRevealed = revealedCards.has(position);
+  const missingQuestion =
+    roundQuestions[item.questionIndex];
+
+  const displayAnswer =
+    getDisplayAnswer(
+      missingQuestion
+    );
+
+  const isRevealed =
+    revealedCards.has(position);
 
   if (isRevealed) {
     card.classList.add(
@@ -294,33 +456,82 @@ function createMissingCard(item, position) {
       "missing-revealed"
     );
 
-    const answer = document.createElement("span");
-    answer.className = "revealed-answer";
-    answer.textContent = missingQuestion.answerText;
+    const answer =
+      document.createElement("span");
+
+    answer.className =
+      "revealed-answer";
+
+    answer.textContent =
+      displayAnswer;
 
     card.appendChild(answer);
 
     card.setAttribute(
       "aria-label",
-      `The missing answer was ${missingQuestion.answerText}. Click to hide.`
+      `The missing answer was ` +
+      `${displayAnswer}. Click to hide.`
     );
   } else {
-    const cardBack = document.createElement("span");
-    cardBack.className = "card-back-pattern";
+    const cardBack =
+      document.createElement("span");
+
+    cardBack.className =
+      "card-back-pattern";
 
     card.appendChild(cardBack);
 
     card.setAttribute(
       "aria-label",
-      "Face-down card. Click to reveal the missing answer."
+      "Face-down card. Click to reveal " +
+      "the missing answer."
     );
   }
 
-  card.addEventListener("click", () => {
-    toggleCardReveal(position);
-  });
+  card.addEventListener(
+    "click",
+    () => {
+      toggleCardReveal(position);
+    }
+  );
 
   return card;
+}
+
+function getDisplayAnswer(question) {
+  if (
+    typeof QuestionGenerator.formatAnswer ===
+    "function"
+  ) {
+    return QuestionGenerator.formatAnswer(
+      question
+    );
+  }
+
+  const answerPrefix =
+    typeof question.answerPrefix ===
+    "string"
+      ? question.answerPrefix
+      : "";
+
+  const answerText =
+    question.answerText !== undefined
+      ? String(question.answerText)
+      : question.answer !== undefined
+        ? String(question.answer)
+        : "";
+
+  const answerSuffix =
+    typeof question.answerSuffix ===
+    "string"
+      ? question.answerSuffix
+      : "";
+
+  return (
+    `${answerPrefix}` +
+    `${answerText}` +
+    `${answerSuffix}`
+  );
 }
 
 function toggleCardReveal(position) {
@@ -334,19 +545,26 @@ function toggleCardReveal(position) {
 }
 
 function revealAllCards() {
-  questionLayout.forEach((item, position) => {
-    revealedCards.add(position);
-  });
+  questionLayout.forEach(
+    (item, position) => {
+      revealedCards.add(position);
+    }
+  );
 
   renderQuestionCards();
 }
 
-function createCard(extraClass, interactive = false) {
-  const card = document.createElement(
-    interactive ? "button" : "div"
-  );
+function createCard(
+  extraClass,
+  interactive = false
+) {
+  const card =
+    document.createElement(
+      interactive ? "button" : "div"
+    );
 
-  card.className = `kim-card ${extraClass}`;
+  card.className =
+    `kim-card ${extraClass}`;
 
   if (interactive) {
     card.type = "button";
@@ -358,50 +576,84 @@ function createCard(extraClass, interactive = false) {
 function renderCardsInBalancedRows(cards) {
   cardTable.innerHTML = "";
 
-  const layout = chooseCardLayout(cards.length);
+  const layout = chooseCardLayout(
+    cards.length
+  );
+
   let cardIndex = 0;
 
-  layout.rowCounts.forEach((numberOfCardsInRow) => {
-    const row = document.createElement("div");
-    row.className = "card-row";
+  layout.rowCounts.forEach(
+    (numberOfCardsInRow) => {
+      const row =
+        document.createElement("div");
 
-    for (
-      let indexInRow = 0;
-      indexInRow < numberOfCardsInRow;
-      indexInRow++
-    ) {
-      row.appendChild(cards[cardIndex]);
-      cardIndex++;
+      row.className = "card-row";
+
+      for (
+        let indexInRow = 0;
+        indexInRow <
+        numberOfCardsInRow;
+        indexInRow++
+      ) {
+        row.appendChild(
+          cards[cardIndex]
+        );
+
+        cardIndex++;
+      }
+
+      cardTable.appendChild(row);
     }
+  );
 
-    cardTable.appendChild(row);
-  });
+  applyCardDimensions(
+    layout.cardWidth
+  );
 
-  applyCardDimensions(layout.cardWidth);
   scheduleTextFitting();
 }
 
 function chooseCardLayout(cardCount) {
-  const tableRect = cardTable.getBoundingClientRect();
-  const availableWidth = Math.max(300, tableRect.width);
-  const availableHeight = Math.max(260, tableRect.height);
+  const tableRect =
+    cardTable.getBoundingClientRect();
+
+  const availableWidth = Math.max(
+    300,
+    tableRect.width
+  );
+
+  const availableHeight = Math.max(
+    260,
+    tableRect.height
+  );
+
   const gap = getCardGap();
 
   let bestLayout = null;
-  const maximumRows = Math.min(cardCount, 6);
+
+  const maximumRows = Math.min(
+    cardCount,
+    6
+  );
 
   for (
     let rowCount = 1;
     rowCount <= maximumRows;
     rowCount++
   ) {
-    const rowCounts = distributeCardsAcrossRows(
-      cardCount,
-      rowCount
+    const rowCounts =
+      distributeCardsAcrossRows(
+        cardCount,
+        rowCount
+      );
+
+    const largestRow = Math.max(
+      ...rowCounts
     );
 
-    const largestRow = Math.max(...rowCounts);
-    const smallestRow = Math.min(...rowCounts);
+    const smallestRow = Math.min(
+      ...rowCounts
+    );
 
     const widthFromHorizontalSpace =
       (
@@ -416,7 +668,8 @@ function chooseCardLayout(cardCount) {
       ) / rowCount;
 
     const widthFromVerticalSpace =
-      heightPerCard * CARD_ASPECT_RATIO;
+      heightPerCard *
+      CARD_ASPECT_RATIO;
 
     const cardWidth = Math.min(
       widthFromHorizontalSpace,
@@ -433,35 +686,51 @@ function chooseCardLayout(cardCount) {
       gap * (largestRow - 1);
 
     const layoutHeight =
-      rowCount * (cardWidth / CARD_ASPECT_RATIO) +
+      rowCount *
+        (
+          cardWidth /
+          CARD_ASPECT_RATIO
+        ) +
       gap * (rowCount - 1);
 
     const tableAspectRatio =
-      availableWidth / availableHeight;
+      availableWidth /
+      availableHeight;
 
     const layoutAspectRatio =
-      layoutWidth / layoutHeight;
+      layoutWidth /
+      layoutHeight;
 
-    const aspectDifference = Math.abs(
-      Math.log(
-        layoutAspectRatio / tableAspectRatio
-      )
-    );
+    const aspectDifference =
+      Math.abs(
+        Math.log(
+          layoutAspectRatio /
+          tableAspectRatio
+        )
+      );
 
-    const unevenness = largestRow - smallestRow;
+    const unevenness =
+      largestRow - smallestRow;
+
     const hasSingleCardRow =
-      smallestRow === 1 && cardCount > 4;
+      smallestRow === 1 &&
+      cardCount > 4;
 
     let score = cardWidth;
 
-    score -= aspectDifference * 16;
+    score -=
+      aspectDifference * 16;
+
     score -= unevenness * 7;
 
     if (hasSingleCardRow) {
       score -= 45;
     }
 
-    if (rowCount === 1 && cardCount > 6) {
+    if (
+      rowCount === 1 &&
+      cardCount > 6
+    ) {
       score -= 60;
     }
 
@@ -484,15 +753,25 @@ function chooseCardLayout(cardCount) {
   };
 }
 
-function distributeCardsAcrossRows(cardCount, rowCount) {
-  const cardsPerFullRow = Math.floor(
-    cardCount / rowCount
-  );
+function distributeCardsAcrossRows(
+  cardCount,
+  rowCount
+) {
+  const cardsPerFullRow =
+    Math.floor(
+      cardCount / rowCount
+    );
 
-  const extraCards = cardCount % rowCount;
+  const extraCards =
+    cardCount % rowCount;
+
   const rowCounts = [];
 
-  for (let row = 0; row < rowCount; row++) {
+  for (
+    let row = 0;
+    row < rowCount;
+    row++
+  ) {
     rowCounts.push(
       cardsPerFullRow +
       (row < extraCards ? 1 : 0)
@@ -509,7 +788,8 @@ function applyCardDimensions(cardWidth) {
   );
 
   const cardHeight = Math.floor(
-    safeCardWidth / CARD_ASPECT_RATIO
+    safeCardWidth /
+    CARD_ASPECT_RATIO
   );
 
   cardTable.style.setProperty(
@@ -531,60 +811,85 @@ function scheduleCardLayout() {
   }
 
   layoutAnimationFrame =
-    window.requestAnimationFrame(() => {
-      layoutAnimationFrame = null;
+    window.requestAnimationFrame(
+      () => {
+        layoutAnimationFrame = null;
 
-      const cards = [
-        ...cardTable.querySelectorAll(".kim-card")
-      ];
+        const cards = [
+          ...cardTable.querySelectorAll(
+            ".kim-card"
+          )
+        ];
 
-      if (cards.length === 0) {
-        return;
+        if (cards.length === 0) {
+          return;
+        }
+
+        renderCardsInBalancedRows(
+          cards
+        );
       }
-
-      renderCardsInBalancedRows(cards);
-    });
+    );
 }
 
 function scheduleTextFitting() {
-  window.requestAnimationFrame(() => {
-    window.requestAnimationFrame(() => {
-      fitAllCardText();
-    });
-  });
+  window.requestAnimationFrame(
+    () => {
+      window.requestAnimationFrame(
+        () => {
+          fitAllCardText();
+        }
+      );
+    }
+  );
 }
 
 function fitAllCardText() {
-  const cardWidth = getCurrentCardWidth();
+  const cardWidth =
+    getCurrentCardWidth();
 
   document
     .querySelectorAll(
-      ".answer-card-value, .revealed-answer"
+      ".answer-card-value, " +
+      ".revealed-answer"
     )
     .forEach((element) => {
       fitSingleLineText(
         element,
-        Math.min(74, cardWidth * 0.3),
+        Math.min(
+          74,
+          cardWidth * 0.3
+        ),
         16
       );
     });
 
   document
-    .querySelectorAll(".question-card-text")
+    .querySelectorAll(
+      ".question-card-text"
+    )
     .forEach((element) => {
       fitSingleLineText(
         element,
-        Math.min(42, cardWidth * 0.18),
+        Math.min(
+          42,
+          cardWidth * 0.18
+        ),
         11
       );
     });
 
   document
-    .querySelectorAll(".revealed-question")
+    .querySelectorAll(
+      ".revealed-question"
+    )
     .forEach((element) => {
       fitSingleLineText(
         element,
-        Math.min(22, cardWidth * 0.105),
+        Math.min(
+          22,
+          cardWidth * 0.105
+        ),
         9
       );
     });
@@ -599,17 +904,28 @@ function fitSingleLineText(
   let upperBound = maximumSize;
   let bestSize = minimumSize;
 
-  element.style.fontSize = `${minimumSize}px`;
+  element.style.fontSize =
+    `${minimumSize}px`;
 
-  for (let attempt = 0; attempt < 12; attempt++) {
+  for (
+    let attempt = 0;
+    attempt < 12;
+    attempt++
+  ) {
     const testSize =
-      (lowerBound + upperBound) / 2;
+      (
+        lowerBound +
+        upperBound
+      ) / 2;
 
-    element.style.fontSize = `${testSize}px`;
+    element.style.fontSize =
+      `${testSize}px`;
 
     const fits =
-      element.scrollWidth <= element.clientWidth + 1 &&
-      element.scrollHeight <= element.clientHeight + 1;
+      element.scrollWidth <=
+        element.clientWidth + 1 &&
+      element.scrollHeight <=
+        element.clientHeight + 1;
 
     if (fits) {
       bestSize = testSize;
@@ -619,63 +935,90 @@ function fitSingleLineText(
     }
   }
 
-  element.style.fontSize = `${bestSize}px`;
+  element.style.fontSize =
+    `${bestSize}px`;
 }
 
 function getCurrentCardWidth() {
   const value = window
     .getComputedStyle(cardTable)
-    .getPropertyValue("--card-width");
+    .getPropertyValue(
+      "--card-width"
+    );
 
-  const parsedValue = Number.parseFloat(value);
+  const parsedValue =
+    Number.parseFloat(value);
 
-  return Number.isFinite(parsedValue)
+  return Number.isFinite(
+    parsedValue
+  )
     ? parsedValue
     : 100;
 }
 
 function getCardGap() {
   const computedStyle =
-    window.getComputedStyle(cardTable);
+    window.getComputedStyle(
+      cardTable
+    );
 
   const gap = Number.parseFloat(
     computedStyle.rowGap
   );
 
-  return Number.isFinite(gap) ? gap : 12;
+  return Number.isFinite(gap)
+    ? gap
+    : 12;
 }
 
 function makeQuestionLayout() {
   const items = [];
 
-  roundQuestions.forEach((question, questionIndex) => {
-    if (questionIndex === missingQuestionIndex) {
-      return;
-    }
+  roundQuestions.forEach(
+    (question, questionIndex) => {
+      if (
+        questionIndex ===
+        missingQuestionIndex
+      ) {
+        return;
+      }
 
-    items.push({
-      kind: "question",
-      questionIndex
-    });
-  });
+      items.push({
+        kind: "question",
+        questionIndex
+      });
+    }
+  );
 
   items.push({
     kind: "missing",
-    questionIndex: missingQuestionIndex
+    questionIndex:
+      missingQuestionIndex
   });
 
-  for (let attempt = 0; attempt < 1000; attempt++) {
-    const shuffledItems = shuffle(items);
+  for (
+    let attempt = 0;
+    attempt < 1000;
+    attempt++
+  ) {
+    const shuffledItems =
+      shuffle(items);
 
-    const validLayout = shuffledItems.every(
-      (item, position) => {
-        if (item.kind === "missing") {
-          return true;
+    const validLayout =
+      shuffledItems.every(
+        (item, position) => {
+          if (
+            item.kind === "missing"
+          ) {
+            return true;
+          }
+
+          return (
+            item.questionIndex !==
+            position
+          );
         }
-
-        return item.questionIndex !== position;
-      }
-    );
+      );
 
     if (validLayout) {
       return shuffledItems;
@@ -686,21 +1029,33 @@ function makeQuestionLayout() {
 }
 
 function rotateItems(items) {
-  for (let shift = 1; shift < items.length; shift++) {
-    const candidate = items.map((item, index) => {
-      return items[
-        (index + shift) % items.length
-      ];
-    });
-
-    const validLayout = candidate.every(
-      (item, position) => {
-        return (
-          item.kind === "missing" ||
-          item.questionIndex !== position
-        );
+  for (
+    let shift = 1;
+    shift < items.length;
+    shift++
+  ) {
+    const candidate = items.map(
+      (item, index) => {
+        return items[
+          (
+            index +
+            shift
+          ) %
+          items.length
+        ];
       }
     );
+
+    const validLayout =
+      candidate.every(
+        (item, position) => {
+          return (
+            item.kind === "missing" ||
+            item.questionIndex !==
+              position
+          );
+        }
+      );
 
     if (validLayout) {
       return candidate;
@@ -714,11 +1069,13 @@ function shuffle(array) {
   const shuffledArray = [...array];
 
   for (
-    let index = shuffledArray.length - 1;
+    let index =
+      shuffledArray.length - 1;
     index > 0;
     index--
   ) {
-    const randomIndex = randomInt(0, index);
+    const randomIndex =
+      randomInt(0, index);
 
     [
       shuffledArray[index],
@@ -732,29 +1089,51 @@ function shuffle(array) {
   return shuffledArray;
 }
 
-function randomInt(minimum, maximum) {
+function randomInt(
+  minimum,
+  maximum
+) {
   return Math.floor(
-    Math.random() * (maximum - minimum + 1)
+    Math.random() *
+      (
+        maximum -
+        minimum +
+        1
+      )
   ) + minimum;
 }
 
-function clampNumber(value, minimum, maximum) {
+function clampNumber(
+  value,
+  minimum,
+  maximum
+) {
   if (!Number.isFinite(value)) {
     return minimum;
   }
 
   return Math.min(
     maximum,
-    Math.max(minimum, Math.round(value))
+    Math.max(
+      minimum,
+      Math.round(value)
+    )
   );
 }
 
 function showGameMessage(message) {
-  gameMessage.textContent = message;
-  gameMessage.classList.remove("hidden");
+  gameMessage.textContent =
+    message;
+
+  gameMessage.classList.remove(
+    "hidden"
+  );
 }
 
 function hideGameMessage() {
   gameMessage.textContent = "";
-  gameMessage.classList.add("hidden");
+
+  gameMessage.classList.add(
+    "hidden"
+  );
 }
