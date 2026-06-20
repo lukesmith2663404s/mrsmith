@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Hotseat Display</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/hotseat.css" />
+
+  <script src="../../js/clue-item-generator.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+
+<body class="hotseat-page hotseat-game-page">
+  <main class="hotseat-display-shell">
+    <header class="hotseat-display-header">
+      <div>
+        <p class="hotseat-eyebrow">Hotseat</p>
+        <h1 id="roundHeading">Waiting for a round</h1>
+      </div>
+
+      <div
+        id="displayScoreboard"
+        class="hotseat-display-scoreboard"
+        aria-label="Scores"
+      ></div>
+
+      <div class="hotseat-timer-panel">
+        <span>Time</span>
+        <strong id="timerDisplay">1:00</strong>
+      </div>
+    </header>
+
+    <section id="standbyPanel" class="hotseat-standby-panel">
+      <div class="hotseat-flame-icon" aria-hidden="true">🔥</div>
+      <h2>Ready for Hotseat</h2>
+      <p>
+        Prepare and start a round from the teacher controls.
+      </p>
+    </section>
+
+    <section
+      id="roundPanel"
+      class="hotseat-round-panel hidden"
+      aria-label="Hotseat prompts"
+    >
+      <div
+        id="promptGrid"
+        class="hotseat-prompt-grid"
+      ></div>
+    </section>
+
+    <footer class="hotseat-display-footer">
+      <p id="displayMessage">
+        Correctly described prompts can be clicked to award points.
+      </p>
+
+      <button
+        id="endRoundButton"
+        class="hotseat-secondary-button hidden"
+        type="button"
+      >
+        End Round
+      </button>
+    </footer>
+
+    <div
+      id="roundCompleteOverlay"
+      class="hotseat-round-complete hidden"
+      aria-live="assertive"
+    >
+      <div class="hotseat-round-complete-card">
+        <p class="hotseat-eyebrow">Round complete</p>
+        <h2 id="roundCompleteHeading">Time!</h2>
+        <p id="roundCompleteSummary"></p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

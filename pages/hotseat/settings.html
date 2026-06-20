@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Hotseat Setup</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/hotseat.css" />
+
+  <script src="../../js/clue-item-generator.js" defer></script>
+  <script src="settings.js" defer></script>
+</head>
+
+<body class="hotseat-page hotseat-settings-page">
+  <main class="hotseat-settings-shell">
+    <header class="hotseat-settings-header">
+      <a class="hotseat-link" href="../../index.html">
+        ← Games
+      </a>
+
+      <div>
+        <p class="hotseat-eyebrow">Teacher controls</p>
+        <h1>Hotseat</h1>
+        <p class="hotseat-subtitle">
+          Preview rounds here, then send them to a separate classroom display.
+        </p>
+      </div>
+
+      <button
+        id="openDisplayButton"
+        class="hotseat-secondary-button"
+        type="button"
+      >
+        Open Display
+      </button>
+    </header>
+
+    <section class="hotseat-settings-grid">
+      <form id="hotseatSettingsForm" class="hotseat-settings-card">
+        <div class="hotseat-section-heading">
+          <div>
+            <p class="hotseat-eyebrow">Game setup</p>
+            <h2>Round settings</h2>
+          </div>
+
+          <button
+            id="newGameButton"
+            class="hotseat-danger-button"
+            type="button"
+          >
+            New Game
+          </button>
+        </div>
+
+        <div class="hotseat-basic-settings">
+          <label>
+            Items per round
+            <input
+              id="itemCountInput"
+              type="number"
+              min="4"
+              max="20"
+              step="1"
+            />
+          </label>
+
+          <label>
+            Teams
+            <select id="teamCountSelect"></select>
+          </label>
+
+          <label class="hotseat-timer-toggle">
+            <span>
+              <strong>Round timer</strong>
+              <small>Starts when Start Round is pressed</small>
+            </span>
+
+            <input id="timerEnabledInput" type="checkbox" />
+          </label>
+
+          <label>
+            Timer length (seconds)
+            <input
+              id="timerDurationInput"
+              type="number"
+              min="10"
+              max="600"
+              step="5"
+            />
+          </label>
+        </div>
+
+        <section class="hotseat-category-section">
+          <div class="hotseat-section-heading">
+            <div>
+              <p class="hotseat-eyebrow">Prompt pool</p>
+              <h2>Categories</h2>
+              <p>
+                All mathematics categories are selected by default.
+              </p>
+            </div>
+
+            <div class="hotseat-shortcuts">
+              <button
+                id="selectMathsButton"
+                class="hotseat-small-button"
+                type="button"
+              >
+                All Maths
+              </button>
+
+              <button
+                id="selectAllButton"
+                class="hotseat-small-button"
+                type="button"
+              >
+                Select All
+              </button>
+
+              <button
+                id="clearAllButton"
+                class="hotseat-small-button"
+                type="button"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="categoryChecklist"
+            class="hotseat-category-checklist"
+          ></div>
+        </section>
+
+        <p
+          id="settingsMessage"
+          class="hotseat-settings-message"
+          role="alert"
+        ></p>
+      </form>
+
+      <aside class="hotseat-control-card">
+        <div class="hotseat-live-status">
+          <div>
+            <span>Next round</span>
+            <strong id="nextRoundDisplay">Round 1</strong>
+          </div>
+
+          <div>
+            <span>Next team</span>
+            <strong id="nextTeamDisplay">Team 1</strong>
+          </div>
+        </div>
+
+        <div
+          id="controllerScoreboard"
+          class="hotseat-controller-scoreboard"
+          aria-label="Current scores"
+        ></div>
+
+        <div class="hotseat-preview-heading">
+          <div>
+            <p class="hotseat-eyebrow">Private preview</p>
+            <h2>Upcoming prompts</h2>
+          </div>
+
+          <span class="hotseat-private-badge">
+            Teacher screen only
+          </span>
+        </div>
+
+        <div
+          id="previewGrid"
+          class="hotseat-preview-grid"
+          aria-live="polite"
+        >
+          <p class="hotseat-preview-empty">
+            Press Preview to prepare a round.
+          </p>
+        </div>
+
+        <div class="hotseat-round-controls">
+          <button
+            id="previewButton"
+            class="hotseat-secondary-button"
+            type="button"
+          >
+            Preview
+          </button>
+
+
+          <button
+            id="startRoundButton"
+            class="hotseat-primary-button"
+            type="button"
+          >
+            Start Round
+          </button>
+        </div>
+
+        <p id="roundStatusMessage" class="hotseat-round-status">
+          The classroom display will remain on standby until a round starts.
+        </p>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>

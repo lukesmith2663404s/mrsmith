@@ -255,6 +255,321 @@ body {
   }
 }
 
+
+/* The Wheel */
+
+.wheel-tile:hover,
+.wheel-tile:focus-visible {
+  color: #e9fbff;
+
+  background:
+    linear-gradient(
+      rgba(81, 191, 255, 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(81, 191, 255, 0.08) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 50% 38%,
+      #1b2a3b,
+      #0c1521 58%,
+      #03070d
+    );
+
+  background-size:
+    24px 24px,
+    24px 24px,
+    auto;
+
+  border-color: #66d6ff;
+
+  box-shadow:
+    inset 0 0 0 3px rgba(117, 220, 255, 0.14),
+    inset 0 0 28px rgba(52, 181, 238, 0.13),
+    0 0 18px rgba(66, 199, 255, 0.34),
+    0 12px 34px rgba(0, 0, 0, 0.42);
+}
+
+.wheel-tile:hover h2,
+.wheel-tile:focus-visible h2 {
+  color: #ecfbff;
+
+  transform:
+    translateY(42%)
+    scale(1.04);
+
+  text-shadow:
+    0 0 6px #ffffff,
+    0 0 14px #55d4ff,
+    0 0 27px rgba(40, 158, 207, 0.86);
+}
+
+.tile-wheel-preview {
+  position: absolute;
+  z-index: 4;
+
+  top: 6%;
+  left: 50%;
+
+  width: clamp(82px, 43%, 138px);
+  aspect-ratio: 1;
+
+  opacity: 0;
+
+  transform:
+    translateX(-50%)
+    translateY(-10px)
+    scale(0.68);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.22s ease,
+    transform 0.32s cubic-bezier(0.18, 0.84, 0.27, 1.25);
+}
+
+.tile-wheel-disc {
+  position: absolute;
+
+  inset: 4%;
+
+  border: clamp(4px, 0.7vw, 8px) solid #35475d;
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      from -11deg,
+      #ea4d9d 0deg 45deg,
+      #25a653 45deg 90deg,
+      #2382d8 90deg 135deg,
+      #25a653 135deg 180deg,
+      #7c3ab4 180deg 225deg,
+      #25a653 225deg 270deg,
+      #2382d8 270deg 315deg,
+      #25a653 315deg 360deg
+    );
+
+  box-shadow:
+    inset 0 0 0 3px #000000,
+    0 0 0 2px #59c7ff,
+    0 0 16px rgba(70, 199, 255, 0.62),
+    0 7px 12px rgba(0, 0, 0, 0.5);
+}
+
+.tile-wheel-disc::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: 50%;
+
+  background:
+    repeating-conic-gradient(
+      from -1deg,
+      transparent 0deg 43deg,
+      #000000 43deg 46deg
+    );
+}
+
+.tile-wheel-centre {
+  position: absolute;
+  z-index: 3;
+
+  top: 50%;
+  left: 50%;
+
+  width: 34%;
+  aspect-ratio: 1;
+
+  display: grid;
+  place-items: center;
+
+  transform:
+    translate(-50%, -50%);
+
+  color: #dff7ff;
+  background: #08111b;
+
+  border: 4px solid #000000;
+  border-radius: 50%;
+
+  font-family:
+    ui-monospace,
+    "Cascadia Mono",
+    Consolas,
+    monospace;
+
+  font-size: clamp(0.42rem, 1.1vw, 0.7rem);
+  font-weight: 900;
+
+  box-shadow:
+    inset 0 0 0 2px #5dcfff,
+    0 0 10px #46c7ff;
+}
+
+.tile-wheel-pointer {
+  position: absolute;
+  z-index: 5;
+
+  top: 50%;
+  right: -3%;
+
+  width: 0;
+  height: 0;
+
+  transform: translateY(-50%);
+
+  border-top: clamp(7px, 1.2vw, 12px) solid transparent;
+  border-bottom: clamp(7px, 1.2vw, 12px) solid transparent;
+  border-right: clamp(17px, 2.8vw, 29px) solid #87e4ff;
+
+  filter:
+    drop-shadow(0 0 5px #4ed2ff)
+    drop-shadow(0 3px 2px rgba(0, 0, 0, 0.65));
+}
+
+.wheel-tile:hover .tile-wheel-preview,
+.wheel-tile:focus-visible .tile-wheel-preview {
+  opacity: 1;
+
+  transform:
+    translateX(-50%)
+    translateY(0)
+    scale(1);
+}
+
+.wheel-tile:hover .tile-wheel-disc,
+.wheel-tile:focus-visible .tile-wheel-disc {
+  animation:
+    tileWheelSpin
+    1.25s
+    cubic-bezier(0.12, 0.72, 0.13, 1)
+    forwards;
+}
+
+.wheel-tile:hover .tile-wheel-centre,
+.wheel-tile:focus-visible .tile-wheel-centre {
+  animation:
+    tileWheelCentrePulse
+    1.25s ease-out;
+}
+
+@keyframes tileWheelSpin {
+  from {
+    transform: rotate(-40deg);
+  }
+
+  to {
+    transform: rotate(680deg);
+  }
+}
+
+@keyframes tileWheelCentrePulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 2px #5dcfff,
+      0 0 10px #46c7ff;
+  }
+
+  78% {
+    box-shadow:
+      inset 0 0 0 2px #ffffff,
+      0 0 8px #ffffff,
+      0 0 22px #46c7ff;
+  }
+}
+
+/* Hotseat */
+
+.hotseat-tile:hover,
+.hotseat-tile:focus-visible {
+  color: #fff8f0;
+
+  background:
+    radial-gradient(
+      circle at 20% 10%,
+      rgba(255, 132, 0, 0.22),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 80% 25%,
+      rgba(255, 107, 53, 0.24),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      #bd2b12,
+      #640b08 42%,
+      #210000 80%,
+      #090000
+    );
+
+  border-color: #ff7b3d;
+
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 143, 83, 0.16),
+    inset 0 0 30px rgba(255, 95, 31, 0.08),
+    0 0 18px rgba(255, 88, 30, 0.38),
+    0 12px 34px rgba(61, 5, 3, 0.46);
+}
+
+.hotseat-tile::before {
+  content: "";
+
+  position: absolute;
+  z-index: 1;
+
+  inset: 0;
+
+  opacity: 0;
+
+  background:
+    radial-gradient(circle at 12% 88%, #ff6a00 0 2px, transparent 3px),
+    radial-gradient(circle at 25% 78%, #ffd166 0 2px, transparent 3px),
+    radial-gradient(circle at 54% 92%, #ff3b1f 0 3px, transparent 4px),
+    radial-gradient(circle at 77% 84%, #ff8a1f 0 2px, transparent 3px),
+    radial-gradient(circle at 92% 70%, #ffd166 0 2px, transparent 3px);
+
+  background-size: 120px 120px;
+
+  pointer-events: none;
+}
+
+.hotseat-tile:hover::before,
+.hotseat-tile:focus-visible::before {
+  opacity: 0.42;
+
+  animation:
+    tileHotseatEmbers
+    4.5s linear infinite;
+}
+
+.hotseat-tile:hover h2,
+.hotseat-tile:focus-visible h2 {
+  color: #fff8f0;
+
+  text-shadow:
+    0 0 7px #ff8a1f,
+    0 0 18px rgba(255, 59, 31, 0.9),
+    0 3px 5px rgba(54, 0, 0, 0.88);
+}
+
+@keyframes tileHotseatEmbers {
+  from {
+    background-position: 0 70px;
+  }
+
+  to {
+    background-position: 0 -70px;
+  }
+}
+
 /* Kim's Game and Pairs shared table theme */
 
 .card-table-tile:hover,
@@ -680,7 +995,9 @@ body {
   .game-tile,
   .game-tile h2,
   .tile-ghost-preview,
-  .preview-card-inner {
+  .preview-card-inner,
+  .tile-wheel-preview,
+  .hotseat-tile::before {
     transition: none;
   }
 
@@ -688,7 +1005,10 @@ body {
   .kims-preview-card,
   .pairs-preview-card,
   .pairs-preview-card.is-match::after,
-  .tile-map-path-reveal {
+  .tile-map-path-reveal,
+  .hotseat-tile::before,
+  .tile-wheel-disc,
+  .tile-wheel-centre {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
