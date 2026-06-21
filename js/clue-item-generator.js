@@ -3,16 +3,17 @@
 
   Put this file at: js/clue-item-generator.js
 
-  Image items use an approved list of exact English Wikipedia page titles.
-  The generator asks Wikipedia for the page image, then Wikimedia Commons
-  for a thumbnail and licence metadata. It does not perform open-ended image
-  searches.
+  Real-world image items use approved Wikipedia titles.
+
+  Fictional-character items are generated locally by the Fandom character
+  downloader. The downloader stores approved images in the project and
+  inserts their item records into the marked section below.
 */
 
 globalThis.ClueItemGenerator = (() => {
   "use strict";
 
-  const CACHE_KEY = "clueItemGeneratorImageCacheV3";
+  const CACHE_KEY = "clueItemGeneratorImageCacheV4";
   const CACHE_AGE = 30 * 24 * 60 * 60 * 1000;
   const REQUEST_TIMEOUT = 12000;
 
@@ -125,6 +126,12 @@ globalThis.ClueItemGenerator = (() => {
     svgKey = null,
     flagCode = null,
     colourValue = null,
+    imagePath = null,
+    sourcePage = null,
+    imageSource = null,
+    franchise = null,
+    fandomWiki = null,
+    fandomPage = null,
     wikipediaTitle = null,
     allowWikipediaThumbnail = false,
     approvalStatus = "approved",
@@ -146,6 +153,12 @@ globalThis.ClueItemGenerator = (() => {
       svgKey,
       flagCode,
       colourValue,
+      imagePath,
+      sourcePage,
+      imageSource,
+      franchise,
+      fandomWiki,
+      fandomPage,
       wikipediaTitle,
       allowWikipediaThumbnail,
       approvalStatus,
@@ -154,6 +167,4058 @@ globalThis.ClueItemGenerator = (() => {
   }
 
   const ITEMS = [];
+
+  const GENERATED_CHARACTER_ITEMS = [
+    // FANDOM_CHARACTER_ITEMS_START
+      {
+          "id": "character-animated-mickey-mouse",
+          "label": "Mickey Mouse",
+          "spokenName": "Mickey Mouse",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-mickey-mouse.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Mickey_Mouse",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Mickey Mouse",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-minnie-mouse",
+          "label": "Minnie Mouse",
+          "spokenName": "Minnie Mouse",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-minnie-mouse.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Minnie_Mouse",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Minnie Mouse",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-donald-duck",
+          "label": "Donald Duck",
+          "spokenName": "Donald Duck",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-donald-duck.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Donald_Duck",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Donald Duck",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-daisy-duck",
+          "label": "Daisy Duck",
+          "spokenName": "Daisy Duck",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-daisy-duck.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Daisy_Duck",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Daisy Duck",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-goofy",
+          "label": "Goofy",
+          "spokenName": "Goofy",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-goofy.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Goofy",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Goofy",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-pluto",
+          "label": "Pluto",
+          "spokenName": "Pluto",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-pluto.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Pluto",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Pluto",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-scrooge-mcduck",
+          "label": "Scrooge McDuck",
+          "spokenName": "Scrooge McDuck",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-scrooge-mcduck.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Scrooge_McDuck",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Scrooge McDuck",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-stitch",
+          "label": "Stitch",
+          "spokenName": "Stitch",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-stitch.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Stitch",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Stitch",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-lilo-pelekai",
+          "label": "Lilo Pelekai",
+          "spokenName": "Lilo Pelekai",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-lilo-pelekai.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Lilo_Pelekai",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Lilo Pelekai",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-elsa",
+          "label": "Elsa",
+          "spokenName": "Elsa",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-elsa.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Elsa",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Elsa",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-anna",
+          "label": "Anna",
+          "spokenName": "Anna",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-anna.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Anna",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Anna",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-olaf",
+          "label": "Olaf",
+          "spokenName": "Olaf",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-olaf.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Olaf",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Olaf",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-maui",
+          "label": "Maui",
+          "spokenName": "Maui",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-maui.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Maui",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Maui",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-rapunzel",
+          "label": "Rapunzel",
+          "spokenName": "Rapunzel",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-rapunzel.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Rapunzel",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Rapunzel",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-flynn-rider",
+          "label": "Flynn Rider",
+          "spokenName": "Flynn Rider",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-flynn-rider.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Flynn_Rider",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Flynn Rider",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-ariel",
+          "label": "Ariel",
+          "spokenName": "Ariel",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-ariel.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Ariel",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Ariel",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-sebastian",
+          "label": "Sebastian",
+          "spokenName": "Sebastian",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-sebastian.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Sebastian",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Sebastian",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-simba",
+          "label": "Simba",
+          "spokenName": "Simba",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-simba.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Simba",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Simba",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-timon",
+          "label": "Timon",
+          "spokenName": "Timon",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-timon.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Timon",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Timon",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-pumbaa",
+          "label": "Pumbaa",
+          "spokenName": "Pumbaa",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-pumbaa.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Pumbaa",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Pumbaa",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-genie",
+          "label": "Genie",
+          "spokenName": "Genie",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-genie.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Genie",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Genie",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-belle",
+          "label": "Belle",
+          "spokenName": "Belle",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-belle.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Belle",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Belle",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-the-beast",
+          "label": "The Beast",
+          "spokenName": "The Beast",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-the-beast.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Beast",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Beast",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-mushu",
+          "label": "Mushu",
+          "spokenName": "Mushu",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-mushu.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Mushu",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Mushu",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-baymax",
+          "label": "Baymax",
+          "spokenName": "Baymax",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-baymax.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Baymax",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Baymax",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-vanellope",
+          "label": "Vanellope",
+          "spokenName": "Vanellope",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-vanellope.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Vanellope_von_Schweetz",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Vanellope von Schweetz",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-mirabel",
+          "label": "Mirabel",
+          "spokenName": "Mirabel",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-mirabel.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Mirabel_Madrigal",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Mirabel Madrigal",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-bruno-madrigal",
+          "label": "Bruno Madrigal",
+          "spokenName": "Bruno Madrigal",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-bruno-madrigal.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Bruno_Madrigal",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Bruno Madrigal",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-lightning-mcqueen",
+          "label": "Lightning McQueen",
+          "spokenName": "Lightning McQueen",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-lightning-mcqueen.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Lightning_McQueen",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Lightning McQueen",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-mater",
+          "label": "Mater",
+          "spokenName": "Mater",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-mater.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Tow_Mater",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Tow Mater",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-buzz-lightyear",
+          "label": "Buzz Lightyear",
+          "spokenName": "Buzz Lightyear",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-buzz-lightyear.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Buzz_Lightyear",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Buzz Lightyear",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-jessie",
+          "label": "Jessie",
+          "spokenName": "Jessie",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-jessie.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Jessie",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Jessie",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-mr-incredible",
+          "label": "Mr. Incredible",
+          "spokenName": "Mr. Incredible",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-mr-incredible.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Bob_Parr",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Bob Parr",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-elastigirl",
+          "label": "Elastigirl",
+          "spokenName": "Elastigirl",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-elastigirl.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Helen_Parr",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Helen Parr",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-violet-parr",
+          "label": "Violet Parr",
+          "spokenName": "Violet Parr",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-violet-parr.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Violet_Parr",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Violet Parr",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-dash-parr",
+          "label": "Dash Parr",
+          "spokenName": "Dash Parr",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-dash-parr.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Dash_Parr",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Dash Parr",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-frozone",
+          "label": "Frozone",
+          "spokenName": "Frozone",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-frozone.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Lucius_Best",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Lucius Best",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-nemo",
+          "label": "Nemo",
+          "spokenName": "Nemo",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-nemo.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Nemo",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Nemo",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-dory",
+          "label": "Dory",
+          "spokenName": "Dory",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-dory.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Dory",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Dory",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-sulley",
+          "label": "Sulley",
+          "spokenName": "Sulley",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-sulley.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/James_P._Sullivan",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "James P. Sullivan",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-mike-wazowski",
+          "label": "Mike Wazowski",
+          "spokenName": "Mike Wazowski",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-mike-wazowski.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Mike_Wazowski",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Mike Wazowski",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-remy",
+          "label": "Remy",
+          "spokenName": "Remy",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-remy.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Remy",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Remy",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-wall-e",
+          "label": "WALL-E",
+          "spokenName": "WALL-E",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-wall-e.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/WALL%E2%80%A2E",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "WALL•E",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-eve",
+          "label": "EVE",
+          "spokenName": "EVE",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-eve.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/EVE",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "EVE",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-joy",
+          "label": "Joy",
+          "spokenName": "Joy",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-joy.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Joy",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Joy",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-sadness",
+          "label": "Sadness",
+          "spokenName": "Sadness",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-sadness.webp",
+          "sourcePage": "https://pixar.fandom.com/wiki/Sadness",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pixar",
+          "fandomWiki": "pixar",
+          "fandomPage": "Sadness",
+          "recognisability": "high",
+          "familyId": "franchise:pixar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-princess-fiona",
+          "label": "Princess Fiona",
+          "spokenName": "Princess Fiona",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-princess-fiona.webp",
+          "sourcePage": "https://dreamworks.fandom.com/wiki/Fiona",
+          "imageSource": "local-fandom-download",
+          "franchise": "DreamWorks",
+          "fandomWiki": "dreamworks",
+          "fandomPage": "Fiona",
+          "recognisability": "high",
+          "familyId": "franchise:dreamworks",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-donkey",
+          "label": "Donkey",
+          "spokenName": "Donkey",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-donkey.webp",
+          "sourcePage": "https://dreamworks.fandom.com/wiki/Donkey",
+          "imageSource": "local-fandom-download",
+          "franchise": "DreamWorks",
+          "fandomWiki": "dreamworks",
+          "fandomPage": "Donkey",
+          "recognisability": "high",
+          "familyId": "franchise:dreamworks",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-puss-in-boots",
+          "label": "Puss in Boots",
+          "spokenName": "Puss in Boots",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-puss-in-boots.webp",
+          "sourcePage": "https://dreamworks.fandom.com/wiki/Puss_in_Boots",
+          "imageSource": "local-fandom-download",
+          "franchise": "DreamWorks",
+          "fandomWiki": "dreamworks",
+          "fandomPage": "Puss in Boots",
+          "recognisability": "high",
+          "familyId": "franchise:dreamworks",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-toothless",
+          "label": "Toothless",
+          "spokenName": "Toothless",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-toothless.webp",
+          "sourcePage": "https://dreamworks.fandom.com/wiki/Toothless",
+          "imageSource": "local-fandom-download",
+          "franchise": "DreamWorks",
+          "fandomWiki": "dreamworks",
+          "fandomPage": "Toothless",
+          "recognisability": "high",
+          "familyId": "franchise:dreamworks",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-alex-the-lion",
+          "label": "Alex the Lion",
+          "spokenName": "Alex the Lion",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-alex-the-lion.webp",
+          "sourcePage": "https://dreamworks.fandom.com/wiki/Alex_(Madagascar)",
+          "imageSource": "local-fandom-download",
+          "franchise": "DreamWorks",
+          "fandomWiki": "dreamworks",
+          "fandomPage": "Alex (Madagascar)",
+          "recognisability": "high",
+          "familyId": "franchise:dreamworks",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-king-julien",
+          "label": "King Julien",
+          "spokenName": "King Julien",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-king-julien.webp",
+          "sourcePage": "https://dreamworks.fandom.com/wiki/King_Julien_the_13th",
+          "imageSource": "local-fandom-download",
+          "franchise": "DreamWorks",
+          "fandomWiki": "dreamworks",
+          "fandomPage": "King Julien the 13th",
+          "recognisability": "high",
+          "familyId": "franchise:dreamworks",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-megamind",
+          "label": "Megamind",
+          "spokenName": "Megamind",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-megamind.webp",
+          "sourcePage": "https://dreamworks.fandom.com/wiki/Megamind_(franchise)",
+          "imageSource": "local-fandom-download",
+          "franchise": "DreamWorks",
+          "fandomWiki": "dreamworks",
+          "fandomPage": "Megamind (franchise)",
+          "recognisability": "high",
+          "familyId": "franchise:dreamworks",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-spongebob",
+          "label": "SpongeBob",
+          "spokenName": "SpongeBob",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-spongebob.webp",
+          "sourcePage": "https://spongebob.fandom.com/wiki/SpongeBob_SquarePants_(character)",
+          "imageSource": "local-fandom-download",
+          "franchise": "SpongeBob SquarePants",
+          "fandomWiki": "spongebob",
+          "fandomPage": "SpongeBob SquarePants (character)",
+          "recognisability": "high",
+          "familyId": "franchise:spongebob-squarepants",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-patrick-star",
+          "label": "Patrick Star",
+          "spokenName": "Patrick Star",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-patrick-star.webp",
+          "sourcePage": "https://spongebob.fandom.com/wiki/Patrick_Star",
+          "imageSource": "local-fandom-download",
+          "franchise": "SpongeBob SquarePants",
+          "fandomWiki": "spongebob",
+          "fandomPage": "Patrick Star",
+          "recognisability": "high",
+          "familyId": "franchise:spongebob-squarepants",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-squidward",
+          "label": "Squidward",
+          "spokenName": "Squidward",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-squidward.webp",
+          "sourcePage": "https://spongebob.fandom.com/wiki/Squidward_Tentacles",
+          "imageSource": "local-fandom-download",
+          "franchise": "SpongeBob SquarePants",
+          "fandomWiki": "spongebob",
+          "fandomPage": "Squidward Tentacles",
+          "recognisability": "high",
+          "familyId": "franchise:spongebob-squarepants",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-mr-krabs",
+          "label": "Mr. Krabs",
+          "spokenName": "Mr. Krabs",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-mr-krabs.webp",
+          "sourcePage": "https://spongebob.fandom.com/wiki/Eugene_H._Krabs",
+          "imageSource": "local-fandom-download",
+          "franchise": "SpongeBob SquarePants",
+          "fandomWiki": "spongebob",
+          "fandomPage": "Eugene H. Krabs",
+          "recognisability": "high",
+          "familyId": "franchise:spongebob-squarepants",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-sandy-cheeks",
+          "label": "Sandy Cheeks",
+          "spokenName": "Sandy Cheeks",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-sandy-cheeks.webp",
+          "sourcePage": "https://spongebob.fandom.com/wiki/Sandy_Cheeks",
+          "imageSource": "local-fandom-download",
+          "franchise": "SpongeBob SquarePants",
+          "fandomWiki": "spongebob",
+          "fandomPage": "Sandy Cheeks",
+          "recognisability": "high",
+          "familyId": "franchise:spongebob-squarepants",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-aang",
+          "label": "Aang",
+          "spokenName": "Aang",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-aang.webp",
+          "sourcePage": "https://avatar.fandom.com/wiki/Aang",
+          "imageSource": "local-fandom-download",
+          "franchise": "Avatar",
+          "fandomWiki": "avatar",
+          "fandomPage": "Aang",
+          "recognisability": "high",
+          "familyId": "franchise:avatar",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-scooby-doo",
+          "label": "Scooby-Doo",
+          "spokenName": "Scooby-Doo",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-scooby-doo.webp",
+          "sourcePage": "https://scoobydoo.fandom.com/wiki/Scooby-Doo",
+          "imageSource": "local-fandom-download",
+          "franchise": "Scooby-Doo",
+          "fandomWiki": "scoobydoo",
+          "fandomPage": "Scooby-Doo",
+          "recognisability": "high",
+          "familyId": "franchise:scooby-doo",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-tom",
+          "label": "Tom",
+          "spokenName": "Tom",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-tom.webp",
+          "sourcePage": "https://tomandjerry.fandom.com/wiki/Tom_Cat",
+          "imageSource": "local-fandom-download",
+          "franchise": "Tom and Jerry",
+          "fandomWiki": "tomandjerry",
+          "fandomPage": "Tom Cat",
+          "recognisability": "high",
+          "familyId": "franchise:tom-and-jerry",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-jerry",
+          "label": "Jerry",
+          "spokenName": "Jerry",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-jerry.webp",
+          "sourcePage": "https://tomandjerry.fandom.com/wiki/Jerry_Mouse",
+          "imageSource": "local-fandom-download",
+          "franchise": "Tom and Jerry",
+          "fandomWiki": "tomandjerry",
+          "fandomPage": "Jerry Mouse",
+          "recognisability": "high",
+          "familyId": "franchise:tom-and-jerry",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-bugs-bunny",
+          "label": "Bugs Bunny",
+          "spokenName": "Bugs Bunny",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-bugs-bunny.webp",
+          "sourcePage": "https://looneytunes.fandom.com/wiki/Bugs_Bunny",
+          "imageSource": "local-fandom-download",
+          "franchise": "Looney Tunes",
+          "fandomWiki": "looneytunes",
+          "fandomPage": "Bugs Bunny",
+          "recognisability": "high",
+          "familyId": "franchise:looney-tunes",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-daffy-duck",
+          "label": "Daffy Duck",
+          "spokenName": "Daffy Duck",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-daffy-duck.webp",
+          "sourcePage": "https://looneytunes.fandom.com/wiki/Daffy_Duck",
+          "imageSource": "local-fandom-download",
+          "franchise": "Looney Tunes",
+          "fandomWiki": "looneytunes",
+          "fandomPage": "Daffy Duck",
+          "recognisability": "high",
+          "familyId": "franchise:looney-tunes",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-wile-e-coyote",
+          "label": "Wile E. Coyote",
+          "spokenName": "Wile E. Coyote",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-wile-e-coyote.webp",
+          "sourcePage": "https://looneytunes.fandom.com/wiki/Wile_E._Coyote",
+          "imageSource": "local-fandom-download",
+          "franchise": "Looney Tunes",
+          "fandomWiki": "looneytunes",
+          "fandomPage": "Wile E. Coyote",
+          "recognisability": "high",
+          "familyId": "franchise:looney-tunes",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-road-runner",
+          "label": "Road Runner",
+          "spokenName": "Road Runner",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-road-runner.webp",
+          "sourcePage": "https://looneytunes.fandom.com/wiki/Road_Runner",
+          "imageSource": "local-fandom-download",
+          "franchise": "Looney Tunes",
+          "fandomWiki": "looneytunes",
+          "fandomPage": "Road Runner",
+          "recognisability": "high",
+          "familyId": "franchise:looney-tunes",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-garfield",
+          "label": "Garfield",
+          "spokenName": "Garfield",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-garfield.webp",
+          "sourcePage": "https://garfield.fandom.com/wiki/Garfield_(character)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Garfield",
+          "fandomWiki": "garfield",
+          "fandomPage": "Garfield (character)",
+          "recognisability": "high",
+          "familyId": "franchise:garfield",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-snoopy",
+          "label": "Snoopy",
+          "spokenName": "Snoopy",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-snoopy.webp",
+          "sourcePage": "https://peanuts.fandom.com/wiki/Snoopy",
+          "imageSource": "local-fandom-download",
+          "franchise": "Peanuts",
+          "fandomWiki": "peanuts",
+          "fandomPage": "Snoopy",
+          "recognisability": "high",
+          "familyId": "franchise:peanuts",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-charlie-brown",
+          "label": "Charlie Brown",
+          "spokenName": "Charlie Brown",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-charlie-brown.webp",
+          "sourcePage": "https://peanuts.fandom.com/wiki/Charlie_Brown",
+          "imageSource": "local-fandom-download",
+          "franchise": "Peanuts",
+          "fandomWiki": "peanuts",
+          "fandomPage": "Charlie Brown",
+          "recognisability": "high",
+          "familyId": "franchise:peanuts",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-homer-simpson",
+          "label": "Homer Simpson",
+          "spokenName": "Homer Simpson",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-homer-simpson.webp",
+          "sourcePage": "https://simpsons.fandom.com/wiki/Homer_Simpson",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Simpsons",
+          "fandomWiki": "simpsons",
+          "fandomPage": "Homer Simpson",
+          "recognisability": "high",
+          "familyId": "franchise:the-simpsons",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-bart-simpson",
+          "label": "Bart Simpson",
+          "spokenName": "Bart Simpson",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-bart-simpson.webp",
+          "sourcePage": "https://simpsons.fandom.com/wiki/Bart_Simpson",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Simpsons",
+          "fandomWiki": "simpsons",
+          "fandomPage": "Bart Simpson",
+          "recognisability": "high",
+          "familyId": "franchise:the-simpsons",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-lisa-simpson",
+          "label": "Lisa Simpson",
+          "spokenName": "Lisa Simpson",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-lisa-simpson.webp",
+          "sourcePage": "https://simpsons.fandom.com/wiki/Lisa_Simpson",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Simpsons",
+          "fandomWiki": "simpsons",
+          "fandomPage": "Lisa Simpson",
+          "recognisability": "high",
+          "familyId": "franchise:the-simpsons",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-marge-simpson",
+          "label": "Marge Simpson",
+          "spokenName": "Marge Simpson",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-marge-simpson.webp",
+          "sourcePage": "https://simpsons.fandom.com/wiki/Marge_Simpson",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Simpsons",
+          "fandomWiki": "simpsons",
+          "fandomPage": "Marge Simpson",
+          "recognisability": "high",
+          "familyId": "franchise:the-simpsons",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-stewie-griffin",
+          "label": "Stewie Griffin",
+          "spokenName": "Stewie Griffin",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-stewie-griffin.webp",
+          "sourcePage": "https://familyguy.fandom.com/wiki/Stewie_Griffin",
+          "imageSource": "local-fandom-download",
+          "franchise": "Family Guy",
+          "fandomWiki": "familyguy",
+          "fandomPage": "Stewie Griffin",
+          "recognisability": "high",
+          "familyId": "franchise:family-guy",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-peter-griffin",
+          "label": "Peter Griffin",
+          "spokenName": "Peter Griffin",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-peter-griffin.webp",
+          "sourcePage": "https://familyguy.fandom.com/wiki/Peter_Griffin",
+          "imageSource": "local-fandom-download",
+          "franchise": "Family Guy",
+          "fandomWiki": "familyguy",
+          "fandomPage": "Peter Griffin",
+          "recognisability": "high",
+          "familyId": "franchise:family-guy",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-rick-sanchez",
+          "label": "Rick Sanchez",
+          "spokenName": "Rick Sanchez",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-rick-sanchez.webp",
+          "sourcePage": "https://rickandmorty.fandom.com/wiki/Rick_Sanchez",
+          "imageSource": "local-fandom-download",
+          "franchise": "Rick and Morty",
+          "fandomWiki": "rickandmorty",
+          "fandomPage": "Rick Sanchez",
+          "recognisability": "high",
+          "familyId": "franchise:rick-and-morty",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-morty-smith",
+          "label": "Morty Smith",
+          "spokenName": "Morty Smith",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-morty-smith.webp",
+          "sourcePage": "https://rickandmorty.fandom.com/wiki/Morty_Smith",
+          "imageSource": "local-fandom-download",
+          "franchise": "Rick and Morty",
+          "fandomWiki": "rickandmorty",
+          "fandomPage": "Morty Smith",
+          "recognisability": "high",
+          "familyId": "franchise:rick-and-morty",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-finn-the-human",
+          "label": "Finn the Human",
+          "spokenName": "Finn the Human",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-finn-the-human.webp",
+          "sourcePage": "https://adventuretime.fandom.com/wiki/Finn",
+          "imageSource": "local-fandom-download",
+          "franchise": "Adventure Time",
+          "fandomWiki": "adventuretime",
+          "fandomPage": "Finn",
+          "recognisability": "high",
+          "familyId": "franchise:adventure-time",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-jake-the-dog",
+          "label": "Jake the Dog",
+          "spokenName": "Jake the Dog",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-jake-the-dog.webp",
+          "sourcePage": "https://adventuretime.fandom.com/wiki/Jake",
+          "imageSource": "local-fandom-download",
+          "franchise": "Adventure Time",
+          "fandomWiki": "adventuretime",
+          "fandomPage": "Jake",
+          "recognisability": "high",
+          "familyId": "franchise:adventure-time",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-peppa-pig",
+          "label": "Peppa Pig",
+          "spokenName": "Peppa Pig",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-peppa-pig.webp",
+          "sourcePage": "https://peppapig.fandom.com/wiki/Peppa_Pig_(character)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Peppa Pig",
+          "fandomWiki": "peppapig",
+          "fandomPage": "Peppa Pig (character)",
+          "recognisability": "high",
+          "familyId": "franchise:peppa-pig",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-bluey",
+          "label": "Bluey",
+          "spokenName": "Bluey",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-bluey.webp",
+          "sourcePage": "https://blueypedia.fandom.com/wiki/Bluey_Heeler",
+          "imageSource": "local-fandom-download",
+          "franchise": "Bluey",
+          "fandomWiki": "blueypedia",
+          "fandomPage": "Bluey Heeler",
+          "recognisability": "high",
+          "familyId": "franchise:bluey",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-wallace",
+          "label": "Wallace",
+          "spokenName": "Wallace",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-wallace.webp",
+          "sourcePage": "https://wallaceandgromit.fandom.com/wiki/Wallace",
+          "imageSource": "local-fandom-download",
+          "franchise": "Wallace and Gromit",
+          "fandomWiki": "wallaceandgromit",
+          "fandomPage": "Wallace",
+          "recognisability": "high",
+          "familyId": "franchise:wallace-and-gromit",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-animated-gromit",
+          "label": "Gromit",
+          "spokenName": "Gromit",
+          "subcategoryId": "animated-characters",
+          "imagePath": "../../assets/images/clue-items/characters/animated-characters/character-animated-gromit.webp",
+          "sourcePage": "https://wallaceandgromit.fandom.com/wiki/Gromit",
+          "imageSource": "local-fandom-download",
+          "franchise": "Wallace and Gromit",
+          "fandomWiki": "wallaceandgromit",
+          "fandomPage": "Gromit",
+          "recognisability": "high",
+          "familyId": "franchise:wallace-and-gromit",
+          "tags": [
+            "character",
+            "animated-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-harry-potter",
+          "label": "Harry Potter",
+          "spokenName": "Harry Potter",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-harry-potter.webp",
+          "sourcePage": "https://harrypotter.fandom.com/wiki/Harry_Potter",
+          "imageSource": "local-fandom-download",
+          "franchise": "Harry Potter",
+          "fandomWiki": "harrypotter",
+          "fandomPage": "Harry Potter",
+          "recognisability": "high",
+          "familyId": "franchise:harry-potter",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-hermione-granger",
+          "label": "Hermione Granger",
+          "spokenName": "Hermione Granger",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-hermione-granger.webp",
+          "sourcePage": "https://harrypotter.fandom.com/wiki/Hermione_Granger",
+          "imageSource": "local-fandom-download",
+          "franchise": "Harry Potter",
+          "fandomWiki": "harrypotter",
+          "fandomPage": "Hermione Granger",
+          "recognisability": "high",
+          "familyId": "franchise:harry-potter",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-ron-weasley",
+          "label": "Ron Weasley",
+          "spokenName": "Ron Weasley",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-ron-weasley.webp",
+          "sourcePage": "https://harrypotter.fandom.com/wiki/Ronald_Weasley",
+          "imageSource": "local-fandom-download",
+          "franchise": "Harry Potter",
+          "fandomWiki": "harrypotter",
+          "fandomPage": "Ronald Weasley",
+          "recognisability": "high",
+          "familyId": "franchise:harry-potter",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-albus-dumbledore",
+          "label": "Albus Dumbledore",
+          "spokenName": "Albus Dumbledore",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-albus-dumbledore.webp",
+          "sourcePage": "https://harrypotter.fandom.com/wiki/Albus_Dumbledore",
+          "imageSource": "local-fandom-download",
+          "franchise": "Harry Potter",
+          "fandomWiki": "harrypotter",
+          "fandomPage": "Albus Dumbledore",
+          "recognisability": "high",
+          "familyId": "franchise:harry-potter",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-rubeus-hagrid",
+          "label": "Rubeus Hagrid",
+          "spokenName": "Rubeus Hagrid",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-rubeus-hagrid.webp",
+          "sourcePage": "https://harrypotter.fandom.com/wiki/Rubeus_Hagrid",
+          "imageSource": "local-fandom-download",
+          "franchise": "Harry Potter",
+          "fandomWiki": "harrypotter",
+          "fandomPage": "Rubeus Hagrid",
+          "recognisability": "high",
+          "familyId": "franchise:harry-potter",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-lord-voldemort",
+          "label": "Lord Voldemort",
+          "spokenName": "Lord Voldemort",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-lord-voldemort.webp",
+          "sourcePage": "https://harrypotter.fandom.com/wiki/Tom_Riddle",
+          "imageSource": "local-fandom-download",
+          "franchise": "Harry Potter",
+          "fandomWiki": "harrypotter",
+          "fandomPage": "Tom Riddle",
+          "recognisability": "high",
+          "familyId": "franchise:harry-potter",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-dobby",
+          "label": "Dobby",
+          "spokenName": "Dobby",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-dobby.webp",
+          "sourcePage": "https://harrypotter.fandom.com/wiki/Dobby",
+          "imageSource": "local-fandom-download",
+          "franchise": "Harry Potter",
+          "fandomWiki": "harrypotter",
+          "fandomPage": "Dobby",
+          "recognisability": "high",
+          "familyId": "franchise:harry-potter",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-darth-vader",
+          "label": "Darth Vader",
+          "spokenName": "Darth Vader",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-darth-vader.webp",
+          "sourcePage": "https://starwars.fandom.com/wiki/Anakin_Skywalker",
+          "imageSource": "local-fandom-download",
+          "franchise": "Star Wars",
+          "fandomWiki": "starwars",
+          "fandomPage": "Anakin Skywalker",
+          "recognisability": "high",
+          "familyId": "franchise:star-wars",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-han-solo",
+          "label": "Han Solo",
+          "spokenName": "Han Solo",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-han-solo.webp",
+          "sourcePage": "https://starwars.fandom.com/wiki/Han_Solo",
+          "imageSource": "local-fandom-download",
+          "franchise": "Star Wars",
+          "fandomWiki": "starwars",
+          "fandomPage": "Han Solo",
+          "recognisability": "high",
+          "familyId": "franchise:star-wars",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-yoda",
+          "label": "Yoda",
+          "spokenName": "Yoda",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-yoda.webp",
+          "sourcePage": "https://starwars.fandom.com/wiki/Yoda",
+          "imageSource": "local-fandom-download",
+          "franchise": "Star Wars",
+          "fandomWiki": "starwars",
+          "fandomPage": "Yoda",
+          "recognisability": "high",
+          "familyId": "franchise:star-wars",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-chewbacca",
+          "label": "Chewbacca",
+          "spokenName": "Chewbacca",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-chewbacca.webp",
+          "sourcePage": "https://starwars.fandom.com/wiki/Chewbacca",
+          "imageSource": "local-fandom-download",
+          "franchise": "Star Wars",
+          "fandomWiki": "starwars",
+          "fandomPage": "Chewbacca",
+          "recognisability": "high",
+          "familyId": "franchise:star-wars",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-r2-d2",
+          "label": "R2-D2",
+          "spokenName": "R2-D2",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-r2-d2.webp",
+          "sourcePage": "https://starwars.fandom.com/wiki/R2-D2",
+          "imageSource": "local-fandom-download",
+          "franchise": "Star Wars",
+          "fandomWiki": "starwars",
+          "fandomPage": "R2-D2",
+          "recognisability": "high",
+          "familyId": "franchise:star-wars",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-c-3po",
+          "label": "C-3PO",
+          "spokenName": "C-3PO",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-c-3po.webp",
+          "sourcePage": "https://starwars.fandom.com/wiki/C-3PO",
+          "imageSource": "local-fandom-download",
+          "franchise": "Star Wars",
+          "fandomWiki": "starwars",
+          "fandomPage": "C-3PO",
+          "recognisability": "high",
+          "familyId": "franchise:star-wars",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-grogu",
+          "label": "Grogu",
+          "spokenName": "Grogu",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-grogu.webp",
+          "sourcePage": "https://starwars.fandom.com/wiki/Din_Grogu",
+          "imageSource": "local-fandom-download",
+          "franchise": "Star Wars",
+          "fandomWiki": "starwars",
+          "fandomPage": "Din Grogu",
+          "recognisability": "high",
+          "familyId": "franchise:star-wars",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-indiana-jones",
+          "label": "Indiana Jones",
+          "spokenName": "Indiana Jones",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-indiana-jones.webp",
+          "sourcePage": "https://indianajones.fandom.com/wiki/Indiana_Jones",
+          "imageSource": "local-fandom-download",
+          "franchise": "Indiana Jones",
+          "fandomWiki": "indianajones",
+          "fandomPage": "Indiana Jones",
+          "recognisability": "high",
+          "familyId": "franchise:indiana-jones",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-e-t",
+          "label": "E.T.",
+          "spokenName": "E.T.",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-e-t.webp",
+          "sourcePage": "https://ettheextraterrestrial.fandom.com/wiki/E.T.",
+          "imageSource": "local-fandom-download",
+          "franchise": "E.T.",
+          "fandomWiki": "ettheextraterrestrial",
+          "fandomPage": "E.T.",
+          "recognisability": "high",
+          "familyId": "franchise:e-t",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-marty-mcfly",
+          "label": "Marty McFly",
+          "spokenName": "Marty McFly",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-marty-mcfly.webp",
+          "sourcePage": "https://backtothefuture.fandom.com/wiki/Marty_McFly",
+          "imageSource": "local-fandom-download",
+          "franchise": "Back to the Future",
+          "fandomWiki": "backtothefuture",
+          "fandomPage": "Marty McFly",
+          "recognisability": "high",
+          "familyId": "franchise:back-to-the-future",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-doc-brown",
+          "label": "Doc Brown",
+          "spokenName": "Doc Brown",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-doc-brown.webp",
+          "sourcePage": "https://backtothefuture.fandom.com/wiki/Emmett_Brown",
+          "imageSource": "local-fandom-download",
+          "franchise": "Back to the Future",
+          "fandomWiki": "backtothefuture",
+          "fandomPage": "Emmett Brown",
+          "recognisability": "high",
+          "familyId": "franchise:back-to-the-future",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-jack-sparrow",
+          "label": "Jack Sparrow",
+          "spokenName": "Jack Sparrow",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-jack-sparrow.webp",
+          "sourcePage": "https://pirates.fandom.com/wiki/Jack_Sparrow",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pirates of the Caribbean",
+          "fandomWiki": "pirates",
+          "fandomPage": "Jack Sparrow",
+          "recognisability": "high",
+          "familyId": "franchise:pirates-of-the-caribbean",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-willy-wonka",
+          "label": "Willy Wonka",
+          "spokenName": "Willy Wonka",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-willy-wonka.webp",
+          "sourcePage": "https://roalddahl.fandom.com/wiki/Willy_Wonka",
+          "imageSource": "local-fandom-download",
+          "franchise": "Roald Dahl",
+          "fandomWiki": "roalddahl",
+          "fandomPage": "Willy Wonka",
+          "recognisability": "high",
+          "familyId": "franchise:roald-dahl",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-paddington-bear",
+          "label": "Paddington Bear",
+          "spokenName": "Paddington Bear",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-paddington-bear.webp",
+          "sourcePage": "https://paddingtonbear.fandom.com/wiki/Paddington_Brown",
+          "imageSource": "local-fandom-download",
+          "franchise": "Paddington",
+          "fandomWiki": "paddingtonbear",
+          "fandomPage": "Paddington Brown",
+          "recognisability": "high",
+          "familyId": "franchise:paddington",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-tinker-bell",
+          "label": "Tinker Bell",
+          "spokenName": "Tinker Bell",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-tinker-bell.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Tinker_Bell",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Tinker Bell",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-alice",
+          "label": "Alice",
+          "spokenName": "Alice",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-alice.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Alice",
+          "imageSource": "local-fandom-download",
+          "franchise": "Disney",
+          "fandomWiki": "disney",
+          "fandomPage": "Alice",
+          "recognisability": "high",
+          "familyId": "franchise:disney",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-frodo-baggins",
+          "label": "Frodo Baggins",
+          "spokenName": "Frodo Baggins",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-frodo-baggins.webp",
+          "sourcePage": "https://lotr.fandom.com/wiki/Frodo_Baggins",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Lord of the Rings",
+          "fandomWiki": "lotr",
+          "fandomPage": "Frodo Baggins",
+          "recognisability": "high",
+          "familyId": "franchise:the-lord-of-the-rings",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-neo",
+          "label": "Neo",
+          "spokenName": "Neo",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-neo.webp",
+          "sourcePage": "https://matrix.fandom.com/wiki/Neo",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Matrix",
+          "fandomWiki": "matrix",
+          "fandomPage": "Neo",
+          "recognisability": "high",
+          "familyId": "franchise:the-matrix",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-emmet",
+          "label": "Emmet",
+          "spokenName": "Emmet",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-emmet.webp",
+          "sourcePage": "https://thelegomovie.fandom.com/wiki/Emmet_Brickowski",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Lego Movie",
+          "fandomWiki": "thelegomovie",
+          "fandomPage": "Emmet Brickowski",
+          "recognisability": "high",
+          "familyId": "franchise:the-lego-movie",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-batman",
+          "label": "Batman",
+          "spokenName": "Batman",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-batman.webp",
+          "sourcePage": "https://dc.fandom.com/wiki/Batman",
+          "imageSource": "local-fandom-download",
+          "franchise": "DC",
+          "fandomWiki": "dc",
+          "fandomPage": "Batman",
+          "recognisability": "high",
+          "familyId": "franchise:dc",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-superman",
+          "label": "Superman",
+          "spokenName": "Superman",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-superman.webp",
+          "sourcePage": "https://dc.fandom.com/wiki/Superman",
+          "imageSource": "local-fandom-download",
+          "franchise": "DC",
+          "fandomWiki": "dc",
+          "fandomPage": "Superman",
+          "recognisability": "high",
+          "familyId": "franchise:dc",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-wonder-woman",
+          "label": "Wonder Woman",
+          "spokenName": "Wonder Woman",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-wonder-woman.webp",
+          "sourcePage": "https://dc.fandom.com/wiki/Wonder_Woman",
+          "imageSource": "local-fandom-download",
+          "franchise": "DC",
+          "fandomWiki": "dc",
+          "fandomPage": "Wonder Woman",
+          "recognisability": "high",
+          "familyId": "franchise:dc",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-thanos",
+          "label": "Thanos",
+          "spokenName": "Thanos",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-thanos.webp",
+          "sourcePage": "https://marvel.fandom.com/wiki/Thanos_(Earth-TRN666)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Marvel",
+          "fandomWiki": "marvel",
+          "fandomPage": "Thanos (Earth-TRN666)",
+          "recognisability": "high",
+          "familyId": "franchise:marvel",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-wolverine",
+          "label": "Wolverine",
+          "spokenName": "Wolverine",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-wolverine.webp",
+          "sourcePage": "https://marvel.fandom.com/wiki/Wolverine_Vol_1_1",
+          "imageSource": "local-fandom-download",
+          "franchise": "Marvel",
+          "fandomWiki": "marvel",
+          "fandomPage": "Wolverine Vol 1 1",
+          "recognisability": "high",
+          "familyId": "franchise:marvel",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-ant-man",
+          "label": "Ant-Man",
+          "spokenName": "Ant-Man",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-ant-man.webp",
+          "sourcePage": "https://marvel.fandom.com/wiki/Ant-Man_(film)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Marvel",
+          "fandomWiki": "marvel",
+          "fandomPage": "Ant-Man (film)",
+          "recognisability": "high",
+          "familyId": "franchise:marvel",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-aquaman",
+          "label": "Aquaman",
+          "spokenName": "Aquaman",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-aquaman.webp",
+          "sourcePage": "https://dc.fandom.com/wiki/Aquaman",
+          "imageSource": "local-fandom-download",
+          "franchise": "DC",
+          "fandomWiki": "dc",
+          "fandomPage": "Aquaman",
+          "recognisability": "high",
+          "familyId": "franchise:dc",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-shazam",
+          "label": "Shazam",
+          "spokenName": "Shazam",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-shazam.webp",
+          "sourcePage": "https://dc.fandom.com/wiki/Shazam",
+          "imageSource": "local-fandom-download",
+          "franchise": "DC",
+          "fandomWiki": "dc",
+          "fandomPage": "Shazam",
+          "recognisability": "high",
+          "familyId": "franchise:dc",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-katniss-everdeen",
+          "label": "Katniss Everdeen",
+          "spokenName": "Katniss Everdeen",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-katniss-everdeen.webp",
+          "sourcePage": "https://thehungergames.fandom.com/wiki/Katniss_Everdeen",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Hunger Games",
+          "fandomWiki": "thehungergames",
+          "fandomPage": "Katniss Everdeen",
+          "recognisability": "high",
+          "familyId": "franchise:the-hunger-games",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-the-grinch",
+          "label": "The Grinch",
+          "spokenName": "The Grinch",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-the-grinch.webp",
+          "sourcePage": "https://seuss.fandom.com/wiki/The_Grinch",
+          "imageSource": "local-fandom-download",
+          "franchise": "Dr. Seuss",
+          "fandomWiki": "seuss",
+          "fandomPage": "The Grinch",
+          "recognisability": "high",
+          "familyId": "franchise:dr-seuss",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-film-kevin-mccallister",
+          "label": "Kevin McCallister",
+          "spokenName": "Kevin McCallister",
+          "subcategoryId": "film-characters",
+          "imagePath": "../../assets/images/clue-items/characters/film-characters/character-film-kevin-mccallister.webp",
+          "sourcePage": "https://homealone.fandom.com/wiki/Kevin_McCallister",
+          "imageSource": "local-fandom-download",
+          "franchise": "Home Alone",
+          "fandomWiki": "homealone",
+          "fandomPage": "Kevin McCallister",
+          "recognisability": "high",
+          "familyId": "franchise:home-alone",
+          "tags": [
+            "character",
+            "film-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-dalek",
+          "label": "Dalek",
+          "spokenName": "Dalek",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-dalek.webp",
+          "sourcePage": "https://tardis.fandom.com/wiki/Dalek",
+          "imageSource": "local-fandom-download",
+          "franchise": "Doctor Who",
+          "fandomWiki": "tardis",
+          "fandomPage": "Dalek",
+          "recognisability": "high",
+          "familyId": "franchise:doctor-who",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-eleven",
+          "label": "Eleven",
+          "spokenName": "Eleven",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-eleven.webp",
+          "sourcePage": "https://strangerthings.fandom.com/wiki/Eleven",
+          "imageSource": "local-fandom-download",
+          "franchise": "Stranger Things",
+          "fandomWiki": "strangerthings",
+          "fandomPage": "Eleven",
+          "recognisability": "high",
+          "familyId": "franchise:stranger-things",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-mr-bean",
+          "label": "Mr Bean",
+          "spokenName": "Mr Bean",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-mr-bean.webp",
+          "sourcePage": "https://mrbean.fandom.com/wiki/Mr._Bean_(character)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Mr Bean",
+          "fandomWiki": "mrbean",
+          "fandomPage": "Mr. Bean (character)",
+          "recognisability": "high",
+          "familyId": "franchise:mr-bean",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-sheldon-cooper",
+          "label": "Sheldon Cooper",
+          "spokenName": "Sheldon Cooper",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-sheldon-cooper.webp",
+          "sourcePage": "https://bigbangtheory.fandom.com/wiki/Sheldon_Cooper",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Big Bang Theory",
+          "fandomWiki": "bigbangtheory",
+          "fandomPage": "Sheldon Cooper",
+          "recognisability": "high",
+          "familyId": "franchise:the-big-bang-theory",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-joey-tribbiani",
+          "label": "Joey Tribbiani",
+          "spokenName": "Joey Tribbiani",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-joey-tribbiani.webp",
+          "sourcePage": "https://friends.fandom.com/wiki/Joey_Tribbiani",
+          "imageSource": "local-fandom-download",
+          "franchise": "Friends",
+          "fandomWiki": "friends",
+          "fandomPage": "Joey Tribbiani",
+          "recognisability": "high",
+          "familyId": "franchise:friends",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-jake-peralta",
+          "label": "Jake Peralta",
+          "spokenName": "Jake Peralta",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-jake-peralta.webp",
+          "sourcePage": "https://brooklyn99.fandom.com/wiki/Jake_Peralta",
+          "imageSource": "local-fandom-download",
+          "franchise": "Brooklyn Nine-Nine",
+          "fandomWiki": "brooklyn99",
+          "fandomPage": "Jake Peralta",
+          "recognisability": "high",
+          "familyId": "franchise:brooklyn-nine-nine",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-dwight-schrute",
+          "label": "Dwight Schrute",
+          "spokenName": "Dwight Schrute",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-dwight-schrute.webp",
+          "sourcePage": "https://theoffice.fandom.com/wiki/Dwight_Schrute",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Office",
+          "fandomWiki": "theoffice",
+          "fandomPage": "Dwight Schrute",
+          "recognisability": "high",
+          "familyId": "franchise:the-office",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-spock",
+          "label": "Spock",
+          "spokenName": "Spock",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-spock.webp",
+          "sourcePage": "https://memoryalpha.fandom.com/wiki/Spock",
+          "imageSource": "local-fandom-download",
+          "franchise": "Star Trek",
+          "fandomWiki": "memoryalpha",
+          "fandomPage": "Spock",
+          "recognisability": "high",
+          "familyId": "franchise:star-trek",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-kermit-the-frog",
+          "label": "Kermit the Frog",
+          "spokenName": "Kermit the Frog",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-kermit-the-frog.webp",
+          "sourcePage": "https://muppet.fandom.com/wiki/Kermit_the_Frog",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Muppets / Sesame Street",
+          "fandomWiki": "muppet",
+          "fandomPage": "Kermit the Frog",
+          "recognisability": "high",
+          "familyId": "franchise:the-muppets-sesame-street",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-miss-piggy",
+          "label": "Miss Piggy",
+          "spokenName": "Miss Piggy",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-miss-piggy.webp",
+          "sourcePage": "https://muppet.fandom.com/wiki/Miss_Piggy",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Muppets / Sesame Street",
+          "fandomWiki": "muppet",
+          "fandomPage": "Miss Piggy",
+          "recognisability": "high",
+          "familyId": "franchise:the-muppets-sesame-street",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-elmo",
+          "label": "Elmo",
+          "spokenName": "Elmo",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-elmo.webp",
+          "sourcePage": "https://muppet.fandom.com/wiki/Elmo",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Muppets / Sesame Street",
+          "fandomWiki": "muppet",
+          "fandomPage": "Elmo",
+          "recognisability": "high",
+          "familyId": "franchise:the-muppets-sesame-street",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-big-bird",
+          "label": "Big Bird",
+          "spokenName": "Big Bird",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-big-bird.webp",
+          "sourcePage": "https://muppet.fandom.com/wiki/Big_Bird",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Muppets / Sesame Street",
+          "fandomWiki": "muppet",
+          "fandomPage": "Big Bird",
+          "recognisability": "high",
+          "familyId": "franchise:the-muppets-sesame-street",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-oscar-the-grouch",
+          "label": "Oscar the Grouch",
+          "spokenName": "Oscar the Grouch",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-oscar-the-grouch.webp",
+          "sourcePage": "https://muppet.fandom.com/wiki/Oscar_the_Grouch",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Muppets / Sesame Street",
+          "fandomWiki": "muppet",
+          "fandomPage": "Oscar the Grouch",
+          "recognisability": "high",
+          "familyId": "franchise:the-muppets-sesame-street",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-pingu",
+          "label": "Pingu",
+          "spokenName": "Pingu",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-pingu.webp",
+          "sourcePage": "https://pingu.fandom.com/wiki/Pingu",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pingu",
+          "fandomWiki": "pingu",
+          "fandomPage": "Pingu",
+          "recognisability": "high",
+          "familyId": "franchise:pingu",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-fireman-sam",
+          "label": "Fireman Sam",
+          "spokenName": "Fireman Sam",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-fireman-sam.webp",
+          "sourcePage": "https://firemansam.fandom.com/wiki/Fireman_Sam",
+          "imageSource": "local-fandom-download",
+          "franchise": "Fireman Sam",
+          "fandomWiki": "firemansam",
+          "fandomPage": "Fireman Sam",
+          "recognisability": "high",
+          "familyId": "franchise:fireman-sam",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-tv-danger-mouse",
+          "label": "Danger Mouse",
+          "spokenName": "Danger Mouse",
+          "subcategoryId": "television-characters",
+          "imagePath": "../../assets/images/clue-items/characters/television-characters/character-tv-danger-mouse.webp",
+          "sourcePage": "https://dangermouse.fandom.com/wiki/Danger_Mouse",
+          "imageSource": "local-fandom-download",
+          "franchise": "Danger Mouse",
+          "fandomWiki": "dangermouse",
+          "fandomPage": "Danger Mouse",
+          "recognisability": "high",
+          "familyId": "franchise:danger-mouse",
+          "tags": [
+            "character",
+            "television-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-mario",
+          "label": "Mario",
+          "spokenName": "Mario",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-mario.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Mario",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Mario",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-luigi",
+          "label": "Luigi",
+          "spokenName": "Luigi",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-luigi.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Luigi",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Luigi",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-princess-peach",
+          "label": "Princess Peach",
+          "spokenName": "Princess Peach",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-princess-peach.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Princess_Peach",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Princess Peach",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-bowser",
+          "label": "Bowser",
+          "spokenName": "Bowser",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-bowser.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Bowser",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Bowser",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-yoshi",
+          "label": "Yoshi",
+          "spokenName": "Yoshi",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-yoshi.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Yoshi_(character)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Yoshi (character)",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-toad",
+          "label": "Toad",
+          "spokenName": "Toad",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-toad.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Toad_(character)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Toad (character)",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-wario",
+          "label": "Wario",
+          "spokenName": "Wario",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-wario.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Wario",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Wario",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-waluigi",
+          "label": "Waluigi",
+          "spokenName": "Waluigi",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-waluigi.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Waluigi",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Waluigi",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-donkey-kong",
+          "label": "Donkey Kong",
+          "spokenName": "Donkey Kong",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-donkey-kong.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Donkey_Kong_(character)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Donkey Kong (character)",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-diddy-kong",
+          "label": "Diddy Kong",
+          "spokenName": "Diddy Kong",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-diddy-kong.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Diddy_Kong",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Diddy Kong",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-rosalina",
+          "label": "Rosalina",
+          "spokenName": "Rosalina",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-rosalina.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Rosalina",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Rosalina",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-link",
+          "label": "Link",
+          "spokenName": "Link",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-link.webp",
+          "sourcePage": "https://zelda.fandom.com/wiki/Link",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Legend of Zelda",
+          "fandomWiki": "zelda",
+          "fandomPage": "Link",
+          "recognisability": "high",
+          "familyId": "franchise:the-legend-of-zelda",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-princess-zelda",
+          "label": "Princess Zelda",
+          "spokenName": "Princess Zelda",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-princess-zelda.webp",
+          "sourcePage": "https://zelda.fandom.com/wiki/Princess_Zelda",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Legend of Zelda",
+          "fandomWiki": "zelda",
+          "fandomPage": "Princess Zelda",
+          "recognisability": "high",
+          "familyId": "franchise:the-legend-of-zelda",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-ganondorf",
+          "label": "Ganondorf",
+          "spokenName": "Ganondorf",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-ganondorf.webp",
+          "sourcePage": "https://zelda.fandom.com/wiki/Ganondorf",
+          "imageSource": "local-fandom-download",
+          "franchise": "The Legend of Zelda",
+          "fandomWiki": "zelda",
+          "fandomPage": "Ganondorf",
+          "recognisability": "high",
+          "familyId": "franchise:the-legend-of-zelda",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-kirby",
+          "label": "Kirby",
+          "spokenName": "Kirby",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-kirby.webp",
+          "sourcePage": "https://kirby.fandom.com/wiki/Kirby",
+          "imageSource": "local-fandom-download",
+          "franchise": "Kirby",
+          "fandomWiki": "kirby",
+          "fandomPage": "Kirby",
+          "recognisability": "high",
+          "familyId": "franchise:kirby",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-samus-aran",
+          "label": "Samus Aran",
+          "spokenName": "Samus Aran",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-samus-aran.webp",
+          "sourcePage": "https://metroid.fandom.com/wiki/Samus_Aran",
+          "imageSource": "local-fandom-download",
+          "franchise": "Metroid",
+          "fandomWiki": "metroid",
+          "fandomPage": "Samus Aran",
+          "recognisability": "high",
+          "familyId": "franchise:metroid",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-fox-mccloud",
+          "label": "Fox McCloud",
+          "spokenName": "Fox McCloud",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-fox-mccloud.webp",
+          "sourcePage": "https://starfox.fandom.com/wiki/Fox_McCloud",
+          "imageSource": "local-fandom-download",
+          "franchise": "Star Fox",
+          "fandomWiki": "starfox",
+          "fandomPage": "Fox McCloud",
+          "recognisability": "high",
+          "familyId": "franchise:star-fox",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-pikachu",
+          "label": "Pikachu",
+          "spokenName": "Pikachu",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-pikachu.webp",
+          "sourcePage": "https://pokemon.fandom.com/wiki/Pikachu",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pokémon",
+          "fandomWiki": "pokemon",
+          "fandomPage": "Pikachu",
+          "recognisability": "high",
+          "familyId": "franchise:pok-mon",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-charizard",
+          "label": "Charizard",
+          "spokenName": "Charizard",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-charizard.webp",
+          "sourcePage": "https://pokemon.fandom.com/wiki/Charizard",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pokémon",
+          "fandomWiki": "pokemon",
+          "fandomPage": "Charizard",
+          "recognisability": "high",
+          "familyId": "franchise:pok-mon",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-eevee",
+          "label": "Eevee",
+          "spokenName": "Eevee",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-eevee.webp",
+          "sourcePage": "https://pokemon.fandom.com/wiki/Eevee",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pokémon",
+          "fandomWiki": "pokemon",
+          "fandomPage": "Eevee",
+          "recognisability": "high",
+          "familyId": "franchise:pok-mon",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-mewtwo",
+          "label": "Mewtwo",
+          "spokenName": "Mewtwo",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-mewtwo.webp",
+          "sourcePage": "https://pokemon.fandom.com/wiki/Mewtwo",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pokémon",
+          "fandomWiki": "pokemon",
+          "fandomPage": "Mewtwo",
+          "recognisability": "high",
+          "familyId": "franchise:pok-mon",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-jigglypuff",
+          "label": "Jigglypuff",
+          "spokenName": "Jigglypuff",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-jigglypuff.webp",
+          "sourcePage": "https://pokemon.fandom.com/wiki/Jigglypuff",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pokémon",
+          "fandomWiki": "pokemon",
+          "fandomPage": "Jigglypuff",
+          "recognisability": "high",
+          "familyId": "franchise:pok-mon",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-snorlax",
+          "label": "Snorlax",
+          "spokenName": "Snorlax",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-snorlax.webp",
+          "sourcePage": "https://pokemon.fandom.com/wiki/Snorlax",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pokémon",
+          "fandomWiki": "pokemon",
+          "fandomPage": "Snorlax",
+          "recognisability": "high",
+          "familyId": "franchise:pok-mon",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-psyduck",
+          "label": "Psyduck",
+          "spokenName": "Psyduck",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-psyduck.webp",
+          "sourcePage": "https://pokemon.fandom.com/wiki/Psyduck",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pokémon",
+          "fandomWiki": "pokemon",
+          "fandomPage": "Psyduck",
+          "recognisability": "high",
+          "familyId": "franchise:pok-mon",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-meowth",
+          "label": "Meowth",
+          "spokenName": "Meowth",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-meowth.webp",
+          "sourcePage": "https://pokemon.fandom.com/wiki/Meowth",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pokémon",
+          "fandomWiki": "pokemon",
+          "fandomPage": "Meowth",
+          "recognisability": "high",
+          "familyId": "franchise:pok-mon",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-sonic",
+          "label": "Sonic",
+          "spokenName": "Sonic",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-sonic.webp",
+          "sourcePage": "https://sonic.fandom.com/wiki/Sonic_the_Hedgehog",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sonic the Hedgehog",
+          "fandomWiki": "sonic",
+          "fandomPage": "Sonic the Hedgehog",
+          "recognisability": "high",
+          "familyId": "franchise:sonic-the-hedgehog",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-tails",
+          "label": "Tails",
+          "spokenName": "Tails",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-tails.webp",
+          "sourcePage": "https://sonic.fandom.com/wiki/Miles_%22Tails%22_Prower",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sonic the Hedgehog",
+          "fandomWiki": "sonic",
+          "fandomPage": "Miles \"Tails\" Prower",
+          "recognisability": "high",
+          "familyId": "franchise:sonic-the-hedgehog",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-knuckles",
+          "label": "Knuckles",
+          "spokenName": "Knuckles",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-knuckles.webp",
+          "sourcePage": "https://sonic.fandom.com/wiki/Knuckles_the_Echidna",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sonic the Hedgehog",
+          "fandomWiki": "sonic",
+          "fandomPage": "Knuckles the Echidna",
+          "recognisability": "high",
+          "familyId": "franchise:sonic-the-hedgehog",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-shadow",
+          "label": "Shadow",
+          "spokenName": "Shadow",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-shadow.webp",
+          "sourcePage": "https://sonic.fandom.com/wiki/Shadow_the_Hedgehog",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sonic the Hedgehog",
+          "fandomWiki": "sonic",
+          "fandomPage": "Shadow the Hedgehog",
+          "recognisability": "high",
+          "familyId": "franchise:sonic-the-hedgehog",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-amy-rose",
+          "label": "Amy Rose",
+          "spokenName": "Amy Rose",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-amy-rose.webp",
+          "sourcePage": "https://sonic.fandom.com/wiki/Amy_Rose",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sonic the Hedgehog",
+          "fandomWiki": "sonic",
+          "fandomPage": "Amy Rose",
+          "recognisability": "high",
+          "familyId": "franchise:sonic-the-hedgehog",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-dr-eggman",
+          "label": "Dr. Eggman",
+          "spokenName": "Dr. Eggman",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-dr-eggman.webp",
+          "sourcePage": "https://sonic.fandom.com/wiki/Doctor_Eggman",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sonic the Hedgehog",
+          "fandomWiki": "sonic",
+          "fandomPage": "Doctor Eggman",
+          "recognisability": "high",
+          "familyId": "franchise:sonic-the-hedgehog",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-crash-bandicoot",
+          "label": "Crash Bandicoot",
+          "spokenName": "Crash Bandicoot",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-crash-bandicoot.webp",
+          "sourcePage": "https://crashbandicoot.fandom.com/wiki/Crash_Bandicoot",
+          "imageSource": "local-fandom-download",
+          "franchise": "Crash Bandicoot",
+          "fandomWiki": "crashbandicoot",
+          "fandomPage": "Crash Bandicoot",
+          "recognisability": "high",
+          "familyId": "franchise:crash-bandicoot",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-master-chief",
+          "label": "Master Chief",
+          "spokenName": "Master Chief",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-master-chief.webp",
+          "sourcePage": "https://halo.fandom.com/wiki/John-117",
+          "imageSource": "local-fandom-download",
+          "franchise": "Halo",
+          "fandomWiki": "halo",
+          "fandomPage": "John-117",
+          "recognisability": "high",
+          "familyId": "franchise:halo",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-steve",
+          "label": "Steve",
+          "spokenName": "Steve",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-steve.webp",
+          "sourcePage": "https://minecraft.fandom.com/wiki/Player",
+          "imageSource": "local-fandom-download",
+          "franchise": "Minecraft",
+          "fandomWiki": "minecraft",
+          "fandomPage": "Player",
+          "recognisability": "high",
+          "familyId": "franchise:minecraft",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-alex",
+          "label": "Alex",
+          "spokenName": "Alex",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-alex.webp",
+          "sourcePage": "https://minecraft.fandom.com/wiki/Player",
+          "imageSource": "local-fandom-download",
+          "franchise": "Minecraft",
+          "fandomWiki": "minecraft",
+          "fandomPage": "Player",
+          "recognisability": "high",
+          "familyId": "franchise:minecraft",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-creeper",
+          "label": "Creeper",
+          "spokenName": "Creeper",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-creeper.webp",
+          "sourcePage": "https://minecraft.fandom.com/wiki/Creeper",
+          "imageSource": "local-fandom-download",
+          "franchise": "Minecraft",
+          "fandomWiki": "minecraft",
+          "fandomPage": "Creeper",
+          "recognisability": "high",
+          "familyId": "franchise:minecraft",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-enderman",
+          "label": "Enderman",
+          "spokenName": "Enderman",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-enderman.webp",
+          "sourcePage": "https://minecraft.fandom.com/wiki/Enderman",
+          "imageSource": "local-fandom-download",
+          "franchise": "Minecraft",
+          "fandomWiki": "minecraft",
+          "fandomPage": "Enderman",
+          "recognisability": "high",
+          "familyId": "franchise:minecraft",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-sackboy",
+          "label": "Sackboy",
+          "spokenName": "Sackboy",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-sackboy.webp",
+          "sourcePage": "https://littlebigplanet.fandom.com/wiki/Sackboy",
+          "imageSource": "local-fandom-download",
+          "franchise": "LittleBigPlanet",
+          "fandomWiki": "littlebigplanet",
+          "fandomPage": "Sackboy",
+          "recognisability": "high",
+          "familyId": "franchise:littlebigplanet",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-jonesy",
+          "label": "Jonesy",
+          "spokenName": "Jonesy",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-jonesy.webp",
+          "sourcePage": "https://fortnite.fandom.com/wiki/Jonesy_(Save_the_World)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Fortnite",
+          "fandomWiki": "fortnite",
+          "fandomPage": "Jonesy (Save the World)",
+          "recognisability": "high",
+          "familyId": "franchise:fortnite",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-pac-man",
+          "label": "Pac-Man",
+          "spokenName": "Pac-Man",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-pac-man.webp",
+          "sourcePage": "https://pacman.fandom.com/wiki/Pac-Man",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pac-Man",
+          "fandomWiki": "pacman",
+          "fandomPage": "Pac-Man",
+          "recognisability": "high",
+          "familyId": "franchise:pac-man",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-cloud-strife",
+          "label": "Cloud Strife",
+          "spokenName": "Cloud Strife",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-cloud-strife.webp",
+          "sourcePage": "https://finalfantasy.fandom.com/wiki/Cloud_Strife",
+          "imageSource": "local-fandom-download",
+          "franchise": "Final Fantasy",
+          "fandomWiki": "finalfantasy",
+          "fandomPage": "Cloud Strife",
+          "recognisability": "high",
+          "familyId": "franchise:final-fantasy",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-sephiroth",
+          "label": "Sephiroth",
+          "spokenName": "Sephiroth",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-sephiroth.webp",
+          "sourcePage": "https://finalfantasy.fandom.com/wiki/Sephiroth",
+          "imageSource": "local-fandom-download",
+          "franchise": "Final Fantasy",
+          "fandomWiki": "finalfantasy",
+          "fandomPage": "Sephiroth",
+          "recognisability": "high",
+          "familyId": "franchise:final-fantasy",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-sora",
+          "label": "Sora",
+          "spokenName": "Sora",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-sora.webp",
+          "sourcePage": "https://kingdomhearts.fandom.com/wiki/Sora",
+          "imageSource": "local-fandom-download",
+          "franchise": "Kingdom Hearts",
+          "fandomWiki": "kingdomhearts",
+          "fandomPage": "Sora",
+          "recognisability": "high",
+          "familyId": "franchise:kingdom-hearts",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-banjo",
+          "label": "Banjo",
+          "spokenName": "Banjo",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-banjo.webp",
+          "sourcePage": "https://banjokazooie.fandom.com/wiki/Banjo",
+          "imageSource": "local-fandom-download",
+          "franchise": "Banjo-Kazooie",
+          "fandomWiki": "banjokazooie",
+          "fandomPage": "Banjo",
+          "recognisability": "high",
+          "familyId": "franchise:banjo-kazooie",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-shovel-knight",
+          "label": "Shovel Knight",
+          "spokenName": "Shovel Knight",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-shovel-knight.webp",
+          "sourcePage": "https://shovelknight.fandom.com/wiki/Shovel_Knight",
+          "imageSource": "local-fandom-download",
+          "franchise": "Shovel Knight",
+          "fandomWiki": "shovelknight",
+          "fandomPage": "Shovel Knight",
+          "recognisability": "high",
+          "familyId": "franchise:shovel-knight",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-papyrus",
+          "label": "Papyrus",
+          "spokenName": "Papyrus",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-papyrus.webp",
+          "sourcePage": "https://undertale.fandom.com/wiki/Papyrus",
+          "imageSource": "local-fandom-download",
+          "franchise": "Undertale",
+          "fandomWiki": "undertale",
+          "fandomPage": "Papyrus",
+          "recognisability": "high",
+          "familyId": "franchise:undertale",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-isabelle",
+          "label": "Isabelle",
+          "spokenName": "Isabelle",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-isabelle.webp",
+          "sourcePage": "https://animalcrossing.fandom.com/wiki/Isabelle",
+          "imageSource": "local-fandom-download",
+          "franchise": "Animal Crossing",
+          "fandomWiki": "animalcrossing",
+          "fandomPage": "Isabelle",
+          "recognisability": "high",
+          "familyId": "franchise:animal-crossing",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-tom-nook",
+          "label": "Tom Nook",
+          "spokenName": "Tom Nook",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-tom-nook.webp",
+          "sourcePage": "https://animalcrossing.fandom.com/wiki/Tom_Nook",
+          "imageSource": "local-fandom-download",
+          "franchise": "Animal Crossing",
+          "fandomWiki": "animalcrossing",
+          "fandomPage": "Tom Nook",
+          "recognisability": "high",
+          "familyId": "franchise:animal-crossing",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-inkling",
+          "label": "Inkling",
+          "spokenName": "Inkling",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-inkling.webp",
+          "sourcePage": "https://splatoon.fandom.com/wiki/Inklings",
+          "imageSource": "local-fandom-download",
+          "franchise": "Splatoon",
+          "fandomWiki": "splatoon",
+          "fandomPage": "Inklings",
+          "recognisability": "high",
+          "familyId": "franchise:splatoon",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-captain-olimar",
+          "label": "Captain Olimar",
+          "spokenName": "Captain Olimar",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-captain-olimar.webp",
+          "sourcePage": "https://pikmin.fandom.com/wiki/Captain_Olimar",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pikmin",
+          "fandomWiki": "pikmin",
+          "fandomPage": "Captain Olimar",
+          "recognisability": "high",
+          "familyId": "franchise:pikmin",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-professor-layton",
+          "label": "Professor Layton",
+          "spokenName": "Professor Layton",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-professor-layton.webp",
+          "sourcePage": "https://layton.fandom.com/wiki/Professor_Hershel_Layton",
+          "imageSource": "local-fandom-download",
+          "franchise": "Professor Layton",
+          "fandomWiki": "layton",
+          "fandomPage": "Professor Hershel Layton",
+          "recognisability": "high",
+          "familyId": "franchise:professor-layton",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-phoenix-wright",
+          "label": "Phoenix Wright",
+          "spokenName": "Phoenix Wright",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-phoenix-wright.webp",
+          "sourcePage": "https://aceattorney.fandom.com/wiki/Phoenix_Wright",
+          "imageSource": "local-fandom-download",
+          "franchise": "Ace Attorney",
+          "fandomWiki": "aceattorney",
+          "fandomPage": "Phoenix Wright",
+          "recognisability": "high",
+          "familyId": "franchise:ace-attorney",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-red-bird",
+          "label": "Red Bird",
+          "spokenName": "Red Bird",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-red-bird.webp",
+          "sourcePage": "https://angrybirds.fandom.com/wiki/Red",
+          "imageSource": "local-fandom-download",
+          "franchise": "Angry Birds",
+          "fandomWiki": "angrybirds",
+          "fandomPage": "Red",
+          "recognisability": "high",
+          "familyId": "franchise:angry-birds",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-king-pig",
+          "label": "King Pig",
+          "spokenName": "King Pig",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-king-pig.webp",
+          "sourcePage": "https://angrybirds.fandom.com/wiki/King_Pig",
+          "imageSource": "local-fandom-download",
+          "franchise": "Angry Birds",
+          "fandomWiki": "angrybirds",
+          "fandomPage": "King Pig",
+          "recognisability": "high",
+          "familyId": "franchise:angry-birds",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-crazy-dave",
+          "label": "Crazy Dave",
+          "spokenName": "Crazy Dave",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-crazy-dave.webp",
+          "sourcePage": "https://plantsvszombies.fandom.com/wiki/Crazy_Dave",
+          "imageSource": "local-fandom-download",
+          "franchise": "Plants vs. Zombies",
+          "fandomWiki": "plantsvszombies",
+          "fandomPage": "Crazy Dave",
+          "recognisability": "high",
+          "familyId": "franchise:plants-vs-zombies",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-princess-daisy",
+          "label": "Princess Daisy",
+          "spokenName": "Princess Daisy",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-princess-daisy.webp",
+          "sourcePage": "https://mario.fandom.com/wiki/Princess_Daisy",
+          "imageSource": "local-fandom-download",
+          "franchise": "Super Mario",
+          "fandomWiki": "mario",
+          "fandomPage": "Princess Daisy",
+          "recognisability": "high",
+          "familyId": "franchise:super-mario",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-king-dedede",
+          "label": "King Dedede",
+          "spokenName": "King Dedede",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-king-dedede.webp",
+          "sourcePage": "https://kirby.fandom.com/wiki/King_Dedede",
+          "imageSource": "local-fandom-download",
+          "franchise": "Kirby",
+          "fandomWiki": "kirby",
+          "fandomPage": "King Dedede",
+          "recognisability": "high",
+          "familyId": "franchise:kirby",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-game-meta-knight",
+          "label": "Meta Knight",
+          "spokenName": "Meta Knight",
+          "subcategoryId": "video-game-characters",
+          "imagePath": "../../assets/images/clue-items/characters/video-game-characters/character-game-meta-knight.webp",
+          "sourcePage": "https://kirby.fandom.com/wiki/Meta_Knight",
+          "imageSource": "local-fandom-download",
+          "franchise": "Kirby",
+          "fandomWiki": "kirby",
+          "fandomPage": "Meta Knight",
+          "recognisability": "high",
+          "familyId": "franchise:kirby",
+          "tags": [
+            "character",
+            "video-game-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-anime-ash-ketchum",
+          "label": "Ash Ketchum",
+          "spokenName": "Ash Ketchum",
+          "subcategoryId": "anime-characters",
+          "imagePath": "../../assets/images/clue-items/characters/anime-characters/character-anime-ash-ketchum.webp",
+          "sourcePage": "https://pokemon.fandom.com/wiki/Ash_Ketchum",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pokémon",
+          "fandomWiki": "pokemon",
+          "fandomPage": "Ash Ketchum",
+          "recognisability": "high",
+          "familyId": "franchise:pok-mon",
+          "tags": [
+            "character",
+            "anime-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-anime-goku",
+          "label": "Goku",
+          "spokenName": "Goku",
+          "subcategoryId": "anime-characters",
+          "imagePath": "../../assets/images/clue-items/characters/anime-characters/character-anime-goku.webp",
+          "sourcePage": "https://dragonball.fandom.com/wiki/Goku",
+          "imageSource": "local-fandom-download",
+          "franchise": "Dragon Ball",
+          "fandomWiki": "dragonball",
+          "fandomPage": "Goku",
+          "recognisability": "high",
+          "familyId": "franchise:dragon-ball",
+          "tags": [
+            "character",
+            "anime-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-anime-totoro",
+          "label": "Totoro",
+          "spokenName": "Totoro",
+          "subcategoryId": "anime-characters",
+          "imagePath": "../../assets/images/clue-items/characters/anime-characters/character-anime-totoro.webp",
+          "sourcePage": "https://ghibli.fandom.com/wiki/Totoro",
+          "imageSource": "local-fandom-download",
+          "franchise": "Studio Ghibli",
+          "fandomWiki": "ghibli",
+          "fandomPage": "Totoro",
+          "recognisability": "high",
+          "familyId": "franchise:studio-ghibli",
+          "tags": [
+            "character",
+            "anime-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-anime-luffy",
+          "label": "Luffy",
+          "spokenName": "Luffy",
+          "subcategoryId": "anime-characters",
+          "imagePath": "../../assets/images/clue-items/characters/anime-characters/character-anime-luffy.webp",
+          "sourcePage": "https://onepiece.fandom.com/wiki/Monkey_D._Luffy",
+          "imageSource": "local-fandom-download",
+          "franchise": "One Piece",
+          "fandomWiki": "onepiece",
+          "fandomPage": "Monkey D. Luffy",
+          "recognisability": "high",
+          "familyId": "franchise:one-piece",
+          "tags": [
+            "character",
+            "anime-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-anime-hatsune-miku",
+          "label": "Hatsune Miku",
+          "spokenName": "Hatsune Miku",
+          "subcategoryId": "anime-characters",
+          "imagePath": "../../assets/images/clue-items/characters/anime-characters/character-anime-hatsune-miku.webp",
+          "sourcePage": "https://vocaloid.fandom.com/wiki/Hatsune_Miku",
+          "imageSource": "local-fandom-download",
+          "franchise": "Vocaloid",
+          "fandomWiki": "vocaloid",
+          "fandomPage": "Hatsune Miku",
+          "recognisability": "high",
+          "familyId": "franchise:vocaloid",
+          "tags": [
+            "character",
+            "anime-characters",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-hello-kitty",
+          "label": "Hello Kitty",
+          "spokenName": "Hello Kitty",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-hello-kitty.webp",
+          "sourcePage": "https://hellokitty.fandom.com/wiki/Hello_Kitty",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sanrio",
+          "fandomWiki": "hellokitty",
+          "fandomPage": "Hello Kitty",
+          "recognisability": "high",
+          "familyId": "franchise:sanrio",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-kuromi",
+          "label": "Kuromi",
+          "spokenName": "Kuromi",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-kuromi.webp",
+          "sourcePage": "https://hellokitty.fandom.com/wiki/Kuromi",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sanrio",
+          "fandomWiki": "hellokitty",
+          "fandomPage": "Kuromi",
+          "recognisability": "high",
+          "familyId": "franchise:sanrio",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-cinnamoroll",
+          "label": "Cinnamoroll",
+          "spokenName": "Cinnamoroll",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-cinnamoroll.webp",
+          "sourcePage": "https://hellokitty.fandom.com/wiki/Cinnamoroll",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sanrio",
+          "fandomWiki": "hellokitty",
+          "fandomPage": "Cinnamoroll",
+          "recognisability": "high",
+          "familyId": "franchise:sanrio",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-pompompurin",
+          "label": "Pompompurin",
+          "spokenName": "Pompompurin",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-pompompurin.webp",
+          "sourcePage": "https://hellokitty.fandom.com/wiki/Pompompurin",
+          "imageSource": "local-fandom-download",
+          "franchise": "Sanrio",
+          "fandomWiki": "hellokitty",
+          "fandomPage": "Pompompurin",
+          "recognisability": "high",
+          "familyId": "franchise:sanrio",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-winnie-the-pooh",
+          "label": "Winnie-the-Pooh",
+          "spokenName": "Winnie-the-Pooh",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-winnie-the-pooh.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Winnie_the_Pooh",
+          "imageSource": "local-fandom-download",
+          "franchise": "Winnie the Pooh",
+          "fandomWiki": "disney",
+          "fandomPage": "Winnie the Pooh",
+          "recognisability": "high",
+          "familyId": "franchise:winnie-the-pooh",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-tigger",
+          "label": "Tigger",
+          "spokenName": "Tigger",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-tigger.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Tigger",
+          "imageSource": "local-fandom-download",
+          "franchise": "Winnie the Pooh",
+          "fandomWiki": "disney",
+          "fandomPage": "Tigger",
+          "recognisability": "high",
+          "familyId": "franchise:winnie-the-pooh",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-eeyore",
+          "label": "Eeyore",
+          "spokenName": "Eeyore",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-eeyore.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Eeyore",
+          "imageSource": "local-fandom-download",
+          "franchise": "Winnie the Pooh",
+          "fandomWiki": "disney",
+          "fandomPage": "Eeyore",
+          "recognisability": "high",
+          "familyId": "franchise:winnie-the-pooh",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-piglet",
+          "label": "Piglet",
+          "spokenName": "Piglet",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-piglet.webp",
+          "sourcePage": "https://disney.fandom.com/wiki/Piglet",
+          "imageSource": "local-fandom-download",
+          "franchise": "Winnie the Pooh",
+          "fandomWiki": "disney",
+          "fandomPage": "Piglet",
+          "recognisability": "high",
+          "familyId": "franchise:winnie-the-pooh",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-tony-the-tiger",
+          "label": "Tony the Tiger",
+          "spokenName": "Tony the Tiger",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-tony-the-tiger.webp",
+          "sourcePage": "https://admascots.fandom.com/wiki/Tony_the_Tiger",
+          "imageSource": "local-fandom-download",
+          "franchise": "Brand mascots",
+          "fandomWiki": "admascots",
+          "fandomPage": "Tony the Tiger",
+          "recognisability": "high",
+          "familyId": "franchise:brand-mascots",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-pusheen",
+          "label": "Pusheen",
+          "spokenName": "Pusheen",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-pusheen.webp",
+          "sourcePage": "https://pusheen.fandom.com/wiki/Pusheen",
+          "imageSource": "local-fandom-download",
+          "franchise": "Pusheen",
+          "fandomWiki": "pusheen",
+          "fandomPage": "Pusheen",
+          "recognisability": "high",
+          "familyId": "franchise:pusheen",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-nyan-cat",
+          "label": "Nyan Cat",
+          "spokenName": "Nyan Cat",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-nyan-cat.webp",
+          "sourcePage": "https://nyancat.fandom.com/wiki/Nyan_Cat",
+          "imageSource": "local-fandom-download",
+          "franchise": "Nyan Cat",
+          "fandomWiki": "nyancat",
+          "fandomPage": "Nyan Cat",
+          "recognisability": "high",
+          "familyId": "franchise:nyan-cat",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-moomintroll",
+          "label": "Moomintroll",
+          "spokenName": "Moomintroll",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-moomintroll.webp",
+          "sourcePage": "https://moomin.fandom.com/wiki/Moomintroll",
+          "imageSource": "local-fandom-download",
+          "franchise": "Moomins",
+          "fandomWiki": "moomin",
+          "fandomPage": "Moomintroll",
+          "recognisability": "high",
+          "familyId": "franchise:moomins",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-the-cat-in-the-hat",
+          "label": "The Cat in the Hat",
+          "spokenName": "The Cat in the Hat",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-the-cat-in-the-hat.webp",
+          "sourcePage": "https://seuss.fandom.com/wiki/The_Cat_in_the_Hat",
+          "imageSource": "local-fandom-download",
+          "franchise": "Dr. Seuss",
+          "fandomWiki": "seuss",
+          "fandomPage": "The Cat in the Hat",
+          "recognisability": "high",
+          "familyId": "franchise:dr-seuss",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        },
+        {
+          "id": "character-icon-the-lorax",
+          "label": "The Lorax",
+          "spokenName": "The Lorax",
+          "subcategoryId": "icons-and-mascots",
+          "imagePath": "../../assets/images/clue-items/characters/icons-and-mascots/character-icon-the-lorax.webp",
+          "sourcePage": "https://seuss.fandom.com/wiki/The_Lorax_(film)",
+          "imageSource": "local-fandom-download",
+          "franchise": "Dr. Seuss",
+          "fandomWiki": "seuss",
+          "fandomPage": "The Lorax (film)",
+          "recognisability": "high",
+          "familyId": "franchise:dr-seuss",
+          "tags": [
+            "character",
+            "icons-and-mascots",
+            "fandom-local"
+          ]
+        }
+    // FANDOM_CHARACTER_ITEMS_END
+  ];
 
   function addText(categoryId, subcategoryId, entries) {
     entries.forEach((entry) => {
@@ -247,28 +4312,26 @@ globalThis.ClueItemGenerator = (() => {
     });
   }
 
-  function addCharacterImages(subcategoryId, entries) {
+
+  function addGeneratedCharacterItems(entries) {
     entries.forEach((entry) => {
-      const [id, label, wikipediaTitle, options = {}] = entry;
       ITEMS.push(item({
-        id,
-        label,
-        wikipediaTitle,
         groupId: "general",
         categoryId: "characters",
-        subcategoryId,
         displayType: "image",
-        allowWikipediaThumbnail: true,
-        tags: [
+        approvalStatus: "approved",
+        classroomSafe: true,
+        ...entry,
+        tags: Object.freeze([
           "character",
-          subcategoryId,
-          ...(options.tags || [])
-        ],
-        familyId: options.familyId || `character:${wikipediaTitle}`,
-        ...options
+          entry.subcategoryId,
+          ...(entry.tags || [])
+        ])
       }));
     });
   }
+
+  addGeneratedCharacterItems(GENERATED_CHARACTER_ITEMS);
 
   function addFlags(entries) {
     entries.forEach(([id, label, flagCode]) => {
@@ -635,468 +4698,11 @@ globalThis.ClueItemGenerator = (() => {
     ["person-emma-raducanu", "Emma Raducanu", "Emma Raducanu", { recognisability: "medium" }]
   ]);
 
-  addCharacterImages("animated-characters", [
-    ["character-animated-mickey-mouse", "Mickey Mouse", "Mickey Mouse"],
-    ["character-animated-minnie-mouse", "Minnie Mouse", "Minnie Mouse"],
-    ["character-animated-donald-duck", "Donald Duck", "Donald Duck"],
-    ["character-animated-daisy-duck", "Daisy Duck", "Daisy Duck"],
-    ["character-animated-goofy", "Goofy", "Goofy"],
-    ["character-animated-pluto", "Pluto", "Pluto (Disney)"],
-    ["character-animated-scrooge-mcduck", "Scrooge McDuck", "Scrooge McDuck"],
-    ["character-animated-stitch", "Stitch", "Stitch (Lilo & Stitch)"],
-    ["character-animated-lilo-pelekai", "Lilo Pelekai", "Lilo Pelekai"],
-    ["character-animated-elsa", "Elsa", "Elsa (Frozen)"],
-    ["character-animated-anna", "Anna", "Anna (Frozen)"],
-    ["character-animated-olaf", "Olaf", "Olaf (Frozen)"],
-    ["character-animated-moana", "Moana", "Moana (Disney character)"],
-    ["character-animated-maui", "Maui", "Maui (Moana)"],
-    ["character-animated-rapunzel", "Rapunzel", "Rapunzel (Tangled)"],
-    ["character-animated-flynn-rider", "Flynn Rider", "Flynn Rider"],
-    ["character-animated-ariel", "Ariel", "Ariel (The Little Mermaid)"],
-    ["character-animated-sebastian", "Sebastian", "Sebastian (The Little Mermaid)"],
-    ["character-animated-simba", "Simba", "Simba"],
-    ["character-animated-timon", "Timon", "Timon and Pumbaa"],
-    ["character-animated-pumbaa", "Pumbaa", "Timon and Pumbaa"],
-    ["character-animated-aladdin", "Aladdin", "Aladdin (Disney character)"],
-    ["character-animated-princess-jasmine", "Princess Jasmine", "Jasmine (Aladdin)"],
-    ["character-animated-genie", "Genie", "Genie (Disney)"],
-    ["character-animated-belle", "Belle", "Belle (Beauty and the Beast)"],
-    ["character-animated-the-beast", "The Beast", "Beast (Beauty and the Beast)"],
-    ["character-animated-mulan", "Mulan", "Mulan (Disney character)"],
-    ["character-animated-mushu", "Mushu", "Mushu"],
-    ["character-animated-tiana", "Tiana", "Tiana (The Princess and the Frog)"],
-    ["character-animated-baymax", "Baymax", "Baymax"],
-    ["character-animated-wreck-it-ralph", "Wreck-It Ralph", "Wreck-It Ralph"],
-    ["character-animated-vanellope", "Vanellope", "Vanellope von Schweetz"],
-    ["character-animated-mirabel", "Mirabel", "Mirabel Madrigal"],
-    ["character-animated-bruno-madrigal", "Bruno Madrigal", "Bruno Madrigal"],
-    ["character-animated-lightning-mcqueen", "Lightning McQueen", "Lightning McQueen"],
-    ["character-animated-mater", "Mater", "Mater (Cars)"],
-    ["character-animated-woody", "Woody", "Woody (Toy Story)"],
-    ["character-animated-buzz-lightyear", "Buzz Lightyear", "Buzz Lightyear"],
-    ["character-animated-jessie", "Jessie", "Jessie (Toy Story)"],
-    ["character-animated-mr-incredible", "Mr. Incredible", "Mr. Incredible"],
-    ["character-animated-elastigirl", "Elastigirl", "Elastigirl"],
-    ["character-animated-violet-parr", "Violet Parr", "Violet Parr"],
-    ["character-animated-dash-parr", "Dash Parr", "Dash Parr"],
-    ["character-animated-frozone", "Frozone", "Frozone"],
-    ["character-animated-nemo", "Nemo", "Nemo (Disney)"],
-    ["character-animated-dory", "Dory", "Dory (Finding Nemo)"],
-    ["character-animated-sulley", "Sulley", "James P. Sullivan"],
-    ["character-animated-mike-wazowski", "Mike Wazowski", "Mike Wazowski"],
-    ["character-animated-remy", "Remy", "Remy (Ratatouille)"],
-    ["character-animated-wall-e", "WALL-E", "WALL-E (character)"],
-    ["character-animated-eve", "EVE", "EVE (WALL-E)"],
-    ["character-animated-joy", "Joy", "Joy (Inside Out)"],
-    ["character-animated-sadness", "Sadness", "Sadness (Inside Out)"],
-    ["character-animated-miguel", "Miguel", "Miguel Rivera"],
-    ["character-animated-shrek", "Shrek", "Shrek (character)"],
-    ["character-animated-princess-fiona", "Princess Fiona", "Princess Fiona"],
-    ["character-animated-donkey", "Donkey", "Donkey (Shrek)"],
-    ["character-animated-puss-in-boots", "Puss in Boots", "Puss in Boots"],
-    ["character-animated-po", "Po", "Po (Kung Fu Panda)"],
-    ["character-animated-toothless", "Toothless", "Toothless (How to Train Your Dragon)"],
-    ["character-animated-hiccup", "Hiccup", "Hiccup Horrendous Haddock III"],
-    ["character-animated-alex-the-lion", "Alex the Lion", "Alex (Madagascar)"],
-    ["character-animated-king-julien", "King Julien", "King Julien"],
-    ["character-animated-gru", "Gru", "Gru"],
-    ["character-animated-minion", "Minion", "Minions (Despicable Me)"],
-    ["character-animated-megamind", "Megamind", "Megamind"],
-    ["character-animated-boss-baby", "Boss Baby", "The Boss Baby"],
-    ["character-animated-spongebob", "SpongeBob", "SpongeBob SquarePants (character)"],
-    ["character-animated-patrick-star", "Patrick Star", "Patrick Star"],
-    ["character-animated-squidward", "Squidward", "Squidward Tentacles"],
-    ["character-animated-mr-krabs", "Mr. Krabs", "Mr. Krabs"],
-    ["character-animated-sandy-cheeks", "Sandy Cheeks", "Sandy Cheeks"],
-    ["character-animated-aang", "Aang", "Aang"],
-    ["character-animated-katara", "Katara", "Katara (Avatar: The Last Airbender)"],
-    ["character-animated-zuko", "Zuko", "Zuko"],
-    ["character-animated-korra", "Korra", "Korra"],
-    ["character-animated-leonardo", "Leonardo", "Leonardo (Teenage Mutant Ninja Turtles)"],
-    ["character-animated-michelangelo", "Michelangelo", "Michelangelo (Teenage Mutant Ninja Turtles)"],
-    ["character-animated-raphael", "Raphael", "Raphael (Teenage Mutant Ninja Turtles)"],
-    ["character-animated-donatello", "Donatello", "Donatello (Teenage Mutant Ninja Turtles)"],
-    ["character-animated-scooby-doo", "Scooby-Doo", "Scooby-Doo (character)"],
-    ["character-animated-shaggy", "Shaggy", "Shaggy Rogers"],
-    ["character-animated-tom", "Tom", "Tom Cat"],
-    ["character-animated-jerry", "Jerry", "Jerry Mouse"],
-    ["character-animated-bugs-bunny", "Bugs Bunny", "Bugs Bunny"],
-    ["character-animated-daffy-duck", "Daffy Duck", "Daffy Duck"],
-    ["character-animated-tweety", "Tweety", "Tweety"],
-    ["character-animated-wile-e-coyote", "Wile E. Coyote", "Wile E. Coyote"],
-    ["character-animated-road-runner", "Road Runner", "Road Runner (character)"],
-    ["character-animated-popeye", "Popeye", "Popeye"],
-    ["character-animated-garfield", "Garfield", "Garfield (character)"],
-    ["character-animated-snoopy", "Snoopy", "Snoopy"],
-    ["character-animated-charlie-brown", "Charlie Brown", "Charlie Brown"],
-    ["character-animated-homer-simpson", "Homer Simpson", "Homer Simpson"],
-    ["character-animated-bart-simpson", "Bart Simpson", "Bart Simpson"],
-    ["character-animated-lisa-simpson", "Lisa Simpson", "Lisa Simpson"],
-    ["character-animated-marge-simpson", "Marge Simpson", "Marge Simpson"],
-    ["character-animated-stewie-griffin", "Stewie Griffin", "Stewie Griffin"],
-    ["character-animated-peter-griffin", "Peter Griffin", "Peter Griffin"],
-    ["character-animated-rick-sanchez", "Rick Sanchez", "Rick Sanchez"],
-    ["character-animated-morty-smith", "Morty Smith", "Morty Smith"],
-    ["character-animated-finn-the-human", "Finn the Human", "Finn the Human"],
-    ["character-animated-jake-the-dog", "Jake the Dog", "Jake the Dog"],
-    ["character-animated-gumball", "Gumball", "Gumball Watterson"],
-    ["character-animated-darwin", "Darwin", "Darwin Watterson"],
-    ["character-animated-ben-10", "Ben 10", "Ben Tennyson"],
-    ["character-animated-blossom", "Blossom", "Blossom (The Powerpuff Girls)"],
-    ["character-animated-bubbles", "Bubbles", "Bubbles (The Powerpuff Girls)"],
-    ["character-animated-buttercup", "Buttercup", "Buttercup (The Powerpuff Girls)"],
-    ["character-animated-dora-the-explorer", "Dora the Explorer", "Dora the Explorer (character)"],
-    ["character-animated-peppa-pig", "Peppa Pig", "Peppa Pig (character)"],
-    ["character-animated-bluey", "Bluey", "Bluey (2018 TV series)"],
-    ["character-animated-shaun-the-sheep", "Shaun the Sheep", "Shaun the Sheep"],
-    ["character-animated-wallace", "Wallace", "Wallace and Gromit"],
-    ["character-animated-gromit", "Gromit", "Wallace and Gromit"],
-    ["character-animated-thomas-the-tank-engine", "Thomas the Tank Engine", "Thomas the Tank Engine"],
-    ["character-animated-bob-the-builder", "Bob the Builder", "Bob the Builder"],
-    ["character-animated-postman-pat", "Postman Pat", "Postman Pat"]
-  ]);
 
-  addCharacterImages("film-characters", [
-    ["character-film-harry-potter", "Harry Potter", "Harry Potter (character)"],
-    ["character-film-hermione-granger", "Hermione Granger", "Hermione Granger"],
-    ["character-film-ron-weasley", "Ron Weasley", "Ron Weasley"],
-    ["character-film-albus-dumbledore", "Albus Dumbledore", "Albus Dumbledore"],
-    ["character-film-rubeus-hagrid", "Rubeus Hagrid", "Rubeus Hagrid"],
-    ["character-film-lord-voldemort", "Lord Voldemort", "Lord Voldemort"],
-    ["character-film-dobby", "Dobby", "Dobby (Harry Potter)"],
-    ["character-film-darth-vader", "Darth Vader", "Darth Vader"],
-    ["character-film-luke-skywalker", "Luke Skywalker", "Luke Skywalker"],
-    ["character-film-princess-leia", "Princess Leia", "Princess Leia"],
-    ["character-film-han-solo", "Han Solo", "Han Solo"],
-    ["character-film-yoda", "Yoda", "Yoda"],
-    ["character-film-chewbacca", "Chewbacca", "Chewbacca"],
-    ["character-film-r2-d2", "R2-D2", "R2-D2"],
-    ["character-film-c-3po", "C-3PO", "C-3PO"],
-    ["character-film-grogu", "Grogu", "Grogu"],
-    ["character-film-the-mandalorian", "The Mandalorian", "The Mandalorian (character)"],
-    ["character-film-indiana-jones", "Indiana Jones", "Indiana Jones (character)"],
-    ["character-film-e-t", "E.T.", "E.T. the Extra-Terrestrial (character)"],
-    ["character-film-marty-mcfly", "Marty McFly", "Marty McFly"],
-    ["character-film-doc-brown", "Doc Brown", "Emmett Brown"],
-    ["character-film-jack-sparrow", "Jack Sparrow", "Jack Sparrow"],
-    ["character-film-willy-wonka", "Willy Wonka", "Willy Wonka"],
-    ["character-film-james-bond", "James Bond", "James Bond"],
-    ["character-film-mary-poppins", "Mary Poppins", "Mary Poppins (character)"],
-    ["character-film-paddington-bear", "Paddington Bear", "Paddington Bear"],
-    ["character-film-peter-pan", "Peter Pan", "Peter Pan"],
-    ["character-film-tinker-bell", "Tinker Bell", "Tinker Bell"],
-    ["character-film-alice", "Alice", "Alice (Alice's Adventures in Wonderland)"],
-    ["character-film-mad-hatter", "Mad Hatter", "Hatter (Alice's Adventures in Wonderland)"],
-    ["character-film-dorothy", "Dorothy", "Dorothy Gale"],
-    ["character-film-the-scarecrow", "The Scarecrow", "Scarecrow (Oz)"],
-    ["character-film-gandalf", "Gandalf", "Gandalf"],
-    ["character-film-frodo-baggins", "Frodo Baggins", "Frodo Baggins"],
-    ["character-film-gollum", "Gollum", "Gollum"],
-    ["character-film-aragorn", "Aragorn", "Aragorn"],
-    ["character-film-legolas", "Legolas", "Legolas"],
-    ["character-film-neo", "Neo", "Neo (The Matrix)"],
-    ["character-film-rocky-balboa", "Rocky Balboa", "Rocky Balboa"],
-    ["character-film-daniel-larusso", "Daniel LaRusso", "Daniel LaRusso"],
-    ["character-film-slimer", "Slimer", "Slimer"],
-    ["character-film-barbie", "Barbie", "Barbie"],
-    ["character-film-ken", "Ken", "Ken (doll)"],
-    ["character-film-emmet", "Emmet", "Emmet (The Lego Movie)"],
-    ["character-film-batman", "Batman", "Batman"],
-    ["character-film-superman", "Superman", "Superman"],
-    ["character-film-wonder-woman", "Wonder Woman", "Wonder Woman"],
-    ["character-film-the-joker", "The Joker", "Joker (character)"],
-    ["character-film-harley-quinn", "Harley Quinn", "Harley Quinn"],
-    ["character-film-spider-man", "Spider-Man", "Spider-Man"],
-    ["character-film-iron-man", "Iron Man", "Iron Man"],
-    ["character-film-captain-america", "Captain America", "Captain America"],
-    ["character-film-hulk", "Hulk", "Hulk"],
-    ["character-film-thor", "Thor", "Thor (Marvel Comics)"],
-    ["character-film-black-panther", "Black Panther", "Black Panther (character)"],
-    ["character-film-doctor-strange", "Doctor Strange", "Doctor Strange"],
-    ["character-film-groot", "Groot", "Groot"],
-    ["character-film-rocket-raccoon", "Rocket Raccoon", "Rocket Raccoon"],
-    ["character-film-star-lord", "Star-Lord", "Star-Lord"],
-    ["character-film-thanos", "Thanos", "Thanos"],
-    ["character-film-wolverine", "Wolverine", "Wolverine (character)"],
-    ["character-film-storm", "Storm", "Storm (Marvel Comics)"],
-    ["character-film-shuri", "Shuri", "Shuri (character)"],
-    ["character-film-ant-man", "Ant-Man", "Ant-Man"],
-    ["character-film-aquaman", "Aquaman", "Aquaman"],
-    ["character-film-shazam", "Shazam", "Captain Marvel (DC Comics)"],
-    ["character-film-optimus-prime", "Optimus Prime", "Optimus Prime"],
-    ["character-film-bumblebee", "Bumblebee", "Bumblebee (Transformers)"],
-    ["character-film-katniss-everdeen", "Katniss Everdeen", "Katniss Everdeen"],
-    ["character-film-lara-jean", "Lara Jean", "Lara Jean Covey"],
-    ["character-film-matilda", "Matilda", "Matilda Wormwood"],
-    ["character-film-the-grinch", "The Grinch", "Grinch"],
-    ["character-film-kevin-mccallister", "Kevin McCallister", "Kevin McCallister"],
-    ["character-film-forrest-gump", "Forrest Gump", "Forrest Gump (character)"],
-    ["character-film-mrs-doubtfire", "Mrs Doubtfire", "Mrs. Doubtfire"],
-    ["character-film-ace-ventura", "Ace Ventura", "Ace Ventura"],
-    ["character-film-the-mask", "The Mask", "The Mask (comics)"],
-    ["character-film-buddy-the-elf", "Buddy the Elf", "Elf (film)"]
-  ]);
 
-  addCharacterImages("television-characters", [
-    ["character-tv-the-doctor", "The Doctor", "The Doctor (Doctor Who)"],
-    ["character-tv-dalek", "Dalek", "Dalek"],
-    ["character-tv-cyberman", "Cyberman", "Cyberman"],
-    ["character-tv-sherlock-holmes", "Sherlock Holmes", "Sherlock Holmes"],
-    ["character-tv-john-watson", "John Watson", "Dr. Watson"],
-    ["character-tv-wednesday-addams", "Wednesday Addams", "Wednesday Addams"],
-    ["character-tv-eleven", "Eleven", "Eleven (Stranger Things)"],
-    ["character-tv-jim-hopper", "Jim Hopper", "Jim Hopper (Stranger Things)"],
-    ["character-tv-steve-harrington", "Steve Harrington", "Steve Harrington"],
-    ["character-tv-mr-bean", "Mr Bean", "Mr. Bean (character)"],
-    ["character-tv-del-boy", "Del Boy", "Del Boy"],
-    ["character-tv-rodney-trotter", "Rodney Trotter", "Rodney Trotter"],
-    ["character-tv-basil-fawlty", "Basil Fawlty", "Basil Fawlty"],
-    ["character-tv-david-brent", "David Brent", "David Brent"],
-    ["character-tv-sheldon-cooper", "Sheldon Cooper", "Sheldon Cooper"],
-    ["character-tv-penny", "Penny", "Penny (The Big Bang Theory)"],
-    ["character-tv-rachel-green", "Rachel Green", "Rachel Green"],
-    ["character-tv-ross-geller", "Ross Geller", "Ross Geller"],
-    ["character-tv-joey-tribbiani", "Joey Tribbiani", "Joey Tribbiani"],
-    ["character-tv-monica-geller", "Monica Geller", "Monica Geller"],
-    ["character-tv-chandler-bing", "Chandler Bing", "Chandler Bing"],
-    ["character-tv-phoebe-buffay", "Phoebe Buffay", "Phoebe Buffay"],
-    ["character-tv-jake-peralta", "Jake Peralta", "Jake Peralta"],
-    ["character-tv-captain-holt", "Captain Holt", "Raymond Holt"],
-    ["character-tv-michael-scott", "Michael Scott", "Michael Scott (The Office)"],
-    ["character-tv-dwight-schrute", "Dwight Schrute", "Dwight Schrute"],
-    ["character-tv-leslie-knope", "Leslie Knope", "Leslie Knope"],
-    ["character-tv-ron-swanson", "Ron Swanson", "Ron Swanson"],
-    ["character-tv-ted-lasso", "Ted Lasso", "Ted Lasso (character)"],
-    ["character-tv-will-smith", "Will Smith", "The Fresh Prince of Bel-Air"],
-    ["character-tv-spock", "Spock", "Spock"],
-    ["character-tv-captain-kirk", "Captain Kirk", "James T. Kirk"],
-    ["character-tv-jean-luc-picard", "Jean-Luc Picard", "Jean-Luc Picard"],
-    ["character-tv-kermit-the-frog", "Kermit the Frog", "Kermit the Frog"],
-    ["character-tv-miss-piggy", "Miss Piggy", "Miss Piggy"],
-    ["character-tv-elmo", "Elmo", "Elmo"],
-    ["character-tv-cookie-monster", "Cookie Monster", "Cookie Monster"],
-    ["character-tv-big-bird", "Big Bird", "Big Bird"],
-    ["character-tv-oscar-the-grouch", "Oscar the Grouch", "Oscar the Grouch"],
-    ["character-tv-mr-blobby", "Mr Blobby", "Mr Blobby"],
-    ["character-tv-anne-robinson", "Anne Robinson", "The Weakest Link"],
-    ["character-tv-the-stig", "The Stig", "The Stig"],
-    ["character-tv-ant-and-dec", "Ant and Dec", "Ant & Dec"],
-    ["character-tv-doctor-who-weeping-angel", "Doctor Who Weeping Angel", "Weeping Angel"],
-    ["character-tv-the-teletubbies", "The Teletubbies", "Teletubbies"],
-    ["character-tv-tinky-winky", "Tinky Winky", "Tinky Winky"],
-    ["character-tv-pingu", "Pingu", "Pingu"],
-    ["character-tv-mr-tumble", "Mr Tumble", "Justin Fletcher"],
-    ["character-tv-fireman-sam", "Fireman Sam", "Fireman Sam"],
-    ["character-tv-danger-mouse", "Danger Mouse", "Danger Mouse (1981 TV series)"],
-    ["character-tv-count-duckula", "Count Duckula", "Count Duckula"],
-    ["character-tv-bagpuss", "Bagpuss", "Bagpuss"],
-    ["character-tv-sooty", "Sooty", "Sooty"],
-    ["character-tv-basil-brush", "Basil Brush", "Basil Brush"]
-  ]);
 
-  addCharacterImages("video-game-characters", [
-    ["character-game-mario", "Mario", "Mario"],
-    ["character-game-luigi", "Luigi", "Luigi"],
-    ["character-game-princess-peach", "Princess Peach", "Princess Peach"],
-    ["character-game-bowser", "Bowser", "Bowser"],
-    ["character-game-yoshi", "Yoshi", "Yoshi"],
-    ["character-game-toad", "Toad", "Toad (Nintendo)"],
-    ["character-game-wario", "Wario", "Wario"],
-    ["character-game-waluigi", "Waluigi", "Waluigi"],
-    ["character-game-donkey-kong", "Donkey Kong", "Donkey Kong (character)"],
-    ["character-game-diddy-kong", "Diddy Kong", "Diddy Kong"],
-    ["character-game-rosalina", "Rosalina", "Rosalina (Mario)"],
-    ["character-game-link", "Link", "Link (The Legend of Zelda)"],
-    ["character-game-princess-zelda", "Princess Zelda", "Princess Zelda"],
-    ["character-game-ganondorf", "Ganondorf", "Ganon"],
-    ["character-game-kirby", "Kirby", "Kirby (character)"],
-    ["character-game-samus-aran", "Samus Aran", "Samus Aran"],
-    ["character-game-fox-mccloud", "Fox McCloud", "Fox McCloud"],
-    ["character-game-pikachu", "Pikachu", "Pikachu"],
-    ["character-game-charizard", "Charizard", "Charizard"],
-    ["character-game-eevee", "Eevee", "Eevee"],
-    ["character-game-mewtwo", "Mewtwo", "Mewtwo"],
-    ["character-game-jigglypuff", "Jigglypuff", "Jigglypuff"],
-    ["character-game-snorlax", "Snorlax", "Snorlax"],
-    ["character-game-psyduck", "Psyduck", "Psyduck"],
-    ["character-game-meowth", "Meowth", "Meowth"],
-    ["character-game-sonic", "Sonic", "Sonic the Hedgehog"],
-    ["character-game-tails", "Tails", "Tails (Sonic the Hedgehog)"],
-    ["character-game-knuckles", "Knuckles", "Knuckles the Echidna"],
-    ["character-game-shadow", "Shadow", "Shadow the Hedgehog"],
-    ["character-game-amy-rose", "Amy Rose", "Amy Rose"],
-    ["character-game-dr-eggman", "Dr. Eggman", "Doctor Eggman"],
-    ["character-game-crash-bandicoot", "Crash Bandicoot", "Crash Bandicoot (character)"],
-    ["character-game-coco-bandicoot", "Coco Bandicoot", "Coco Bandicoot"],
-    ["character-game-spyro", "Spyro", "Spyro (character)"],
-    ["character-game-lara-croft", "Lara Croft", "Lara Croft"],
-    ["character-game-master-chief", "Master Chief", "Master Chief (Halo)"],
-    ["character-game-steve", "Steve", "Steve (Minecraft)"],
-    ["character-game-alex", "Alex", "Alex (Minecraft)"],
-    ["character-game-creeper", "Creeper", "Creeper (Minecraft)"],
-    ["character-game-enderman", "Enderman", "Enderman"],
-    ["character-game-sackboy", "Sackboy", "Sackboy"],
-    ["character-game-aloy", "Aloy", "Aloy"],
-    ["character-game-jonesy", "Jonesy", "Jonesy (Fortnite)"],
-    ["character-game-peely", "Peely", "Peely"],
-    ["character-game-among-us-crewmate", "Among Us Crewmate", "Among Us"],
-    ["character-game-pac-man", "Pac-Man", "Pac-Man (character)"],
-    ["character-game-ms-pac-man", "Ms. Pac-Man", "Ms. Pac-Man"],
-    ["character-game-mega-man", "Mega Man", "Mega Man (character)"],
-    ["character-game-ryu", "Ryu", "Ryu (Street Fighter)"],
-    ["character-game-chun-li", "Chun-Li", "Chun-Li"],
-    ["character-game-cloud-strife", "Cloud Strife", "Cloud Strife"],
-    ["character-game-sephiroth", "Sephiroth", "Sephiroth (Final Fantasy)"],
-    ["character-game-sora", "Sora", "Sora (Kingdom Hearts)"],
-    ["character-game-ratchet", "Ratchet", "Ratchet (Ratchet & Clank)"],
-    ["character-game-clank", "Clank", "Clank (Ratchet & Clank)"],
-    ["character-game-jak", "Jak", "Jak (Jak and Daxter)"],
-    ["character-game-daxter", "Daxter", "Daxter (Jak and Daxter)"],
-    ["character-game-rayman", "Rayman", "Rayman (character)"],
-    ["character-game-banjo", "Banjo", "Banjo (character)"],
-    ["character-game-kazooie", "Kazooie", "Kazooie"],
-    ["character-game-cuphead", "Cuphead", "Cuphead (character)"],
-    ["character-game-mugman", "Mugman", "Cuphead"],
-    ["character-game-shovel-knight", "Shovel Knight", "Shovel Knight (character)"],
-    ["character-game-the-knight", "The Knight", "Hollow Knight (video game)"],
-    ["character-game-sans", "Sans", "Sans (Undertale)"],
-    ["character-game-papyrus", "Papyrus", "Papyrus (Undertale)"],
-    ["character-game-freddy-fazbear", "Freddy Fazbear", "Freddy Fazbear"],
-    ["character-game-isabelle", "Isabelle", "Isabelle (Animal Crossing)"],
-    ["character-game-tom-nook", "Tom Nook", "Tom Nook"],
-    ["character-game-villager", "Villager", "Villager (Animal Crossing)"],
-    ["character-game-inkling", "Inkling", "Inkling (Splatoon)"],
-    ["character-game-captain-olimar", "Captain Olimar", "Captain Olimar"],
-    ["character-game-captain-falcon", "Captain Falcon", "Captain Falcon"],
-    ["character-game-solid-snake", "Solid Snake", "Solid Snake"],
-    ["character-game-ezio-auditore", "Ezio Auditore", "Ezio Auditore da Firenze"],
-    ["character-game-professor-layton", "Professor Layton", "Professor Layton"],
-    ["character-game-phoenix-wright", "Phoenix Wright", "Phoenix Wright"],
-    ["character-game-guybrush-threepwood", "Guybrush Threepwood", "Guybrush Threepwood"],
-    ["character-game-red-bird", "Red Bird", "Red (Angry Birds)"],
-    ["character-game-king-pig", "King Pig", "King Pig"],
-    ["character-game-peashooter", "Peashooter", "Plants vs. Zombies"],
-    ["character-game-crazy-dave", "Crazy Dave", "Crazy Dave"],
-    ["character-game-fall-guy", "Fall Guy", "Fall Guys"],
-    ["character-game-roblox-noob", "Roblox Noob", "Roblox"],
-    ["character-game-little-mac", "Little Mac", "Little Mac"],
-    ["character-game-princess-daisy", "Princess Daisy", "Princess Daisy"],
-    ["character-game-king-dedede", "King Dedede", "King Dedede"],
-    ["character-game-meta-knight", "Meta Knight", "Meta Knight"],
-    ["character-game-midna", "Midna", "Midna"],
-    ["character-game-tingle", "Tingle", "Tingle (The Legend of Zelda)"],
-    ["character-game-mii", "Mii", "Mii"],
-    ["character-game-pyramid-head", "Pyramid Head", "Pyramid Head"],
-    ["character-game-chocobo", "Chocobo", "Chocobo"],
-    ["character-game-moogle", "Moogle", "Moogle"],
-    ["character-game-tifa-lockhart", "Tifa Lockhart", "Tifa Lockhart"],
-    ["character-game-aerith-gainsborough", "Aerith Gainsborough", "Aerith Gainsborough"],
-    ["character-game-jin-kazama", "Jin Kazama", "Jin Kazama"],
-    ["character-game-heihachi", "Heihachi", "Heihachi Mishima"]
-  ]);
 
-  addCharacterImages("anime-characters", [
-    ["character-anime-ash-ketchum", "Ash Ketchum", "Ash Ketchum"],
-    ["character-anime-naruto", "Naruto", "Naruto Uzumaki"],
-    ["character-anime-sasuke", "Sasuke", "Sasuke Uchiha"],
-    ["character-anime-sakura", "Sakura", "Sakura Haruno"],
-    ["character-anime-kakashi", "Kakashi", "Kakashi Hatake"],
-    ["character-anime-goku", "Goku", "Goku"],
-    ["character-anime-vegeta", "Vegeta", "Vegeta"],
-    ["character-anime-gohan", "Gohan", "Gohan"],
-    ["character-anime-frieza", "Frieza", "Frieza"],
-    ["character-anime-sailor-moon", "Sailor Moon", "Sailor Moon (character)"],
-    ["character-anime-totoro", "Totoro", "My Neighbor Totoro"],
-    ["character-anime-no-face", "No-Face", "No-Face"],
-    ["character-anime-kiki", "Kiki", "Kiki's Delivery Service"],
-    ["character-anime-ponyo", "Ponyo", "Ponyo (character)"],
-    ["character-anime-luffy", "Luffy", "Monkey D. Luffy"],
-    ["character-anime-zoro", "Zoro", "Roronoa Zoro"],
-    ["character-anime-nami", "Nami", "Nami (One Piece)"],
-    ["character-anime-tony-tony-chopper", "Tony Tony Chopper", "Tony Tony Chopper"],
-    ["character-anime-tanjiro", "Tanjiro", "Tanjiro Kamado"],
-    ["character-anime-nezuko", "Nezuko", "Nezuko Kamado"],
-    ["character-anime-zenitsu", "Zenitsu", "Zenitsu Agatsuma"],
-    ["character-anime-gojo", "Gojo", "Satoru Gojo"],
-    ["character-anime-yuji-itadori", "Yuji Itadori", "Yuji Itadori"],
-    ["character-anime-deku", "Deku", "Izuku Midoriya"],
-    ["character-anime-bakugo", "Bakugo", "Katsuki Bakugo"],
-    ["character-anime-all-might", "All Might", "All Might"],
-    ["character-anime-saitama", "Saitama", "Saitama (One-Punch Man)"],
-    ["character-anime-genos", "Genos", "Genos"],
-    ["character-anime-edward-elric", "Edward Elric", "Edward Elric"],
-    ["character-anime-alphonse-elric", "Alphonse Elric", "Alphonse Elric"],
-    ["character-anime-light-yagami", "Light Yagami", "Light Yagami"],
-    ["character-anime-l", "L", "L (Death Note)"],
-    ["character-anime-anya-forger", "Anya Forger", "Anya Forger"],
-    ["character-anime-loid-forger", "Loid Forger", "Loid Forger"],
-    ["character-anime-yor-forger", "Yor Forger", "Yor Forger"],
-    ["character-anime-doraemon", "Doraemon", "Doraemon (character)"],
-    ["character-anime-astro-boy", "Astro Boy", "Astro Boy (character)"],
-    ["character-anime-hatsune-miku", "Hatsune Miku", "Hatsune Miku"],
-    ["character-anime-inuyasha", "Inuyasha", "Inuyasha (character)"],
-    ["character-anime-kagome", "Kagome", "Kagome Higurashi"],
-    ["character-anime-ichigo-kurosaki", "Ichigo Kurosaki", "Ichigo Kurosaki"],
-    ["character-anime-rukia-kuchiki", "Rukia Kuchiki", "Rukia Kuchiki"],
-    ["character-anime-gon-freecss", "Gon Freecss", "Gon Freecss"],
-    ["character-anime-killua-zoldyck", "Killua Zoldyck", "Killua Zoldyck"],
-    ["character-anime-jotaro-kujo", "Jotaro Kujo", "Jotaro Kujo"],
-    ["character-anime-dio-brando", "Dio Brando", "Dio Brando"],
-    ["character-anime-spike-spiegel", "Spike Spiegel", "Spike Spiegel"],
-    ["character-anime-sakura-kinomoto", "Sakura Kinomoto", "Sakura Kinomoto"],
-    ["character-anime-conan-edogawa", "Conan Edogawa", "Jimmy Kudo"]
-  ]);
 
-  addCharacterImages("icons-and-mascots", [
-    ["character-icon-hello-kitty", "Hello Kitty", "Hello Kitty"],
-    ["character-icon-my-melody", "My Melody", "My Melody"],
-    ["character-icon-kuromi", "Kuromi", "Kuromi"],
-    ["character-icon-cinnamoroll", "Cinnamoroll", "Cinnamoroll"],
-    ["character-icon-gudetama", "Gudetama", "Gudetama"],
-    ["character-icon-keroppi", "Keroppi", "Keroppi"],
-    ["character-icon-pompompurin", "Pompompurin", "Pompompurin"],
-    ["character-icon-winnie-the-pooh", "Winnie-the-Pooh", "Winnie-the-Pooh"],
-    ["character-icon-tigger", "Tigger", "Tigger"],
-    ["character-icon-eeyore", "Eeyore", "Eeyore"],
-    ["character-icon-piglet", "Piglet", "Piglet (Winnie-the-Pooh)"],
-    ["character-icon-peter-rabbit", "Peter Rabbit", "Peter Rabbit"],
-    ["character-icon-miffy", "Miffy", "Miffy"],
-    ["character-icon-curious-george", "Curious George", "Curious George"],
-    ["character-icon-the-gruffalo", "The Gruffalo", "The Gruffalo"],
-    ["character-icon-the-very-hungry-caterpillar", "The Very Hungry Caterpillar", "The Very Hungry Caterpillar"],
-    ["character-icon-where-s-wally", "Where's Wally", "Where's Wally?"],
-    ["character-icon-mr-happy", "Mr. Happy", "Mr. Men"],
-    ["character-icon-little-miss-sunshine", "Little Miss Sunshine", "Little Miss Sunshine (Mr. Men)"],
-    ["character-icon-michelin-man", "Michelin Man", "Michelin Man"],
-    ["character-icon-monopoly-man", "Monopoly Man", "Rich Uncle Pennybags"],
-    ["character-icon-pringles-man", "Pringles Man", "Julius Pringles"],
-    ["character-icon-duolingo-owl", "Duolingo Owl", "Duolingo"],
-    ["character-icon-android-robot", "Android Robot", "Android (operating system)"],
-    ["character-icon-kool-aid-man", "Kool-Aid Man", "Kool-Aid Man"],
-    ["character-icon-tony-the-tiger", "Tony the Tiger", "Tony the Tiger"],
-    ["character-icon-chester-cheetah", "Chester Cheetah", "Chester Cheetah"],
-    ["character-icon-m-and-m-s-characters", "M&M's Characters", "M&M's"],
-    ["character-icon-pudsey-bear", "Pudsey Bear", "Pudsey Bear"],
-    ["character-icon-children-in-need-blush-bear", "Children in Need Blush Bear", "Children in Need"],
-    ["character-icon-the-snowman", "The Snowman", "The Snowman"],
-    ["character-icon-mr-bump", "Mr. Bump", "Mr. Men"],
-    ["character-icon-little-miss-naughty", "Little Miss Naughty", "Mr. Men"],
-    ["character-icon-mr-strong", "Mr. Strong", "Mr. Men"],
-    ["character-icon-rilakkuma", "Rilakkuma", "Rilakkuma"],
-    ["character-icon-pusheen", "Pusheen", "Pusheen"],
-    ["character-icon-nyan-cat", "Nyan Cat", "Nyan Cat"],
-    ["character-icon-domo", "Domo", "Domo (NHK)"],
-    ["character-icon-moomintroll", "Moomintroll", "Moomins"],
-    ["character-icon-babar", "Babar", "Babar the Elephant"],
-    ["character-icon-spot-the-dog", "Spot the Dog", "Spot (franchise)"],
-    ["character-icon-elmer-the-elephant", "Elmer the Elephant", "Elmer the Patchwork Elephant"],
-    ["character-icon-maisy-mouse", "Maisy Mouse", "Maisy"],
-    ["character-icon-mog-the-cat", "Mog the Cat", "Mog (Judith Kerr)"],
-    ["character-icon-the-cat-in-the-hat", "The Cat in the Hat", "The Cat in the Hat"],
-    ["character-icon-the-lorax", "The Lorax", "The Lorax"],
-    ["character-icon-captain-underpants", "Captain Underpants", "Captain Underpants"],
-    ["character-icon-dog-man", "Dog Man", "Dog Man"]
-  ]);
 
   addColours([
     ["colour-red", "red", "#e52521"],
@@ -1725,6 +5331,23 @@ globalThis.ClueItemGenerator = (() => {
     if (!entry || entry.displayType !== "image") throw new Error("This clue item is not image-backed.");
     if (entry.approvalStatus !== "approved" || !entry.classroomSafe) throw new Error("This image is not approved for classroom use.");
 
+    if (entry.imagePath) {
+      return Object.freeze({
+        itemId: entry.id,
+        url: entry.imagePath,
+        originalUrl: entry.imagePath,
+        sourcePage: entry.sourcePage || "",
+        creator: "",
+        credit: entry.franchise || "",
+        licence: "Local classroom asset",
+        licenceUrl: entry.sourcePage || "",
+        attributionRequired: false,
+        imagePolicy: entry.imageSource || "local-fandom-download",
+        fandomWiki: entry.fandomWiki || "",
+        fandomPage: entry.fandomPage || ""
+      });
+    }
+
     const width = clamp(options.width || options.imageWidth || 720, 200, 1600);
     const cacheId = `${entry.id}:${width}`;
     const cache = loadCache();
@@ -2030,6 +5653,31 @@ globalThis.ClueItemGenerator = (() => {
     }
   }
 
+  function getCharacterLibraryStatus() {
+    const characters = ITEMS.filter(
+      (entry) => entry.categoryId === "characters"
+    );
+
+    return {
+      count: characters.length,
+      localImageCount: characters.filter(
+        (entry) => Boolean(entry.imagePath)
+      ).length,
+      subcategoryCounts: Object.fromEntries(
+        CATEGORIES
+          .find((entry) => entry.id === "characters")
+          .subcategories
+          .map((subcategory) => [
+            subcategory.id,
+            characters.filter(
+              (entry) =>
+                entry.subcategoryId === subcategory.id
+            ).length
+          ])
+      )
+    };
+  }
+
   function validateData() {
     const errors = [];
     const ids = new Set();
@@ -2042,9 +5690,12 @@ globalThis.ClueItemGenerator = (() => {
       if (entry.displayType === "svg" && !SVG_RENDERERS[entry.svgKey]) errors.push(`${entry.id} uses unknown SVG key ${entry.svgKey}`);
       if (entry.displayType === "flag" && !getFlagContent(entry.flagCode)) errors.push(`${entry.id} uses unknown flag code ${entry.flagCode}`);
       if (entry.displayType === "colour" && !entry.colourValue) errors.push(`${entry.id} has no colour value`);
-      if (entry.displayType === "image" && !entry.wikipediaTitle) errors.push(`${entry.id} has no Wikipedia title`);
+      if (entry.displayType === "image" && !entry.imagePath && !entry.wikipediaTitle) errors.push(`${entry.id} has no image source`);
       if (entry.categoryId === "characters" && entry.displayType !== "image") {
         errors.push(`${entry.id} is a character but is not image-backed`);
+      }
+      if (entry.categoryId === "characters" && !entry.imagePath) {
+        errors.push(`${entry.id} is a character but has no local image path`);
       }
     });
 
@@ -2094,6 +5745,7 @@ globalThis.ClueItemGenerator = (() => {
     prefetchImages,
     getAttribution,
     clearImageCache,
+    getCharacterLibraryStatus,
     validateData
   });
 })();

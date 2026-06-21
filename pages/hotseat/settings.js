@@ -177,7 +177,21 @@ function buildCategoryChecklist() {
       input.dataset.groupId = group.id;
 
       const text = document.createElement("span");
-      text.textContent = category.name;
+
+      if (
+        category.id === "characters" &&
+        typeof ClueItemGenerator.getCharacterLibraryStatus ===
+          "function"
+      ) {
+        const characterStatus =
+          ClueItemGenerator.getCharacterLibraryStatus();
+
+        text.textContent =
+          `${category.name} ` +
+          `(${characterStatus.count} local images)`;
+      } else {
+        text.textContent = category.name;
+      }
 
       label.append(input, text);
       grid.appendChild(label);
@@ -328,6 +342,21 @@ async function preparePreview() {
 
   if (settings.selectedCategoryIds.length === 0) {
     showMessage("Select at least one category.");
+    return;
+  }
+
+  if (
+    settings.selectedCategoryIds.length === 1 &&
+    settings.selectedCategoryIds[0] === "characters" &&
+    typeof ClueItemGenerator.getCharacterLibraryStatus ===
+      "function" &&
+    ClueItemGenerator.getCharacterLibraryStatus().count === 0
+  ) {
+    showMessage(
+      "No local character images have been generated yet. " +
+      "Run tools/fandom-character-downloader/" +
+      "download_character_images.py first."
+    );
     return;
   }
 
