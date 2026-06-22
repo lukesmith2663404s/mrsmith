@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Timer Setup</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/timer.css" />
+
+  <script src="../../js/timer-music.js" defer></script>
+  <script src="../../js/timer-options.js" defer></script>
+  <script src="settings.js" defer></script>
+</head>
+
+<body class="timer-settings-body">
+  <main class="timer-settings-page">
+    <header class="timer-settings-header">
+      <a class="timer-back-link" href="../../index.html">← Home</a>
+
+      <div>
+        <h1>Timer</h1>
+</div>
+    </header>
+
+    <form id="timerSetupForm" class="timer-setup-form">
+      <div class="timer-settings-columns">
+        <section class="timer-option-column timer-duration-column">
+          <div class="timer-column-heading">
+            <span class="timer-column-number">1</span>
+            <div>
+              <h2>Timer</h2>
+              
+            </div>
+          </div>
+
+          <fieldset id="durationFieldset" class="timer-fieldset">
+            <legend class="visually-hidden">Timer duration</legend>
+
+            <div class="duration-inputs">
+              <label>
+                <span>Hours</span>
+                <input
+                  id="hoursInput"
+                  name="hours"
+                  type="number"
+                  min="0"
+                  max="23"
+                  value="0"
+                  inputmode="numeric"
+                />
+              </label>
+
+              <span class="duration-separator" aria-hidden="true">:</span>
+
+              <label>
+                <span>Minutes</span>
+                <input
+                  id="minutesInput"
+                  name="minutes"
+                  type="number"
+                  min="0"
+                  max="59"
+                  value="1"
+                  inputmode="numeric"
+                />
+              </label>
+
+              <span class="duration-separator" aria-hidden="true">:</span>
+
+              <label>
+                <span>Seconds</span>
+                <input
+                  id="secondsInput"
+                  name="seconds"
+                  type="number"
+                  min="0"
+                  max="59"
+                  value="0"
+                  inputmode="numeric"
+                />
+              </label>
+            </div>
+
+            <div class="timer-presets" aria-label="Timer presets">
+              <button type="button" data-duration="30">30 sec</button>
+              <button type="button" data-duration="60">1 min</button>
+              <button type="button" data-duration="120">2 min</button>
+              <button type="button" data-duration="300">5 min</button>
+              <button type="button" data-duration="600">10 min</button>
+            </div>
+
+            <div id="durationLock" class="duration-lock" hidden>
+              <span aria-hidden="true">🔒</span>
+              <p id="durationLockText"></p>
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="timer-option-column">
+          <div class="timer-column-heading">
+            <span class="timer-column-number">2</span>
+            <div>
+              <h2>Music</h2>
+              
+            </div>
+          </div>
+
+          <fieldset class="timer-fieldset">
+            <legend class="visually-hidden">Music selection</legend>
+            <div id="musicOptions" class="timer-choice-list"></div>
+          </fieldset>
+        </section>
+
+        <section class="timer-option-column">
+          <div class="timer-column-heading">
+            <span class="timer-column-number">3</span>
+            <div>
+              <h2>Animation</h2>
+              
+            </div>
+          </div>
+
+          <fieldset class="timer-fieldset">
+            <legend class="visually-hidden">Animation selection</legend>
+            <div id="animationOptions" class="timer-choice-list"></div>
+          </fieldset>
+        </section>
+      </div>
+
+      <div class="timer-launch-row">
+        <p id="timerSetupStatus" class="timer-setup-status" aria-live="polite"></p>
+
+        <button id="launchTimerButton" class="launch-timer-button" type="submit">
+          <span>Launch timer</span>
+          <span aria-hidden="true">↗</span>
+        </button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

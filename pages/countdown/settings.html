@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Countdown — Settings</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/countdown.css" />
+
+  <script src="settings.js" defer></script>
+</head>
+<body class="countdown-page countdown-settings-page">
+  <main class="countdown-settings-shell">
+    <header class="countdown-header countdown-header-settings">
+      <a class="countdown-back-link" href="../../index.html">← Games</a>
+
+      <div class="countdown-logo" aria-label="Countdown">
+        <span>C</span><span>O</span><span>U</span><span>N</span><span>T</span><span>D</span><span>O</span><span>W</span><span>N</span>
+      </div>
+    </header>
+
+    <form id="countdownSettingsForm" class="countdown-settings-card">
+      <div class="countdown-settings-heading">
+        <p class="countdown-kicker">Round setup</p>
+        <h1>Choose your games</h1>
+        <p>Numbers is selected by default. Select both to switch between round types during the game.</p>
+      </div>
+
+      <fieldset class="countdown-round-selection">
+        <legend>Round types</legend>
+
+        <label class="countdown-round-option countdown-round-option-numbers">
+          <input id="numbersEnabled" type="checkbox" value="numbers" />
+          <span class="round-option-board" aria-hidden="true">
+            <strong>731</strong>
+            <small>25&nbsp;&nbsp;8&nbsp;&nbsp;4&nbsp;&nbsp;7&nbsp;&nbsp;3&nbsp;&nbsp;50</small>
+          </span>
+          <span class="round-option-copy">
+            <strong>Numbers</strong>
+            <small>Six numbers, a guaranteed reachable target and every distinct solution available to reveal.</small>
+          </span>
+        </label>
+
+        <label class="countdown-round-option countdown-round-option-letters">
+          <input id="lettersEnabled" type="checkbox" value="letters" />
+          <span class="round-option-board round-option-letters-board" aria-hidden="true">
+            <strong>R</strong><strong>E</strong><strong>A</strong><strong>C</strong><strong>T</strong>
+          </span>
+          <span class="round-option-copy">
+            <strong>Letters</strong>
+            <small>Nine letters, a built-in dictionary and a reveal showing the longest available words.</small>
+          </span>
+        </label>
+      </fieldset>
+
+      <div class="countdown-options-grid">
+        <section id="numbersOptions" class="countdown-options-panel">
+          <p class="countdown-kicker">Numbers options</p>
+          <h2>Number selection</h2>
+
+          <label class="countdown-field">
+            <span>Large numbers</span>
+            <select id="largeNumberCount">
+              <option value="0">0 large</option>
+              <option value="1">1 large</option>
+              <option value="2">2 large</option>
+              <option value="3">3 large</option>
+              <option value="4">4 large</option>
+            </select>
+          </label>
+
+          <p class="countdown-help">The remaining tiles come from 1–10. Small numbers can appear twice.</p>
+
+          <label class="countdown-switch countdown-option-switch">
+            <input id="showSolutionCount" type="checkbox" />
+            <span aria-hidden="true"></span>
+            Show exact-solution count during the round
+          </label>
+        </section>
+
+        <section id="lettersOptions" class="countdown-options-panel">
+          <p class="countdown-kicker">Letters options</p>
+          <h2>Letter selection</h2>
+
+          <label class="countdown-field">
+            <span>Vowels in the nine letters</span>
+            <select id="vowelCount">
+              <option value="3">3 vowels</option>
+              <option value="4">4 vowels</option>
+              <option value="5">5 vowels</option>
+            </select>
+          </label>
+
+          <p class="countdown-help">Every set is built around at least one seven-, eight- or nine-letter word.</p>
+
+          <label class="countdown-switch countdown-option-switch">
+            <input id="showBestWordLength" type="checkbox" />
+            <span aria-hidden="true"></span>
+            Show the best available word length during the round
+          </label>
+        </section>
+      </div>
+
+      <section class="countdown-clock-settings">
+        <div>
+          <p class="countdown-kicker">Clock</p>
+          <h2>Round timer</h2>
+        </div>
+
+        <label class="countdown-field countdown-time-field">
+          <span>Seconds</span>
+          <input id="roundSeconds" type="number" min="10" max="120" step="1" />
+        </label>
+
+        <label class="countdown-switch">
+          <input id="soundEnabled" type="checkbox" />
+          <span aria-hidden="true"></span>
+          Ticking sound
+        </label>
+      </section>
+
+      <p id="settingsMessage" class="countdown-settings-message" role="alert"></p>
+
+      <div class="countdown-settings-actions">
+        <a class="countdown-button countdown-button-muted" href="../../index.html">Cancel</a>
+        <button class="countdown-button countdown-button-primary" type="submit">Start Game</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

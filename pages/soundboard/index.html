@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Soundboard</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/soundboard.css" />
+
+  <script src="../../js/soundboard-sounds.js" defer></script>
+  <script src="soundboard.js" defer></script>
+</head>
+
+<body>
+  <main class="soundboard-page">
+    <header class="soundboard-header">
+      <a class="back-link" href="../../index.html">← Home</a>
+
+      <div class="soundboard-title-group">
+        <p class="eyebrow">Classroom audio controls</p>
+        <h1>Soundboard</h1>
+        <p>Press a letter key or click its key on screen. Press Space to stop all sounds.</p>
+      </div>
+
+      <div class="soundboard-controls">
+        <label class="volume-control" for="volumeSlider">
+          <span>Volume</span>
+          <input
+            id="volumeSlider"
+            type="range"
+            min="0"
+            max="100"
+            value="80"
+          />
+        </label>
+
+        <button id="stopAllButton" class="stop-button" type="button">
+          Stop all · Space
+        </button>
+      </div>
+    </header>
+
+    <section
+      id="keyboard"
+      class="soundboard-keyboard"
+      aria-label="Soundboard keyboard"
+    ></section>
+
+    <p id="soundboardStatus" class="soundboard-status" aria-live="polite">
+      Ready
+    </p>
+  </main>
+</body>
+</html>

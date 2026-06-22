@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Classroom Timer</title>
+
+  <link rel="stylesheet" href="../../css/timer.css" />
+
+  <script src="../../js/timer-music.js" defer></script>
+  <script src="../../js/timer-options.js" defer></script>
+  <script src="timer.js" defer></script>
+</head>
+
+<body class="timer-display-body">
+  <main id="timerDisplay" class="timer-display" data-animation="none">
+    <div id="screenDrain" class="screen-drain" aria-hidden="true"></div>
+
+    <canvas
+      id="circleAnimation"
+      class="timer-circle-animation"
+      aria-hidden="true"
+      hidden
+    ></canvas>
+
+    <img
+      id="gifAnimation"
+      class="timer-gif-animation"
+      src=""
+      alt=""
+      aria-hidden="true"
+      hidden
+    />
+
+    <header class="timer-display-toolbar">
+      <div id="timerMediaSummary" class="timer-media-summary"></div>
+
+      <div class="timer-toolbar-actions">
+        <button id="fullscreenButton" type="button">
+          Fullscreen
+        </button>
+      </div>
+    </header>
+
+    <section class="timer-stage" aria-live="polite">
+      <div id="radialClock" class="timer-radial-clock" aria-hidden="true"></div>
+
+      <div class="timer-time-wrap">
+        <p id="timerStateLabel" class="timer-state-label">Ready</p>
+        <strong id="timerTime" class="timer-time">01:00</strong>
+
+        <button
+          id="startTimerButton"
+          class="timer-start-button"
+          type="button"
+        >
+          Start timer
+        </button>
+      </div>
+    </section>
+
+    <footer class="timer-display-controls">
+      <button id="pauseButton" type="button" disabled>Pause</button>
+      <button id="restartButton" type="button">Restart</button>
+      <button id="closeButton" type="button">Close</button>
+    </footer>
+  </main>
+</body>
+</html>

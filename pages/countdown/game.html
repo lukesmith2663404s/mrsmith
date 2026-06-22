@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Countdown</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/countdown.css" />
+
+  <script src="../../js/countdown-wordbank.js" defer></script>
+  <script src="../../js/countdown-number-solver.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body class="countdown-page countdown-game-page">
+  <main class="countdown-game-shell">
+    <header class="countdown-header countdown-game-header">
+      <a class="countdown-back-link" href="settings.html">← Settings</a>
+
+      <div class="countdown-logo countdown-logo-game" aria-label="Countdown">
+        <span>C</span><span>O</span><span>U</span><span>N</span><span>T</span><span>D</span><span>O</span><span>W</span><span>N</span>
+      </div>
+
+      <nav id="roundTypeSwitcher" class="round-type-switcher" aria-label="Round type"></nav>
+    </header>
+
+    <div class="countdown-stage">
+      <section class="countdown-round-area">
+        <section id="numbersRound" class="countdown-round-panel" aria-labelledby="numbersHeading">
+          <div class="round-heading-row">
+            <div>
+              <p class="countdown-kicker">Numbers game</p>
+              <h1 id="numbersHeading">Reach the target</h1>
+            </div>
+            <p id="numbersStatus" class="round-status" aria-live="polite">Generating a guaranteed round…</p>
+          </div>
+
+          <div class="numbers-board">
+            <div class="target-panel">
+              <span>Target</span>
+              <strong id="targetNumber">---</strong>
+            </div>
+
+            <div id="numberTiles" class="number-tiles" aria-label="Selected numbers">
+              <span class="countdown-number-tile is-loading"></span>
+              <span class="countdown-number-tile is-loading"></span>
+              <span class="countdown-number-tile is-loading"></span>
+              <span class="countdown-number-tile is-loading"></span>
+              <span class="countdown-number-tile is-loading"></span>
+              <span class="countdown-number-tile is-loading"></span>
+            </div>
+          </div>
+
+          <div class="round-actions">
+            <button id="newNumbersButton" class="countdown-button countdown-button-primary" type="button">New Numbers</button>
+            <button id="showSolutionsButton" class="countdown-button" type="button" disabled>Show Every Solution</button>
+          </div>
+        </section>
+
+        <section id="lettersRound" class="countdown-round-panel" aria-labelledby="lettersHeading" hidden>
+          <div class="round-heading-row">
+            <div>
+              <p class="countdown-kicker">Letters game</p>
+              <h1 id="lettersHeading">Find the longest word</h1>
+            </div>
+            <p id="lettersStatus" class="round-status" aria-live="polite"></p>
+          </div>
+
+          <div id="letterTiles" class="letter-tiles" aria-label="Selected letters"></div>
+
+          <form id="wordCheckForm" class="word-check-form">
+            <label for="wordInput">Check a word</label>
+            <div>
+              <input id="wordInput" type="text" autocomplete="off" maxlength="9" spellcheck="false" placeholder="Type your word" />
+              <button class="countdown-button" type="submit">Check</button>
+            </div>
+            <p id="wordCheckMessage" class="word-check-message" aria-live="polite"></p>
+          </form>
+
+          <div class="round-actions">
+            <button id="newLettersButton" class="countdown-button countdown-button-primary" type="button">New Letters</button>
+            <button id="showWordsButton" class="countdown-button" type="button">Show Best Words</button>
+          </div>
+        </section>
+      </section>
+
+      <aside class="countdown-clock-panel">
+        <div
+          id="countdownClock"
+          class="countdown-clock"
+          style="--clock-elapsed: 0deg; --clock-colour: hsl(120 82% 45%);"
+          role="timer"
+          aria-label="Countdown timer"
+        >
+          <div class="clock-face">
+            <strong id="clockSeconds">30</strong>
+          </div>
+        </div>
+
+        <p id="clockMessage" class="clock-message" aria-live="polite">Ready</p>
+
+        <div class="clock-actions">
+          <button id="startClockButton" class="countdown-button countdown-button-primary" type="button">Start Clock</button>
+          <button id="pauseClockButton" class="countdown-button countdown-button-muted" type="button" disabled>Pause</button>
+          <button id="resetClockButton" class="countdown-button countdown-button-muted" type="button">Reset</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <dialog id="solutionsDialog" class="countdown-dialog">
+    <div class="dialog-heading-row">
+      <div>
+        <p class="countdown-kicker">Numbers game</p>
+        <h2 id="solutionsHeading">Solutions</h2>
+      </div>
+      <button class="dialog-close-button" type="button" data-close-dialog="solutionsDialog" aria-label="Close">×</button>
+    </div>
+
+    <p id="solutionsSummary" class="dialog-summary"></p>
+    <ol id="solutionsList" class="solutions-list"></ol>
+  </dialog>
+
+  <dialog id="wordsDialog" class="countdown-dialog">
+    <div class="dialog-heading-row">
+      <div>
+        <p class="countdown-kicker">Letters game</p>
+        <h2 id="wordsHeading">Best words</h2>
+      </div>
+      <button class="dialog-close-button" type="button" data-close-dialog="wordsDialog" aria-label="Close">×</button>
+    </div>
+
+    <p id="wordsSummary" class="dialog-summary"></p>
+    <div id="bestWordsList" class="best-words-list"></div>
+    <details class="all-words-details">
+      <summary>Show all recognised words</summary>
+      <div id="allWordsList" class="all-words-list"></div>
+    </details>
+  </dialog>
+</body>
+</html>

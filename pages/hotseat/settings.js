@@ -101,6 +101,8 @@ const nextTeamDisplay = document.querySelector("#nextTeamDisplay");
 const controllerScoreboard = document.querySelector("#controllerScoreboard");
 const roundStatusMessage = document.querySelector("#roundStatusMessage");
 
+setupEmberField();
+
 buildTeamOptions();
 buildCategoryChecklist();
 applySettingsToForm();
@@ -417,6 +419,8 @@ async function renderPreviewItems(items) {
       imageWidth: 500
     });
 
+    forceContainedImages(visual);
+
     const label = document.createElement("strong");
     label.textContent = entry.label;
 
@@ -439,7 +443,10 @@ async function renderPreviewItems(items) {
       if (!image.complete) {
         image.addEventListener(
           "load",
-          schedulePreviewTextFitting,
+          () => {
+            forceContainedImages(image.parentElement || previewGrid);
+            schedulePreviewTextFitting();
+          },
           { once: true }
         );
       }
@@ -891,6 +898,104 @@ function renderControllerState() {
 
 function setPreviewButtonsDisabled(disabled) {
   previewButton.disabled = disabled;
+}
+
+function forceContainedImages(root) {
+  if (!root) {
+    return;
+  }
+
+  root
+    .querySelectorAll("img")
+    .forEach((image) => {
+      image.removeAttribute("width");
+      image.removeAttribute("height");
+
+      image.style.setProperty("display", "block", "important");
+      image.style.setProperty("width", "auto", "important");
+      image.style.setProperty("height", "auto", "important");
+      image.style.setProperty("min-width", "0", "important");
+      image.style.setProperty("min-height", "0", "important");
+      image.style.setProperty("max-width", "100%", "important");
+      image.style.setProperty("max-height", "100%", "important");
+      image.style.setProperty("aspect-ratio", "auto", "important");
+      image.style.setProperty("object-fit", "contain", "important");
+      image.style.setProperty("object-position", "center center", "important");
+    });
+}
+
+function setupEmberField() {
+  if (document.querySelector(".hotseat-ember-field")) {
+    return;
+  }
+
+  const field = document.createElement("div");
+  field.className = "hotseat-ember-field";
+  field.setAttribute("aria-hidden", "true");
+
+  const particleCount = window.matchMedia(
+    "(max-width: 720px)"
+  ).matches
+    ? 30
+    : 52;
+
+  for (let index = 0; index < particleCount; index++) {
+    const ember = document.createElement("span");
+    ember.className = "hotseat-ember";
+
+    const size = randomBetween(1.5, 5.7);
+    const duration = randomBetween(5.2, 12.2);
+    const colourNumber = randomChoiceWeighted([1, 1, 1, 1, 2, 2, 2, 3]);
+
+    ember.style.setProperty(
+      "--ember-left",
+      `${randomBetween(-2, 102).toFixed(2)}%`
+    );
+    ember.style.setProperty(
+      "--ember-size",
+      `${size.toFixed(2)}px`
+    );
+    ember.style.setProperty(
+      "--ember-duration",
+      `${duration.toFixed(2)}s`
+    );
+    ember.style.setProperty(
+      "--ember-delay",
+      `${(-randomBetween(0, duration)).toFixed(2)}s`
+    );
+    ember.style.setProperty(
+      "--ember-flicker-duration",
+      `${randomBetween(0.38, 1.15).toFixed(2)}s`
+    );
+    ember.style.setProperty(
+      "--ember-flicker-delay",
+      `${(-randomBetween(0, 1.2)).toFixed(2)}s`
+    );
+    ember.style.setProperty(
+      "--ember-drift",
+      `${randomBetween(-105, 105).toFixed(1)}px`
+    );
+    ember.style.setProperty(
+      "--ember-opacity",
+      randomBetween(0.34, 0.88).toFixed(2)
+    );
+    ember.style.setProperty(
+      "--ember-colour",
+      `var(--ember-colour-${colourNumber})`
+    );
+
+    field.appendChild(ember);
+  }
+
+  document.body.prepend(field);
+}
+
+function randomBetween(minimum, maximum) {
+  return minimum + Math.random() * (maximum - minimum);
+}
+
+function randomChoiceWeighted(values) {
+  return values[Math.floor(Math.random() * values.length)];
 }
 
 function loadGameState() {

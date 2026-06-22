@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codenames — Spymaster Files</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/codenames.css" />
+
+  <script src="../../js/clue-item-generator.js" defer></script>
+  <script src="../../js/codenames-library.js" defer></script>
+  <script src="shared.js" defer></script>
+  <script src="settings.js" defer></script>
+</head>
+<body class="codenames-page codenames-settings-page">
+  <main class="codenames-settings-shell">
+    <header class="codenames-top-file">
+      <a class="codenames-back-link" href="../../index.html">← Games</a>
+
+      <div class="codenames-title-block">
+        <span class="codenames-classification">Classified classroom file</span>
+        <h1>Codenames</h1>
+        <p>Set up the board and keep the colour key on this private screen.</p>
+      </div>
+
+      <button id="openDisplayButton" class="paper-button paper-button-dark" type="button">
+        Open Display
+      </button>
+    </header>
+
+    <section class="codenames-settings-layout">
+      <form id="codenamesSettingsForm" class="file-folder settings-folder">
+        <div class="folder-tab">Game file</div>
+
+        <div class="file-heading-row">
+          <div>
+            <p class="file-kicker">Mission setup</p>
+            <h2>Board settings</h2>
+          </div>
+
+          <button id="newGameButton" class="paper-button paper-button-danger" type="button">
+            New Game
+          </button>
+        </div>
+
+        <fieldset class="mode-fieldset">
+          <legend>Game mode</legend>
+
+          <label class="mode-option">
+            <input type="radio" name="gameMode" value="solo" />
+            <span>
+              <strong>One team</strong>
+              <small>Find 9 green cards in no more than 5 turns. Beige ends a turn; black loses immediately.</small>
+            </span>
+          </label>
+
+          <label class="mode-option">
+            <input type="radio" name="gameMode" value="teams" />
+            <span>
+              <strong>Two teams</strong>
+              <small>Blue and red compete using the standard 9–8 agent layout, 7 bystanders and 1 assassin.</small>
+            </span>
+          </label>
+        </fieldset>
+
+        <section class="category-file-section">
+          <div class="file-heading-row category-heading-row">
+            <div>
+              <p class="file-kicker">Card pool</p>
+              <h2>Categories</h2>
+              <p>Choose one or more. Integers are selected by default.</p>
+            </div>
+
+            <div class="category-shortcuts">
+              <button id="selectMathsButton" class="paper-button paper-button-small" type="button">All Maths</button>
+              <button id="selectGeneralButton" class="paper-button paper-button-small" type="button">All General</button>
+              <button id="selectWordsButton" class="paper-button paper-button-small" type="button">Words Only</button>
+              <button id="selectAllButton" class="paper-button paper-button-small" type="button">Select All</button>
+              <button id="clearAllButton" class="paper-button paper-button-small" type="button">Clear</button>
+            </div>
+          </div>
+
+          <div id="categoryChecklist" class="codenames-category-checklist"></div>
+        </section>
+
+        <p id="settingsMessage" class="codenames-form-message" role="alert"></p>
+      </form>
+
+      <aside class="file-folder spymaster-folder">
+        <div class="folder-tab folder-tab-secret">Spymaster copy</div>
+
+        <div class="private-file-heading">
+          <div>
+            <p class="file-kicker">Private key</p>
+            <h2 id="privateBoardHeading">Prepare a board</h2>
+          </div>
+
+          <span class="private-stamp">Teacher / spymaster only</span>
+        </div>
+
+        <div id="privateStatusStrip" class="private-status-strip">
+          <span>25 cards</span>
+          <strong>Not started</strong>
+        </div>
+
+        <div id="keyGrid" class="codenames-key-grid" aria-live="polite">
+          <p class="key-grid-empty">Press Prepare Board to create the secret key.</p>
+        </div>
+
+        <div id="setupControls" class="codenames-control-row">
+          <button id="prepareBoardButton" class="paper-button" type="button">Prepare Board</button>
+          <button id="startGameButton" class="paper-button paper-button-primary" type="button" disabled>Start Game</button>
+        </div>
+
+        <section id="clueControlSection" class="clue-control-file is-disabled" aria-label="Spymaster clue controls">
+          <div class="clue-control-heading">
+            <div>
+              <p class="file-kicker">Current turn</p>
+              <h2 id="turnHeading">Waiting to start</h2>
+            </div>
+            <div id="remainingCounters" class="remaining-counters"></div>
+          </div>
+
+          <div class="clue-input-row">
+            <label>
+              Clue term
+              <input id="clueTextInput" type="text" maxlength="80" placeholder="e.g. cold or x &gt; 15" />
+            </label>
+
+            <label class="clue-number-label">
+              Number
+              <input id="clueNumberInput" type="number" min="1" max="9" value="1" />
+            </label>
+
+            <button id="giveClueButton" class="paper-button paper-button-primary" type="button">Give Clue</button>
+          </div>
+
+          <div class="turn-action-row">
+            <button id="endTurnButton" class="paper-button" type="button">End Turn</button>
+            <button id="undoButton" class="paper-button" type="button">Undo Last Reveal</button>
+          </div>
+        </section>
+
+        <p id="privateMessage" class="private-message">
+          The classroom display remains on standby until Start Game is pressed.
+        </p>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>

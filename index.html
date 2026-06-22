@@ -19,7 +19,7 @@
 <body>
   <main
     class="game-grid"
-    aria-label="Mini game menu"
+    aria-label="Classroom tools menu"
   >
     <a
       class="game-tile active haunted-tile"
@@ -199,9 +199,19 @@
     </a>
 
     <a
-      class="game-tile active"
+      class="game-tile active countdown-tile"
       href="pages/countdown/settings.html"
     >
+      <div class="tile-countdown-preview" aria-hidden="true">
+        <div class="tile-countdown-target">731</div>
+        <div class="tile-countdown-numbers">
+          <span>25</span><span>8</span><span>4</span><span>7</span><span>3</span><span>50</span>
+        </div>
+        <div class="tile-countdown-letters">
+          <span>C</span><span>O</span><span>U</span><span>N</span><span>T</span>
+        </div>
+      </div>
+
       <h2>Countdown</h2>
     </a>
 
@@ -210,33 +220,93 @@
       href="pages/hotseat/settings.html"
     >
       <div
-        class="tile-hotseat-preview"
+        class="tile-hotseat-embers"
         aria-hidden="true"
       >
-        <span class="tile-flame tile-flame-left"></span>
-        <span class="tile-flame tile-flame-centre"></span>
-        <span class="tile-flame tile-flame-right"></span>
-
-        <div class="tile-hotseat-score">+1</div>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
+        <span class="tile-hotseat-ember"></span>
       </div>
 
       <h2>Hotseat</h2>
     </a>
 
     <a
-      class="game-tile active"
+      class="game-tile active codenames-tile"
       href="pages/codenames/settings.html"
     >
+      <div class="tile-codenames-folder" aria-hidden="true">
+        <span class="tile-codenames-tab">SECRET</span>
+        <div class="tile-codenames-key">
+          <span class="mini-agent mini-blue"></span>
+          <span class="mini-agent mini-neutral"></span>
+          <span class="mini-agent mini-red"></span>
+          <span class="mini-agent mini-neutral"></span>
+          <span class="mini-agent mini-black"></span>
+          <span class="mini-agent mini-blue"></span>
+          <span class="mini-agent mini-red"></span>
+          <span class="mini-agent mini-neutral"></span>
+          <span class="mini-agent mini-blue"></span>
+        </div>
+      </div>
+
       <h2>Codenames</h2>
     </a>
 
-    <div class="game-tile coming-soon">
-      <h2></h2>
-    </div>
+    <a
+      class="game-tile active soundboard-tile"
+      href="pages/soundboard/index.html"
+    >
+      <div
+        class="tile-soundboard-preview"
+        aria-hidden="true"
+      >
+        <div class="tile-soundboard-keys">
+          <span>W</span>
+          <span>D</span>
+          <span>V</span>
+          <span>A</span>
+          <span>Y</span>
+          <span>K</span>
+        </div>
 
-    <div class="game-tile coming-soon">
-      <h2></h2>
-    </div>
+        <div class="tile-soundboard-levels">
+          <i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+
+      <h2>Soundboard</h2>
+    </a>
+
+
+    <a
+      class="game-tile active timer-tile"
+      href="pages/timer/settings.html"
+    >
+      <div class="tile-timer-preview" aria-hidden="true">
+        <div class="tile-timer-ring">
+          <span>01:00</span>
+        </div>
+
+        <div class="tile-timer-media">
+          <span class="tile-timer-note">♪</span>
+          <span class="tile-timer-spark">✦</span>
+        </div>
+      </div>
+
+      <h2>Timer</h2>
+    </a>
 
     <div class="game-tile coming-soon">
       <h2></h2>

@@ -89,6 +89,8 @@ const roundCompleteOverlay = document.querySelector("#roundCompleteOverlay");
 const roundCompleteHeading = document.querySelector("#roundCompleteHeading");
 const roundCompleteSummary = document.querySelector("#roundCompleteSummary");
 
+setupEmberField();
+
 endRoundButton.addEventListener("click", () => {
   finishRound("ended");
 });
@@ -217,6 +219,8 @@ async function renderRound(state) {
       imageWidth: 900
     });
 
+    forceContainedImages(content);
+
     const tick = document.createElement("span");
     tick.className = "hotseat-prompt-tick";
     tick.textContent = "✓";
@@ -239,7 +243,10 @@ async function renderRound(state) {
       if (!image.complete) {
         image.addEventListener(
           "load",
-          schedulePromptFitting,
+          () => {
+            forceContainedImages(image.parentElement || promptGrid);
+            schedulePromptFitting();
+          },
           { once: true }
         );
       }
@@ -385,6 +392,7 @@ function showStandby() {
   document.body.style.setProperty("--team-dark", SOLO_HOT_THEME.dark);
   document.body.style.setProperty("--team-mid", SOLO_HOT_THEME.mid);
   document.body.style.setProperty("--team-light", SOLO_HOT_THEME.light);
+  applyEmberPalette(SOLO_HOT_THEME, true);
 
   roundHeading.textContent = "Waiting for a round";
   timerDisplay.textContent = "1:00";
@@ -410,6 +418,7 @@ function applyTheme() {
   document.body.style.setProperty("--team-dark", theme.dark);
   document.body.style.setProperty("--team-mid", theme.mid);
   document.body.style.setProperty("--team-light", theme.light);
+  applyEmberPalette(theme, gameState.teamCount === 1);
 }
 
 function renderScoreboard() {
@@ -612,6 +621,148 @@ function fitTextToContainer(element) {
   element.style.lineHeight = "0.94";
   element.style.fontSize =
     `${Math.max(14, fittedSize)}px`;
+}
+
+function forceContainedImages(root) {
+  if (!root) {
+    return;
+  }
+
+  root
+    .querySelectorAll("img")
+    .forEach((image) => {
+      image.removeAttribute("width");
+      image.removeAttribute("height");
+
+      image.style.setProperty("display", "block", "important");
+      image.style.setProperty("width", "auto", "important");
+      image.style.setProperty("height", "auto", "important");
+      image.style.setProperty("min-width", "0", "important");
+      image.style.setProperty("min-height", "0", "important");
+      image.style.setProperty("max-width", "100%", "important");
+      image.style.setProperty("max-height", "100%", "important");
+      image.style.setProperty("aspect-ratio", "auto", "important");
+      image.style.setProperty("object-fit", "contain", "important");
+      image.style.setProperty("object-position", "center center", "important");
+    });
+}
+
+function setupEmberField() {
+  if (document.querySelector(".hotseat-ember-field")) {
+    return;
+  }
+
+  const field = document.createElement("div");
+  field.className = "hotseat-ember-field";
+  field.setAttribute("aria-hidden", "true");
+
+  const particleCount = window.matchMedia(
+    "(max-width: 720px)"
+  ).matches
+    ? 38
+    : 64;
+
+  for (let index = 0; index < particleCount; index++) {
+    const ember = document.createElement("span");
+    ember.className = "hotseat-ember";
+
+    const size = randomBetween(1.5, 6.2);
+    const duration = randomBetween(4.8, 11.5);
+    const colourNumber = randomChoiceWeighted([1, 1, 1, 1, 2, 2, 2, 3]);
+
+    ember.style.setProperty(
+      "--ember-left",
+      `${randomBetween(-2, 102).toFixed(2)}%`
+    );
+    ember.style.setProperty(
+      "--ember-size",
+      `${size.toFixed(2)}px`
+    );
+    ember.style.setProperty(
+      "--ember-duration",
+      `${duration.toFixed(2)}s`
+    );
+    ember.style.setProperty(
+      "--ember-delay",
+      `${(-randomBetween(0, duration)).toFixed(2)}s`
+    );
+    ember.style.setProperty(
+      "--ember-flicker-duration",
+      `${randomBetween(0.38, 1.15).toFixed(2)}s`
+    );
+    ember.style.setProperty(
+      "--ember-flicker-delay",
+      `${(-randomBetween(0, 1.2)).toFixed(2)}s`
+    );
+    ember.style.setProperty(
+      "--ember-drift",
+      `${randomBetween(-115, 115).toFixed(1)}px`
+    );
+    ember.style.setProperty(
+      "--ember-opacity",
+      randomBetween(0.38, 0.96).toFixed(2)
+    );
+    ember.style.setProperty(
+      "--ember-colour",
+      `var(--ember-colour-${colourNumber})`
+    );
+
+    field.appendChild(ember);
+  }
+
+  document.body.prepend(field);
+}
+
+function applyEmberPalette(theme, useDefaultHotPalette) {
+  if (useDefaultHotPalette) {
+    document.body.style.setProperty("--ember-colour-1", "#ff8a1f");
+    document.body.style.setProperty("--ember-colour-2", "#ffd166");
+    document.body.style.setProperty("--ember-colour-3", "#fff8df");
+    return;
+  }
+
+  document.body.style.setProperty(
+    "--ember-colour-1",
+    mixHexWithWhite(theme.accent, 0.22)
+  );
+  document.body.style.setProperty(
+    "--ember-colour-2",
+    mixHexWithWhite(theme.accent, 0.5)
+  );
+  document.body.style.setProperty(
+    "--ember-colour-3",
+    mixHexWithWhite(theme.accent, 0.78)
+  );
+}
+
+function mixHexWithWhite(hexColour, whiteAmount) {
+  const cleaned = String(hexColour).replace("#", "");
+
+  if (!/^[0-9a-fA-F]{6}$/.test(cleaned)) {
+    return "#ffffff";
+  }
+
+  const red = parseInt(cleaned.slice(0, 2), 16);
+  const green = parseInt(cleaned.slice(2, 4), 16);
+  const blue = parseInt(cleaned.slice(4, 6), 16);
+
+  const mix = (channel) => {
+    return Math.round(
+      channel + (255 - channel) * whiteAmount
+    );
+  };
+
+  return `#${[mix(red), mix(green), mix(blue)]
+    .map((channel) => channel.toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
+function randomBetween(minimum, maximum) {
+  return minimum + Math.random() * (maximum - minimum);
+}
+
+function randomChoiceWeighted(values) {
+  return values[Math.floor(Math.random() * values.length)];
 }
 
 function formatTime(totalSeconds) {

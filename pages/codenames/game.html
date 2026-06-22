@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codenames — Classroom Board</title>
+
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="../../css/codenames.css" />
+
+  <script src="../../js/clue-item-generator.js" defer></script>
+  <script src="../../js/codenames-library.js" defer></script>
+  <script src="shared.js" defer></script>
+  <script src="game.js" defer></script>
+</head>
+<body class="codenames-page codenames-game-page">
+  <main class="codenames-display-shell">
+    <header class="display-file-header">
+      <div class="display-title-block">
+        <span class="codenames-classification">Field operation</span>
+        <h1>Codenames</h1>
+      </div>
+
+      <div id="displayTurnPanel" class="display-turn-panel">
+        <span>Waiting</span>
+        <strong>Open the spymaster file</strong>
+      </div>
+
+      <div id="displayCounters" class="display-counters"></div>
+    </header>
+
+    <section id="standbyPanel" class="codenames-standby file-folder">
+      <div class="folder-tab">Standby</div>
+      <div class="standby-seal" aria-hidden="true">TOP<br />SECRET</div>
+      <h2>Waiting for a mission</h2>
+      <p>Prepare and start a board from the private spymaster screen.</p>
+    </section>
+
+    <section id="gamePanel" class="codenames-game-panel hidden">
+      <div id="publicClueFile" class="public-clue-file waiting-for-clue">
+        <span id="publicClueLabel">Waiting for clue</span>
+        <strong id="publicClueText">—</strong>
+        <b id="publicClueNumber"></b>
+      </div>
+
+      <div id="publicBoard" class="codenames-public-board" aria-label="Codenames board"></div>
+
+      <footer class="display-file-footer">
+        <p id="displayMessage">The spymaster gives one clue term and a number.</p>
+        <span id="guessCounter"></span>
+      </footer>
+    </section>
+
+    <div id="gameOverOverlay" class="codenames-game-over hidden" aria-live="assertive">
+      <div id="gameOverCard" class="game-over-file">
+        <span class="game-over-stamp">File closed</span>
+        <h2 id="gameOverHeading">Mission complete</h2>
+        <p id="gameOverMessage"></p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
