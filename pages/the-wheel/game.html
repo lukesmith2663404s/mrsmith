@@ -13,8 +13,12 @@
   <link rel="stylesheet" href="../../css/style.css" />
   <link rel="stylesheet" href="../../css/the-wheel.css" />
 
-<script src="../../js/question-generator.js"></script>
-<script src="game.js" defer></script>
+  <script
+    src="../../js/question-generator.js"
+    defer
+  ></script>
+
+  <script src="game.js" defer></script>
 </head>
 
 <body class="wheel-page wheel-game-page">
@@ -73,7 +77,31 @@
         <div
           id="questionText"
           class="wheel-question-text"
-        ></div>
+        >
+          <span id="questionPrompt"></span>
+
+          <div
+            id="externalQuestionActions"
+            class="wheel-external-question-actions hidden"
+            aria-label="External question result"
+          >
+            <button
+              id="externalSpinButton"
+              class="wheel-external-spin-button"
+              type="button"
+            >
+              Spin
+            </button>
+
+            <button
+              id="externalPassButton"
+              class="wheel-external-pass-button"
+              type="button"
+            >
+              Pass
+            </button>
+          </div>
+        </div>
 
         <form
           id="answerForm"
@@ -88,6 +116,7 @@
               <span
                 id="answerPrefix"
                 class="wheel-answer-affix hidden"
+                aria-hidden="true"
               ></span>
 
               <input
@@ -100,6 +129,7 @@
               <span
                 id="answerSuffix"
                 class="wheel-answer-affix hidden"
+                aria-hidden="true"
               ></span>
             </div>
 
@@ -166,8 +196,7 @@
           >
             Spin the Wheel
           </button>
-
-          <button
+<button
             id="continueButton"
             class="wheel-secondary-button hidden"
             type="button"

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Loop Quest Settings</title>
+
+  <link rel="stylesheet" href="../../css/loop-quest.css" />
+
+  <script src="../../js/loop-quest-avatar-parts.js"></script>
+  <script src="settings.js" defer></script>
+</head>
+
+<body class="loop-settings-body">
+  <main class="loop-settings-page">
+    <header class="loop-settings-header">
+      <a class="loop-home-link" href="../../index.html">Home</a>
+
+      <div>
+        <p class="loop-eyebrow">Board game reward</p>
+        <h1>Loop Quest</h1>
+      </div>
+    </header>
+
+    <form id="settingsForm" class="loop-settings-form">
+      <section class="loop-settings-card">
+        <h2>Player</h2>
+
+        <label class="loop-field">
+          <span>Team name</span>
+
+          <input
+            id="playerName"
+            name="playerName"
+            type="text"
+            maxlength="32"
+            value="Class"
+          />
+        </label>
+      </section>
+
+      <section class="loop-settings-card loop-avatar-card">
+        <h2>Character</h2>
+
+        <div
+          id="avatarPreview"
+          class="loop-avatar-preview"
+          aria-label="Character preview"
+        ></div>
+
+        <div class="loop-avatar-buttons">
+          <button id="rerollAllAvatar" type="button">
+            Reroll all
+          </button>
+
+          <button id="rerollBody" type="button">
+            Body
+          </button>
+
+          <button id="rerollFace" type="button">
+            Face
+          </button>
+
+          <button id="rerollHeadwear" type="button">
+            Headwear
+          </button>
+        </div>
+
+        <div class="loop-avatar-part-list" aria-live="polite">
+          <p>
+            <strong>Body:</strong>
+            <span id="bodyPartName">None</span>
+          </p>
+
+          <p>
+            <strong>Face:</strong>
+            <span id="facePartName">None</span>
+          </p>
+
+          <p>
+            <strong>Headwear:</strong>
+            <span id="headwearPartName">None</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="loop-settings-card">
+        <h2>Start point</h2>
+
+        <div class="loop-radio-stack">
+          <label>
+            <input
+              type="radio"
+              name="startMode"
+              value="new"
+              checked
+            />
+
+            <span>New run</span>
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="startMode"
+              value="code"
+            />
+
+            <span>Continue from save code</span>
+          </label>
+        </div>
+
+        <label
+          id="codeField"
+          class="loop-field hidden"
+        >
+          <span>Save code</span>
+
+          <textarea
+            id="saveCodeInput"
+            name="saveCode"
+            rows="3"
+            placeholder="Example: LQ-2S.K-8F"
+          ></textarea>
+        </label>
+
+        <p id="decodeMessage" class="loop-settings-message"></p>
+      </section>
+
+      <button class="loop-start-button" type="submit">
+        Start
+      </button>
+    </form>
+  </main>
+</body>
+</html>

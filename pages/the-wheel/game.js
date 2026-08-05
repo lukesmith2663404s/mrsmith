@@ -1,5 +1,5 @@
 const WHEEL_SETTINGS_KEY = "wheelGameSettings";
-const WHEEL_SETTINGS_VERSION = 1;
+const WHEEL_SETTINGS_VERSION = 3;
 
 const STARTING_SCORE = 1;
 const SPIN_DURATION = 4800;
@@ -16,6 +16,7 @@ const DEFAULT_WHEEL_SETTINGS = {
   settingsVersion: WHEEL_SETTINGS_VERSION,
   roundCount: 6,
   playerCount: 1,
+  questionMode: "external",
   selectedQuestionTypeIds: [
     ...DEFAULT_WHEEL_QUESTION_TYPE_IDS
   ]
@@ -170,11 +171,27 @@ const questionText = document.querySelector(
   "#questionText"
 );
 
+const questionPrompt = document.querySelector(
+  "#questionPrompt"
+);
+
+const externalQuestionActions = document.querySelector(
+  "#externalQuestionActions"
+);
+
+const externalSpinButton = document.querySelector(
+  "#externalSpinButton"
+);
+
+const externalPassButton = document.querySelector(
+  "#externalPassButton"
+);
+
 const answerForm = document.querySelector(
   "#answerForm"
 );
 
-const answerPrefixDisplay = document.querySelector(
+const answerPrefix = document.querySelector(
   "#answerPrefix"
 );
 
@@ -182,7 +199,7 @@ const answerInput = document.querySelector(
   "#answerInput"
 );
 
-const answerSuffixDisplay = document.querySelector(
+const answerSuffix = document.querySelector(
   "#answerSuffix"
 );
 
@@ -222,6 +239,7 @@ const spinButton = document.querySelector(
   "#spinButton"
 );
 
+
 const continueButton = document.querySelector(
   "#continueButton"
 );
@@ -250,6 +268,16 @@ answerForm.addEventListener(
 spinButton.addEventListener(
   "click",
   spinWheel
+);
+
+externalSpinButton.addEventListener(
+  "click",
+  spinWheel
+);
+
+externalPassButton.addEventListener(
+  "click",
+  passExternalQuestion
 );
 
 continueButton.addEventListener(
@@ -318,6 +346,11 @@ function loadSettings() {
         8
       ),
 
+      questionMode:
+        parsedSettings.questionMode === "external"
+          ? "external"
+          : "built-in",
+
       selectedQuestionTypeIds:
         validQuestionTypeIds.length > 0
           ? validQuestionTypeIds
@@ -377,7 +410,6 @@ function startNewGame() {
   finalResult.classList.add("hidden");
 
   answerForm.classList.remove("hidden");
-  updateAnswerAffixes(null);
 
   applyCurrentTableTheme();
   renderRoundInformation();
@@ -409,6 +441,11 @@ function beginTurn() {
   spinButton.classList.add("hidden");
   spinButton.disabled = true;
 
+  externalQuestionActions.classList.add("hidden");
+  externalSpinButton.disabled = true;
+  externalPassButton.disabled = true;
+  questionText.classList.remove("external-mode");
+
   continueButton.classList.add("hidden");
   continueButton.textContent =
     getContinueButtonLabel();
@@ -428,14 +465,31 @@ function beginTurn() {
   resetWheelRotation();
   resetWheelSelectionVisuals();
 
+  if (isExternalQuestionMode()) {
+    currentQuestion = null;
+
+    questionPrompt.textContent = "";
+    questionText.classList.add("external-mode");
+
+    answerForm.classList.add("hidden");
+
+    externalQuestionActions.classList.remove("hidden");
+    externalSpinButton.disabled = false;
+    externalPassButton.disabled = false;
+
+    return;
+  }
+
   try {
     currentQuestion =
       generateNextQuestion();
 
-    questionText.textContent =
+    questionPrompt.textContent =
       currentQuestion.question;
 
-    updateAnswerAffixes(currentQuestion);
+    renderAnswerAffixes(
+      currentQuestion
+    );
   } catch (error) {
     showGameMessage(error.message);
     return;
@@ -444,6 +498,53 @@ function beginTurn() {
   window.setTimeout(() => {
     answerInput.focus();
   }, 50);
+}
+
+function renderAnswerAffixes(question) {
+  const prefix =
+    question.answerPrefix || "";
+
+  const suffix =
+    question.answerSuffix || "";
+
+  answerPrefix.textContent = prefix;
+  answerSuffix.textContent = suffix;
+
+  answerPrefix.classList.toggle(
+    "hidden",
+    prefix.length === 0
+  );
+
+  answerSuffix.classList.toggle(
+    "hidden",
+    suffix.length === 0
+  );
+
+  const spokenParts = [
+    prefix.trim(),
+    "answer",
+    suffix.trim()
+  ].filter(Boolean);
+
+  answerInput.setAttribute(
+    "aria-label",
+    spokenParts.join(" ")
+  );
+}
+
+function getAnswerDisplayText(question) {
+  if (
+    typeof question.answerDisplayText ===
+    "string"
+  ) {
+    return question.answerDisplayText;
+  }
+
+  return (
+    `${question.answerPrefix || ""}` +
+    `${question.answerText}` +
+    `${question.answerSuffix || ""}`
+  );
 }
 
 function generateNextQuestion() {
@@ -485,75 +586,6 @@ function generateNextQuestion() {
   throw new Error(
     "A question could not be generated."
   );
-}
-
-function updateAnswerAffixes(question) {
-  const prefix = question
-    ? formatPrefixAffix(question.answerPrefix)
-    : "";
-
-  const suffix = question
-    ? formatSuffixAffix(question.answerSuffix)
-    : "";
-
-  answerPrefixDisplay.textContent = prefix;
-  answerSuffixDisplay.textContent = suffix;
-
-  answerPrefixDisplay.classList.toggle(
-    "hidden",
-    prefix === ""
-  );
-
-  answerSuffixDisplay.classList.toggle(
-    "hidden",
-    suffix === ""
-  );
-}
-
-function formatPrefixAffix(prefix) {
-  return typeof prefix === "string"
-    ? prefix.trimEnd()
-    : "";
-}
-
-function formatSuffixAffix(suffix) {
-  return typeof suffix === "string"
-    ? suffix.trimStart()
-    : "";
-}
-
-function formatFullAnswer(question) {
-  if (!question) {
-    return "";
-  }
-
-  if (
-    typeof QuestionGenerator.formatAnswer ===
-    "function"
-  ) {
-    return QuestionGenerator.formatAnswer(
-      question
-    );
-  }
-
-  const answerPrefix =
-    typeof question.answerPrefix === "string"
-      ? question.answerPrefix
-      : "";
-
-  const answerText =
-    question.answerText !== undefined
-      ? String(question.answerText)
-      : question.answer !== undefined
-        ? String(question.answer)
-        : "";
-
-  const answerSuffix =
-    typeof question.answerSuffix === "string"
-      ? question.answerSuffix
-      : "";
-
-  return `${answerPrefix}${answerText}${answerSuffix}`;
 }
 
 function checkAnswer(event) {
@@ -604,7 +636,7 @@ function handleCorrectAnswer() {
 function handleIncorrectAnswer() {
   answerFeedback.textContent =
     `Incorrect — the answer was ` +
-    `${formatFullAnswer(currentQuestion)}. ` +
+    `${getAnswerDisplayText(currentQuestion)}. ` +
     "The turn is over.";
 
   answerFeedback.className =
@@ -736,18 +768,58 @@ function clearAnswerEffect() {
   );
 }
 
+function passExternalQuestion() {
+  if (
+    gameComplete ||
+    isSpinning ||
+    !isExternalQuestionMode()
+  ) {
+    return;
+  }
+
+  answerFeedback.textContent =
+    "Passed — the turn is over.";
+
+  answerFeedback.className =
+    "wheel-answer-feedback incorrect";
+
+  externalQuestionActions.classList.add("hidden");
+  externalSpinButton.disabled = true;
+  externalPassButton.disabled = true;
+
+  continueButton.textContent =
+    getContinueButtonLabel();
+
+  continueButton.classList.remove("hidden");
+
+  playAnswerEffect("incorrect");
+}
+
 function spinWheel() {
   if (
     isSpinning ||
-    spinButton.disabled ||
     gameComplete
   ) {
+    return;
+  }
+
+  const canSpin = isExternalQuestionMode()
+    ? (
+        !externalSpinButton.disabled ||
+        !spinButton.disabled
+      )
+    : !spinButton.disabled;
+
+  if (!canSpin) {
     return;
   }
 
   isSpinning = true;
 
   spinButton.disabled = true;
+  externalQuestionActions.classList.add("hidden");
+  externalSpinButton.disabled = true;
+  externalPassButton.disabled = true;
   continueButton.classList.add("hidden");
 
   resetWheelSelectionVisuals();
@@ -773,7 +845,9 @@ function spinWheel() {
     landingVariation;
 
   const desiredRotation =
-    normaliseAngle(90 - selectedAngle);
+    normaliseAngle(
+      90 - selectedAngle
+    );
 
   const minimumTarget =
     wheelRotation + 360 * 5;
@@ -1014,13 +1088,15 @@ function finishGame() {
 
   answerForm.classList.add("hidden");
   spinButton.classList.add("hidden");
+  externalQuestionActions.classList.add("hidden");
   continueButton.classList.add("hidden");
 
   answerFeedback.textContent = "";
-  questionText.textContent =
-    "Game complete";
 
-  updateAnswerAffixes(null);
+  questionPrompt.textContent =
+    "Game complete";
+  questionText.classList.remove("external-mode");
+  externalQuestionActions.classList.add("hidden");
 
   finalResult.classList.remove("hidden");
 
@@ -1071,14 +1147,24 @@ function renderRoundInformation() {
 
   if (settings.playerCount === 1) {
     currentPlayerLabel.textContent =
-      "Your question";
+      isExternalQuestionMode()
+        ? "Your turn"
+        : "Your question";
 
     return;
   }
 
   currentPlayerLabel.textContent =
     `Team ${currentTeamIndex + 1}’s ` +
-    "question";
+    (
+      isExternalQuestionMode()
+        ? "turn"
+        : "question"
+    );
+}
+
+function isExternalQuestionMode() {
+  return settings.questionMode === "external";
 }
 
 function renderScoreboard() {
@@ -1190,7 +1276,10 @@ function showRoundAnnouncement(onComplete) {
             "is-leaving"
           );
 
-          if (typeof onComplete === "function") {
+          if (
+            typeof onComplete ===
+            "function"
+          ) {
             onComplete();
           }
         }, ROUND_ANNOUNCEMENT_EXIT_DURATION);

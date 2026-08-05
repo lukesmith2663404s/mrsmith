@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Loop Quest</title>
+
+  <link rel="stylesheet" href="../../css/loop-quest.css" />
+
+  <script src="../../js/loop-quest-avatar-parts.js"></script>
+  <script src="game.js" defer></script>
+</head>
+
+<body class="loop-game-body">
+  <header class="loop-game-header">
+    <a class="loop-home-link" href="settings.html">Settings</a>
+
+    <div>
+      <p id="playerLabel" class="loop-player-label">Class</p>
+      <h1>Loop Quest</h1>
+    </div>
+
+    <button id="copyCodeButton" class="loop-small-button" type="button">
+      Copy code
+    </button>
+  </header>
+
+  <main class="loop-game-page">
+    <section class="loop-board-panel" aria-label="Loop Quest board">
+      <div id="board" class="loop-board"></div>
+
+      <section id="shopPanel" class="loop-shop-panel loop-shop-overlay hidden">
+        <div class="loop-section-heading">
+          <h2>Shop</h2>
+
+          <button id="closeShopButton" class="loop-small-button" type="button">
+            Close
+          </button>
+        </div>
+
+        <div id="shopList" class="loop-shop-list"></div>
+      </section>
+    </section>
+
+    <aside class="loop-control-panel">
+      <section class="loop-stat-grid" aria-label="Current score">
+        <div class="loop-stat-card">
+          <span>Score</span>
+          <strong id="scoreValue">0</strong>
+        </div>
+
+        <div class="loop-stat-card">
+          <span>Coins</span>
+          <strong id="coinsValue">20</strong>
+        </div>
+
+        <div class="loop-stat-card">
+          <span>Lap</span>
+          <strong id="lapValue">0</strong>
+        </div>
+
+        <div class="loop-stat-card">
+          <span>Rolls left</span>
+          <strong id="rollsLeftValue">0</strong>
+        </div>
+      </section>
+
+      <section class="loop-action-card">
+        <p id="messageText" class="loop-message">
+          Ready to roll.
+        </p>
+
+        <div id="diceDisplay" class="loop-dice-display">
+          🎲
+        </div>
+
+        <button id="rollButton" class="loop-roll-button" type="button">
+          Roll
+        </button>
+
+        <button
+          id="continueButton"
+          class="loop-continue-button hidden"
+          type="button"
+        >
+          Continue from Start
+        </button>
+      </section>
+
+      <section class="loop-section">
+        <div class="loop-section-heading">
+          <h2>Active effects</h2>
+        </div>
+
+        <div id="activeEffectsList" class="loop-chip-list">
+          <p class="loop-empty-note">No active effects.</p>
+        </div>
+      </section>
+
+      <section class="loop-save-card">
+        <label for="saveCodeOutput">Save code</label>
+
+        <input
+          id="saveCodeOutput"
+          type="text"
+          readonly
+        />
+      </section>
+
+      <section class="loop-roll-bank-card">
+        <div class="loop-section-heading">
+          <h2>Add rolls</h2>
+        </div>
+
+        <form id="addRollsForm" class="loop-add-rolls-form">
+          <label for="rollsToAddInput">
+            Rolls to add
+          </label>
+
+          <div class="loop-add-rolls-row">
+            <input
+              id="rollsToAddInput"
+              type="number"
+              min="1"
+              step="1"
+              value="1"
+            />
+
+            <button type="submit">
+              Add
+            </button>
+          </div>
+        </form>
+      </section>
+    </aside>
+  </main>
+
+  <div id="slotOverlay" class="loop-slot-overlay hidden" aria-hidden="true">
+    <div class="loop-slot-machine">
+      <p id="slotTitle" class="loop-slot-title">Lucky space</p>
+
+      <div class="loop-slot-window">
+        <div id="slotReel" class="loop-slot-reel"></div>
+      </div>
+
+      <p id="slotOutcome" class="loop-slot-outcome"></p>
+    </div>
+  </div>
+</body>
+</html>

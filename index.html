@@ -17,6 +17,24 @@
 </head>
 
 <body>
+  <nav
+    class="utility-links"
+    aria-label="Classroom utilities"
+  >
+    <a
+      class="utility-link"
+      href="pages/timer/settings.html"
+    >
+      Timer
+    </a>
+
+    <a
+      class="utility-link"
+      href="pages/soundboard/index.html"
+    >
+      Soundboard
+    </a>
+  </nav>
   <main
     class="game-grid"
     aria-label="Classroom tools menu"
@@ -263,52 +281,39 @@
 
       <h2>Codenames</h2>
     </a>
-
     <a
-      class="game-tile active soundboard-tile"
-      href="pages/soundboard/index.html"
+      class="game-tile active hex-tile"
+      href="pages/hex/settings.html"
     >
-      <div
-        class="tile-soundboard-preview"
-        aria-hidden="true"
-      >
-        <div class="tile-soundboard-keys">
-          <span>W</span>
-          <span>D</span>
-          <span>V</span>
-          <span>A</span>
-          <span>Y</span>
-          <span>K</span>
-        </div>
-
-        <div class="tile-soundboard-levels">
-          <i></i><i></i><i></i><i></i><i></i>
-        </div>
+      <div class="tile-hex-board" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span class="tile-hex-blue"></span><span></span><span></span><span class="tile-hex-red"></span>
+        <span></span><span class="tile-hex-blue"></span><span class="tile-hex-blue"></span><span class="tile-hex-red"></span><span class="tile-hex-red"></span>
+        <span></span><span></span><span class="tile-hex-blue"></span><span></span><span class="tile-hex-red"></span>
+        <span></span><span></span><span></span><span></span><span></span>
       </div>
 
-      <h2>Soundboard</h2>
+      <h2>Hex</h2>
     </a>
-
-
     <a
-      class="game-tile active timer-tile"
-      href="pages/timer/settings.html"
+      class="game-tile active loop-quest-tile"
+      href="pages/loop-quest/settings.html"
     >
-      <div class="tile-timer-preview" aria-hidden="true">
-        <div class="tile-timer-ring">
-          <span>01:00</span>
-        </div>
-
-        <div class="tile-timer-media">
-          <span class="tile-timer-note">♪</span>
-          <span class="tile-timer-spark">✦</span>
-        </div>
+      <div class="tile-loop-board" aria-hidden="true">
+        <span class="tile-loop-space tile-loop-start"></span>
+        <span class="tile-loop-space tile-loop-coin"></span>
+        <span class="tile-loop-space tile-loop-lucky"></span>
+        <span class="tile-loop-space tile-loop-shop"></span>
+        <span class="tile-loop-space tile-loop-unlucky"></span>
+        <span class="tile-loop-space tile-loop-coin"></span>
+        <span class="tile-loop-space tile-loop-lucky"></span>
+        <span class="tile-loop-space tile-loop-shop"></span>
+        <span class="tile-loop-player">★</span>
       </div>
 
-      <h2>Timer</h2>
+      <h2>Loop Quest</h2>
     </a>
-
-    <div class="game-tile coming-soon">
+<div class="game-tile coming-soon">
       <h2></h2>
     </div>
 

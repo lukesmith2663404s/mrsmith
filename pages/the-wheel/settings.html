@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -12,72 +13,103 @@
   <link rel="stylesheet" href="../../css/style.css" />
   <link rel="stylesheet" href="../../css/the-wheel.css" />
 
-<script src="../../js/question-generator.js"></script>
-<script src="settings.js" defer></script>
+  <script
+    src="../../js/question-generator.js"
+    defer
+  ></script>
+
+  <script src="settings.js" defer></script>
 </head>
 
-<body class="wheel-page">
+<body class="wheel-page wheel-settings-page">
   <main class="wheel-settings-wrapper">
     <section class="wheel-settings-card">
       <a
         class="wheel-back-link"
         href="../../index.html"
       >
-        ← Back to games
+        ← Games
       </a>
 
       <h1>The Wheel</h1>
 
       <p class="wheel-intro">
-        Answer a question correctly, then spin the wheel
-        to change your score. Later rounds become more
-        rewarding, but also more dangerous.
+        Choose built-in questions or external-question mode.
       </p>
 
       <form id="wheelSettingsForm">
         <section class="wheel-basic-settings">
-          <label>
-            Number of rounds
-
+          <label for="roundCountInput">
+            Rounds
             <input
-              id="roundCount"
-              name="roundCount"
+              id="roundCountInput"
               type="number"
               min="1"
               max="20"
+              step="1"
               value="6"
             />
           </label>
 
-          <label>
-            Number of players or teams
-
-            <select
-              id="playerCount"
-              name="playerCount"
-            >
-              <option value="1" selected>
-                1 player
-              </option>
-
-              <option value="2">2 teams</option>
-              <option value="3">3 teams</option>
-              <option value="4">4 teams</option>
-              <option value="5">5 teams</option>
-              <option value="6">6 teams</option>
-              <option value="7">7 teams</option>
-              <option value="8">8 teams</option>
-            </select>
+          <label for="playerCountInput">
+            Players / teams
+            <input
+              id="playerCountInput"
+              type="number"
+              min="1"
+              max="8"
+              step="1"
+              value="1"
+            />
           </label>
         </section>
 
-        <section class="wheel-topic-section">
+        <fieldset class="wheel-mode-settings">
+          <legend>Question mode</legend>
+
+          <div class="wheel-mode-options">
+            <label class="wheel-mode-option">
+              <input
+                type="radio"
+                name="questionMode"
+                value="built-in"
+              />
+
+              <span>
+                <strong>Built-in questions</strong>
+                <span>
+                  The Wheel asks and checks a generated question.
+                </span>
+              </span>
+            </label>
+
+            <label class="wheel-mode-option">
+              <input
+                type="radio"
+                name="questionMode"
+                value="external"
+                checked
+              />
+
+              <span>
+                <strong>External question</strong>
+                <span>
+                  The Wheel only shows Spin or Pass.
+                </span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <section
+          id="wheelQuestionSection"
+          class="wheel-topic-section"
+        >
           <div class="wheel-topic-heading">
             <div>
-              <h2>Question topics</h2>
-
+              <h2>Question types</h2>
               <p>
-                Select one or more question types to use.
+                Select the questions used in built-in mode.
               </p>
             </div>
 
@@ -86,20 +118,20 @@
                 id="selectAllButton"
                 type="button"
               >
-                Select all
+                Select All
               </button>
 
               <button
                 id="clearAllButton"
                 type="button"
               >
-                Clear all
+                Clear
               </button>
             </div>
           </div>
 
           <div
-            id="questionTypeChecklist"
+            id="questionChecklist"
             class="wheel-question-checklist"
           ></div>
         </section>
@@ -110,12 +142,14 @@
           aria-live="polite"
         ></p>
 
-        <button
-          class="wheel-primary-button"
-          type="submit"
-        >
-          Start Game
-        </button>
+        <div class="wheel-settings-actions">
+          <button
+            class="wheel-primary-button"
+            type="submit"
+          >
+            Start Game
+          </button>
+        </div>
       </form>
     </section>
   </main>
