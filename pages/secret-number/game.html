@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codebreaker</title>
+
+    <link rel="stylesheet" href="../../css/codebreaker.css">
+</head>
+
+<body>
+
+<div class="crt-overlay"></div>
+<div class="scanlines"></div>
+
+<header class="top-bar">
+    <button id="backButton" class="back-button">
+        ← Back to Games
+    </button>
+
+    <h1>
+        CODEBREAKER
+    </h1>
+</header>
+
+<div class="page">
+
+    <!-- ========================= -->
+    <!-- LEFT PANEL                -->
+    <!-- ========================= -->
+
+    <aside class="sidebar">
+
+        <section class="panel">
+
+            <h2>Game Setup</h2>
+
+            <div class="setting">
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="secretMode"
+                        value="manual"
+                        checked
+                    >
+
+                    Teacher enters number
+
+                </label>
+
+            </div>
+
+            <div class="setting">
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="secretMode"
+                        value="random"
+                    >
+
+                    Random number
+
+                </label>
+
+            </div>
+
+            <div
+                id="manualSection"
+                class="setting-group"
+            >
+
+                <label>
+
+                    Secret Number
+
+                    <input
+                        id="manualNumber"
+                        type="number"
+                        value="42"
+                    >
+
+                </label>
+
+            </div>
+
+            <div
+                id="randomSection"
+                class="setting-group hidden"
+            >
+
+                <label>
+
+                    Minimum
+
+                    <input
+                        id="minimumNumber"
+                        type="number"
+                        value="1"
+                    >
+
+                </label>
+
+                <label>
+
+                    Maximum
+
+                    <input
+                        id="maximumNumber"
+                        type="number"
+                        value="100"
+                    >
+
+                </label>
+
+            </div>
+
+            <button
+                id="startButton"
+                class="primary-button"
+            >
+
+                Start Game
+
+            </button>
+
+        </section>
+
+        <section class="panel">
+
+            <h2>Status</h2>
+
+            <div class="status-item">
+
+                Questions Asked
+
+                <span id="questionCount">
+
+                    0
+
+                </span>
+
+            </div>
+
+            <div class="status-item">
+
+                Correct Guess
+
+                <span id="guessStatus">
+
+                    —
+
+                </span>
+
+            </div>
+
+        </section>
+
+        <section class="panel">
+
+            <h2>History</h2>
+
+            <div id="history">
+
+            </div>
+
+        </section>
+
+    </aside>
+
+    <!-- ========================= -->
+    <!-- TERMINAL                  -->
+    <!-- ========================= -->
+
+    <main class="terminal">
+
+        <div class="terminal-header">
+
+            <span>
+
+                MATHEMATICS SECURITY TERMINAL
+
+            </span>
+
+            <span>
+
+                ONLINE
+
+            </span>
+
+        </div>
+
+        <div
+            id="terminalOutput"
+            class="terminal-output"
+        >
+
+            <div class="boot-line">
+
+                CODEBREAKER INITIALISED
+
+            </div>
+
+            <div class="boot-line">
+
+                Awaiting secret number...
+
+            </div>
+
+        </div>
+
+        <div class="terminal-input-row">
+
+            <span class="prompt">
+
+                >
+
+            </span>
+
+            <input
+                id="terminalInput"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="Type a question..."
+            >
+
+            <div class="cursor">
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<!-- ========================= -->
+<!-- RESULT POPUP             -->
+<!-- ========================= -->
+
+<div
+    id="resultOverlay"
+    class="result-overlay hidden"
+>
+
+    <div
+        id="resultBox"
+        class="result-box"
+    >
+
+        <h2 id="resultTitle">
+
+            ACCESS GRANTED
+
+        </h2>
+
+        <p id="resultText">
+
+        </p>
+
+        <button
+            id="continueButton"
+        >
+
+            Continue
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="game.js"></script>
+
+</body>
+</html>
