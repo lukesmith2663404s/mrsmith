@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codebreaker</title>
+    <title>Secret Number</title>
 
     <link rel="stylesheet" href="../../css/secret-number.css">
 </head>
@@ -19,221 +19,40 @@
     </button>
 
     <h1>
-        CODEBREAKER
+        Secret Number
     </h1>
 </header>
 
 <div class="page">
 
-    <!-- ========================= -->
-    <!-- LEFT PANEL                -->
-    <!-- ========================= -->
 
-    <aside class="sidebar">
+<main class="terminal">
 
-        <section class="panel">
+    <div
+        id="history"
+        class="terminal-output"
+    >
 
-            <h2>Game Setup</h2>
+    </div>
 
-            <div class="setting">
+    <div class="terminal-input-row">
 
-                <label>
-
-                    <input
-                        type="radio"
-                        name="secretMode"
-                        value="manual"
-                        checked
-                    >
-
-                    Teacher enters number
-
-                </label>
-
-            </div>
-
-            <div class="setting">
-
-                <label>
-
-                    <input
-                        type="radio"
-                        name="secretMode"
-                        value="random"
-                    >
-
-                    Random number
-
-                </label>
-
-            </div>
-
-            <div
-                id="manualSection"
-                class="setting-group"
+        <span class="prompt">
             >
+        </span>
 
-                <label>
-
-                    Secret Number
-
-                    <input
-                        id="manualNumber"
-                        type="number"
-                        value="42"
-                    >
-
-                </label>
-
-            </div>
-
-            <div
-                id="randomSection"
-                class="setting-group hidden"
-            >
-
-                <label>
-
-                    Minimum
-
-                    <input
-                        id="minimumNumber"
-                        type="number"
-                        value="1"
-                    >
-
-                </label>
-
-                <label>
-
-                    Maximum
-
-                    <input
-                        id="maximumNumber"
-                        type="number"
-                        value="100"
-                    >
-
-                </label>
-
-            </div>
-
-            <button
-                id="startButton"
-                class="primary-button"
-            >
-
-                Start Game
-
-            </button>
-
-        </section>
-
-        <section class="panel">
-
-            <h2>Status</h2>
-
-            <div class="status-item">
-
-                Questions Asked
-
-                <span id="questionCount">
-
-                    0
-
-                </span>
-
-            </div>
-
-            <div class="status-item">
-
-                Correct Guess
-
-                <span id="guessStatus">
-
-                    —
-
-                </span>
-
-            </div>
-
-        </section>
-
-        <section class="panel">
-
-            <h2>History</h2>
-
-            <div id="history">
-
-            </div>
-
-        </section>
-
-    </aside>
-
-    <!-- ========================= -->
-    <!-- TERMINAL                  -->
-    <!-- ========================= -->
-
-    <main class="terminal">
-
-        <div class="terminal-header">
-
-            <span>
-
-                MATHEMATICS SECURITY TERMINAL
-
-            </span>
-
-            <span>
-
-                ONLINE
-
-            </span>
-
-        </div>
-
-        <div
-            id="terminalOutput"
-            class="terminal-output"
+        <input
+            id="terminalInput"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Ask a question..."
         >
 
-            <div class="boot-line">
+        <div class="cursor"></div>
 
-                CODEBREAKER INITIALISED
+    </div>
 
-            </div>
-
-            <div class="boot-line">
-
-                Awaiting secret number...
-
-            </div>
-
-        </div>
-
-        <div class="terminal-input-row">
-
-            <span class="prompt">
-
-                >
-
-            </span>
-
-            <input
-                id="terminalInput"
-                autocomplete="off"
-                spellcheck="false"
-                placeholder="Type a question..."
-            >
-
-            <div class="cursor">
-
-            </div>
-
-        </div>
-
-    </main>
+</main>
 
 </div>
 
@@ -253,7 +72,7 @@
 
         <h2 id="resultTitle">
 
-            ACCESS GRANTED
+            Secret Number Found!
 
         </h2>
 

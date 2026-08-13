@@ -28,8 +28,24 @@ const PAIRS_PREVIEW_VALUES = [
   ["80%", "0.8"]
 ];
 
+const SECRET_NUMBER_PREVIEW = [
+  ["PRIME?", "YES"],
+  ["EVEN?", "NO"],
+  ["> 50?", "YES"],
+  ["SQUARE?", "NO"],
+  ["MULTIPLE OF 3?", "YES"],
+  ["ODD?", "YES"],
+  ["< 100?", "NO"],
+  ["CUBE?", "NO"],
+  ["FACTOR OF 60?", "YES"],
+  ["DIVISIBLE BY 5?", "NO"],
+  ["TRIANGULAR?", "YES"],
+  ["PERFECT?", "NO"]
+];
+
 setupHauntedTilePreviews();
 setupPairsTilePreviews();
+setupSecretNumberTile();
 
 function setupHauntedTilePreviews() {
   document
@@ -210,4 +226,66 @@ function shuffle(array) {
   }
 
   return shuffledArray;
+}
+
+function setupSecretNumberTile() {
+
+  document
+    .querySelectorAll(".secret-number-tile")
+    .forEach((tile) => {
+
+      const question =
+        tile.querySelector(".tile-secret-text");
+
+      const answer =
+        tile.querySelector(".tile-secret-answer");
+
+      if (!question || !answer) {
+        return;
+      }
+
+      let timer;
+
+      const changePreview = () => {
+
+        const pair =
+          randomChoice(SECRET_NUMBER_PREVIEW);
+
+        question.textContent =
+          "> " + pair[0];
+
+        answer.textContent =
+          pair[1];
+
+        answer.classList.toggle(
+          "yes",
+          pair[1] === "YES"
+        );
+
+        answer.classList.toggle(
+          "no",
+          pair[1] === "NO"
+        );
+
+        question.classList.remove("flash");
+        answer.classList.remove("flash");
+
+        void question.offsetWidth;
+
+        question.classList.add("flash");
+        answer.classList.add("flash");
+      };
+
+      changePreview();
+
+      timer = setInterval(
+        changePreview,
+        1800
+      );
+
+      tile.addEventListener("mouseenter", changePreview);
+      tile.addEventListener("focus", changePreview);
+
+    });
+
 }

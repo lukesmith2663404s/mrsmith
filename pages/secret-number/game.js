@@ -1,59 +1,31 @@
 "use strict";
 
-/* ============================================================
-   CODEBREAKER
-   Part 1 - Initialisation / Game State / Boot Sequence
-   ============================================================ */
+/*==========================================================
+    SECRET NUMBER
+==========================================================*/
 
-const state = {
-    secretNumber: null,
-    started: false,
-    questionsAsked: 0,
-    history: [],
-    randomMode: false,
-    min: 1,
-    max: 100
-};
+const SETTINGS_KEY = "secretNumberSettings";
 
-/* ============================================================
-   DOM REFERENCES
-   ============================================================ */
+let settings;
 
-const terminalOutput =
-    document.getElementById("terminalOutput");
+let secretNumber = 0;
+let gameWon = false;
 
-const terminalInput =
-    document.getElementById("terminalInput");
+let history = [];
+let questionCount = 0;
 
-const startButton =
-    document.getElementById("startButton");
+/*==========================================================
+    ELEMENTS
+==========================================================*/
 
-const manualSection =
-    document.getElementById("manualSection");
-
-const randomSection =
-    document.getElementById("randomSection");
-
-const manualNumber =
-    document.getElementById("manualNumber");
-
-const minimumNumber =
-    document.getElementById("minimumNumber");
-
-const maximumNumber =
-    document.getElementById("maximumNumber");
-
-const questionCount =
-    document.getElementById("questionCount");
-
-const historyContainer =
+const historyElement =
     document.getElementById("history");
 
-const guessStatus =
-    document.getElementById("guessStatus");
+const input =
+    document.getElementById("terminalInput");
 
-const resultOverlay =
-    document.getElementById("resultOverlay");
+const resultDialog =
+    document.getElementById("resultDialog");
 
 const resultTitle =
     document.getElementById("resultTitle");
@@ -61,1214 +33,1733 @@ const resultTitle =
 const resultText =
     document.getElementById("resultText");
 
-const continueButton =
-    document.getElementById("continueButton");
+const playAgainButton =
+    document.getElementById("playAgainButton");
 
-/* ============================================================
-   INITIALISE
-   ============================================================ */
+/*==========================================================
+    START
+==========================================================*/
 
 initialise();
 
-function initialise()
-{
-    setupModeButtons();
+function initialise() {
 
-    startButton.addEventListener(
-        "click",
-        startGame
-    );
+    loadSettings();
 
-    terminalInput.addEventListener(
-        "keydown",
-        handleTerminalKey
-    );
+    generateSecretNumber();
 
-    continueButton.addEventListener(
-        "click",
-        () =>
-        {
-            resultOverlay.classList.add("hidden");
-            terminalInput.focus();
-        }
-    );
+    attachEvents();
 
-    bootScreen();
+    input.focus();
+
 }
 
-/* ============================================================
-   BOOT SCREEN
-   ============================================================ */
+/*==========================================================
+    SETTINGS
+==========================================================*/
 
-async function bootScreen()
-{
-    terminalOutput.innerHTML = "";
+function loadSettings() {
 
-    await bootLine(
-        "INITIALISING CODEBREAKER..."
-    );
+    const stored =
+        localStorage.getItem(
+            SETTINGS_KEY
+        );
 
-    await bootLine(
-        "LOADING MATHEMATICAL DATABASE..."
-    );
+    if (!stored) {
 
-    await bootLine(
-        "CHECKING SECURITY..."
-    );
+        settings = {
 
-    await bootLine(
-        "READY."
-    );
+            mode: "random",
 
-    printPrompt(
-        "Choose a secret number and press START."
-    );
-}
+            minimum: 1,
+            maximum: 100,
 
-async function bootLine(text)
-{
-    const div =
-        document.createElement("div");
+            revealAnswer: true,
 
-    div.className = "boot-line";
+            theme: "Green CRT"
 
-    terminalOutput.appendChild(div);
+        };
 
-    for (let i = 0; i < text.length; i++)
-    {
-        div.textContent += text[i];
+        return;
 
-        await sleep(18);
     }
 
-    scrollTerminal();
+    settings =
+        JSON.parse(stored);
 
-    await sleep(180);
 }
 
-/* ============================================================
-   GAME START
-   ============================================================ */
+function generateSecretNumber() {
 
-function startGame()
-{
-    state.started = true;
+    if (
+        settings.mode ===
+        "manual"
+    ) {
 
-    state.questionsAsked = 0;
-
-    state.history = [];
-
-    questionCount.textContent = "0";
-
-    guessStatus.textContent = "—";
-
-    historyContainer.innerHTML = "";
-
-    state.randomMode =
-        document.querySelector(
-            "input[name='secretMode']:checked"
-        ).value === "random";
-
-    if (state.randomMode)
-    {
-        state.min =
-            Number(minimumNumber.value);
-
-        state.max =
-            Number(maximumNumber.value);
-
-        if (state.max < state.min)
-        {
-            const temp = state.min;
-
-            state.min = state.max;
-
-            state.max = temp;
-        }
-
-        state.secretNumber =
-            randomInteger(
-                state.min,
-                state.max
-            );
-    }
-    else
-    {
-        state.secretNumber =
+        secretNumber =
             Number(
-                manualNumber.value
+                settings.manualNumber
             );
 
-        state.min = state.secretNumber;
-        state.max = state.secretNumber;
+        return;
+
     }
 
-    terminalOutput.innerHTML = "";
-
-    printSystem(
-        "NEW SESSION STARTED"
-    );
-
-    printSystem(
-        "PASSWORD STORED"
-    );
-
-    printSystem(
-        "AWAITING QUESTIONS..."
-    );
-
-    terminalInput.value = "";
-
-    terminalInput.focus();
-
-    console.log(
-        "Secret Number:",
-        state.secretNumber
-    );
-}
-
-/* ============================================================
-   SETTINGS
-   ============================================================ */
-
-function setupModeButtons()
-{
-    const radios =
-        document.querySelectorAll(
-            "input[name='secretMode']"
+    secretNumber =
+        randomInteger(
+            Number(settings.minimum),
+            Number(settings.maximum)
         );
 
-    radios.forEach(
-        radio =>
-        {
-            radio.addEventListener(
-                "change",
-                updateModeDisplay
-            );
+}
+
+/*==========================================================
+    EVENTS
+==========================================================*/
+
+function attachEvents() {
+
+    input.addEventListener(
+        "keydown",
+        handleKeyDown
+    );
+
+    playAgainButton?.addEventListener(
+        "click",
+        () => {
+
+            location.href =
+                "settings.html";
+
         }
     );
 
-    updateModeDisplay();
 }
 
-function updateModeDisplay()
-{
-    const mode =
-        document.querySelector(
-            "input[name='secretMode']:checked"
-        ).value;
+function handleKeyDown(event) {
 
-    if (mode === "manual")
-    {
-        manualSection.classList.remove(
-            "hidden"
-        );
-
-        randomSection.classList.add(
-            "hidden"
-        );
-    }
-    else
-    {
-        randomSection.classList.remove(
-            "hidden"
-        );
-
-        manualSection.classList.add(
-            "hidden"
-        );
-    }
-}
-
-/* ============================================================
-   TERMINAL
-   ============================================================ */
-
-function printSystem(text)
-{
-    const line =
-        document.createElement("div");
-
-    line.className =
-        "terminal-system";
-
-    line.textContent =
-        text;
-
-    terminalOutput.appendChild(line);
-
-    scrollTerminal();
-}
-
-function printPrompt(text)
-{
-    const line =
-        document.createElement("div");
-
-    line.className =
-        "terminal-prompt";
-
-    line.innerHTML =
-        `<span>&gt;</span> ${text}`;
-
-    terminalOutput.appendChild(line);
-
-    scrollTerminal();
-}
-
-function printAnswer(
-    text,
-    success
-)
-{
-    const line =
-        document.createElement("div");
-
-    line.className =
-        success
-            ? "terminal-yes"
-            : "terminal-no";
-
-    line.textContent =
-        text;
-
-    terminalOutput.appendChild(line);
-
-    scrollTerminal();
-}
-
-function scrollTerminal()
-{
-    terminalOutput.scrollTop =
-        terminalOutput.scrollHeight;
-}
-
-/* ============================================================
-   INPUT
-   ============================================================ */
-
-function handleTerminalKey(event)
-{
-    if (event.key !== "Enter")
-    {
+    if (event.key !== "Enter") {
         return;
     }
 
     event.preventDefault();
 
-    if (!state.started)
-    {
+    if (gameWon) {
         return;
     }
 
     const text =
-        terminalInput.value.trim();
+        input.value.trim();
 
-    if (text.length === 0)
-    {
+    input.value = "";
+
+    if (!text.length) {
         return;
     }
 
-    terminalInput.value = "";
-
-    printPrompt(text);
-
     processInput(text);
+
 }
 
-/* ============================================================
-   HISTORY
-   ============================================================ */
+/*==========================================================
+    MAIN INPUT
+==========================================================*/
 
-function addHistory(
-    question,
-    answer
-)
-{
-    state.history.unshift({
-        question,
-        answer
-    });
+function processInput(text) {
 
-    state.questionsAsked++;
+    const result =
+        interpretInput(text);
 
-    questionCount.textContent =
-        state.questionsAsked;
+    if (!result) {
 
-    const div =
-        document.createElement("div");
+        addHistoryLine(
+            "Unknown question",
+            "ERROR"
+        );
 
-    div.className =
-        answer
-            ? "history-yes"
-            : "history-no";
+        return;
 
-    div.textContent =
-        `${answer ? "✓" : "✗"} ${question}`;
+    }
 
-    historyContainer.prepend(div);
+    if (
+        result.type ===
+        "guess"
+    ) {
+
+        handleGuess(
+            result.value
+        );
+
+        return;
+
+    }
+
+    questionCount++;
+
+    addHistoryLine(
+        result.question,
+        result.answer
+            ? "YES"
+            : "NO"
+    );
+
 }
 
-/* ============================================================
-   RESULT OVERLAY
-   ============================================================ */
+/*==========================================================
+    GUESS
+==========================================================*/
 
-function showResult(
-    title,
-    text
-)
-{
+function handleGuess(value) {
+
+    if (
+        value ===
+        secretNumber
+    ) {
+
+        gameWon = true;
+
+        addHistoryLine(
+            "Guess " + value,
+            "CORRECT"
+        );
+
+        showWin();
+
+        return;
+
+    }
+
+    addHistoryLine(
+        "Guess " + value,
+        "WRONG"
+    );
+
+}
+
+function showWin() {
+
+    if (!resultDialog) {
+        return;
+    }
+
     resultTitle.textContent =
-        title;
+        "Correct!";
 
     resultText.textContent =
-        text;
+        settings.revealAnswer
+            ? "The secret number was " +
+              secretNumber
+            : "";
 
-    resultOverlay.classList.remove(
-        "hidden"
-    );
+    resultDialog.showModal();
+
 }
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
+/*==========================================================
+    HISTORY
+==========================================================*/
+
+function addHistoryLine(
+    question,
+    answer
+) {
+
+    history.push({
+
+        question,
+        answer
+
+    });
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+    row.className =
+        "history-row";
+
+    const left =
+        document.createElement(
+            "span"
+        );
+
+    left.className =
+        "history-question";
+
+    left.textContent =
+        question;
+
+    const right =
+        document.createElement(
+            "span"
+        );
+
+    right.className =
+        "history-answer";
+
+    right.textContent =
+        answer;
+
+    switch (answer) {
+
+        case "YES":
+
+            row.classList.add(
+                "answer-yes"
+            );
+
+            break;
+
+        case "NO":
+
+            row.classList.add(
+                "answer-no"
+            );
+
+            break;
+
+        case "CORRECT":
+
+            row.classList.add(
+                "answer-correct"
+            );
+
+            break;
+
+        case "WRONG":
+
+            row.classList.add(
+                "answer-wrong"
+            );
+
+            break;
+
+    }
+
+row.append(left, right);
+
+    historyElement.appendChild(
+        row
+    );
+
+    historyElement.scrollTop =
+        historyElement.scrollHeight;
+
+}
+
+/*==========================================================
+    HELPERS
+==========================================================*/
 
 function randomInteger(
-    min,
-    max
-)
-{
+    minimum,
+    maximum
+) {
+
     return (
         Math.floor(
             Math.random() *
-            (max - min + 1)
-        ) + min
+            (maximum - minimum + 1)
+        ) +
+        minimum
     );
+
 }
 
-function sleep(ms)
-{
-    return new Promise(
-        resolve =>
-            setTimeout(resolve, ms)
-    );
-}
+/*==========================================================
+    PARSER
+==========================================================*/
 
-/* ============================================================
-   PART 2
-   INPUT PARSER
-   ============================================================ */
+function interpretInput(text) {
 
-function processInput(input)
-{
-    input = input
-        .trim()
-        .toLowerCase();
+    const original =
+        text.trim();
 
-    printSystem("ANALYSING...");
+    const input =
+        original
+            .toLowerCase()
+            .replace(/\s+/g, "");
 
-    setTimeout(() =>
-    {
-        evaluateInput(input);
-    }, 250);
-}
+    /*--------------------------
+        Direct number guess
+    --------------------------*/
 
-function evaluateInput(input)
-{
-    // Guess?
+    if (/^-?\d+$/.test(input)) {
 
-    const guess = parseGuess(input);
+        return {
 
-    if (guess !== null)
-    {
-        checkGuess(guess);
-        return;
+            type: "guess",
+
+            value: Number(input)
+
+        };
+
     }
 
-    // Question?
+    /*--------------------------
+        Greater than
+    --------------------------*/
 
-    const result =
-        parseQuestion(input);
-
-    if (result)
-    {
-        answerQuestion(
-            result.question,
-            result.answer
+    let match =
+        input.match(
+            /^>(-?\d+)$/
         );
 
-        return;
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it greater than ${value}?`,
+
+            secretNumber > value
+
+        );
+
     }
 
-    printAnswer(
-        "UNKNOWN QUESTION",
-        false
+    match =
+        input.match(
+            /^greaterthan(-?\d+)$/
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it greater than ${value}?`,
+
+            secretNumber > value
+
+        );
+
+    }
+
+    /*--------------------------
+        Less than
+    --------------------------*/
+
+    match =
+        input.match(
+            /^<(-?\d+)$/
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it less than ${value}?`,
+
+            secretNumber < value
+
+        );
+
+    }
+
+    match =
+        input.match(
+            /^lessthan(-?\d+)$/
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it less than ${value}?`,
+
+            secretNumber < value
+
+        );
+
+    }
+
+    /*--------------------------
+        Even
+    --------------------------*/
+
+    if (
+
+        input === "even"
+
+    ) {
+
+        return buildQuestion(
+
+            "Is it even?",
+
+            isEven(secretNumber)
+
+        );
+
+    }
+
+    /*--------------------------
+        Odd
+    --------------------------*/
+
+    if (
+
+        input === "odd"
+
+    ) {
+
+        return buildQuestion(
+
+            "Is it odd?",
+
+            isOdd(secretNumber)
+
+        );
+
+    }
+
+    /*--------------------------
+        Prime
+    --------------------------*/
+
+    if (
+
+        input === "prime"
+
+    ) {
+
+        return buildQuestion(
+
+            "Is it prime?",
+
+            isPrime(secretNumber)
+
+        );
+
+    }
+
+    /*--------------------------
+        Square
+    --------------------------*/
+
+    if (
+
+        input === "square" ||
+        input === "squarenumber"
+
+    ) {
+
+        return buildQuestion(
+
+            "Is it a square number?",
+
+            isSquare(secretNumber)
+
+        );
+
+    }
+
+    /*--------------------------
+        Cube
+    --------------------------*/
+
+    if (
+
+        input === "cube" ||
+        input === "cubenumber"
+
+    ) {
+
+        return buildQuestion(
+
+            "Is it a cube number?",
+
+            isCube(secretNumber)
+
+        );
+
+    }
+
+    /*--------------------------
+        Triangular
+    --------------------------*/
+
+    if (
+
+        input === "triangular"
+
+    ) {
+
+        return buildQuestion(
+
+            "Is it a triangular number?",
+
+            isTriangular(secretNumber)
+
+        );
+
+    }
+
+    /*--------------------------
+        Fibonacci
+    --------------------------*/
+
+    if (
+
+        input === "fibonacci" ||
+        input === "fib"
+
+    ) {
+
+        return buildQuestion(
+
+            "Is it a Fibonacci number?",
+
+            isFibonacci(secretNumber)
+
+        );
+
+    }
+
+    /*--------------------------
+        Perfect
+    --------------------------*/
+
+    if (
+
+        input === "perfect"
+
+    ) {
+
+        return buildQuestion(
+
+            "Is it a perfect number?",
+
+            isPerfect(secretNumber)
+
+        );
+
+    }
+
+    /*--------------------------
+        Multiple
+
+        multiple7
+        multipleof7
+        7x
+        7times
+        7timestable
+
+    --------------------------*/
+
+    match =
+        input.match(
+
+            /^multiple(of)?(-?\d+)$/
+
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[2]);
+
+        return buildQuestion(
+
+            `Is it a multiple of ${value}?`,
+
+            isMultiple(secretNumber, value)
+
+        );
+
+    }
+
+    match =
+        input.match(
+
+            /^(-?\d+)x$/
+
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it a multiple of ${value}?`,
+
+            isMultiple(secretNumber, value)
+
+        );
+
+    }
+
+    match =
+        input.match(
+
+            /^(-?\d+)times(table)?$/
+
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it a multiple of ${value}?`,
+
+            isMultiple(secretNumber, value)
+
+        );
+
+    }
+
+    /*--------------------------
+        Factor
+
+        factor60
+        factorof60
+
+    --------------------------*/
+
+    match =
+        input.match(
+
+            /^factor(of)?(-?\d+)$/
+
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[2]);
+
+        return buildQuestion(
+
+            `Is it a factor of ${value}?`,
+
+            value % secretNumber === 0
+
+        );
+
+    }
+
+    /*--------------------------
+        Divisible by
+
+        divisible7
+        divisibleby7
+
+    --------------------------*/
+
+    match =
+        input.match(
+
+            /^divisible(by)?(-?\d+)$/
+
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[2]);
+
+        return buildQuestion(
+
+            `Is it divisible by ${value}?`,
+
+            isMultiple(secretNumber, value)
+
+        );
+
+    }
+
+        /*----------------------------------
+        STARTS WITH
+
+        starts with t
+        starts with th
+        starts with 3
+        begins with...
+        first letter...
+        first digit...
+    ----------------------------------*/
+
+    match = original.match(
+        /^(starts?\s*with|begins?\s*with|first\s*(letter|digit)?)(?:\s+)?(.+)$/i
     );
+
+    if (match) {
+
+        const value = match[3]
+            .trim()
+            .toLowerCase();
+
+        const answer =
+            /^\d+$/.test(value)
+                ? startsWithDigit(secretNumber, value)
+                : startsWithText(secretNumber, value);
+
+        return buildQuestion(
+            `Does it start with "${value}"?`,
+            answer
+        );
+
+    }
+
+    /*----------------------------------
+        ENDS WITH
+
+        ends with...
+        last letter...
+        last digit...
+    ----------------------------------*/
+
+    match = original.match(
+        /^(ends?\s*with|last\s*(letter|digit)?)(?:\s+)?(.+)$/i
+    );
+
+    if (match) {
+
+        const value = match[3]
+            .trim()
+            .toLowerCase();
+
+        const answer =
+            /^\d+$/.test(value)
+                ? endsWithDigit(secretNumber, value)
+                : endsWithText(secretNumber, value);
+
+        return buildQuestion(
+            `Does it end with "${value}"?`,
+            answer
+        );
+
+    }
+
+    /*----------------------------------
+        CONTAINS
+
+        contains...
+        has...
+        includes...
+    ----------------------------------*/
+
+    match = original.match(
+        /^(contains?|has|includes?)(?:\s+)?(.+)$/i
+    );
+
+    if (match) {
+
+        const value = match[2]
+            .trim()
+            .toLowerCase();
+
+        const answer =
+            /^\d+$/.test(value)
+                ? containsDigit(secretNumber, value)
+                : containsText(secretNumber, value);
+
+        return buildQuestion(
+            `Does it contain "${value}"?`,
+            answer
+        );
+
+    }
+
+    return null;
+
 }
 
-/* ============================================================
-   ANSWERS
-   ============================================================ */
+/*==========================================================
+    QUESTION OBJECT
+==========================================================*/
 
-function answerQuestion(
+function buildQuestion(
     question,
     answer
-)
-{
-    addHistory(
+) {
+
+    return {
+
+        type: "question",
+
         question,
+
         answer
-    );
 
-    if (answer)
-    {
-        printAnswer(
-            "YES",
-            true
-        );
-    }
-    else
-    {
-        printAnswer(
-            "NO",
-            false
-        );
-    }
+    };
+
 }
 
-function checkGuess(
-    guess
-)
-{
-    if (
-        guess === state.secretNumber
-    )
-    {
-        guessStatus.textContent =
-            "✓";
+/*==========================================================
+    PARSER
+==========================================================*/
 
-        showResult(
-            "ACCESS GRANTED",
-            `Correct! The number was ${state.secretNumber}.`
-        );
+function interpretInput(rawText) {
 
-        printAnswer(
-            "PASSWORD ACCEPTED",
-            true
-        );
+    const original = rawText.trim();
 
-        state.started = false;
+    const input = normaliseInput(original);
 
-        return;
+    /*----------------------------------
+        Direct Guess
+    ----------------------------------*/
+
+    if (/^-?\d+$/.test(input)) {
+
+        return {
+            type: "guess",
+            value: Number(input)
+        };
+
     }
 
-    guessStatus.textContent =
-        "✗";
+    /*----------------------------------
+        Greater Than
+    ----------------------------------*/
 
-    printAnswer(
-        "ACCESS DENIED",
-        false
-    );
+    let match =
+        input.match(
+            /^>(-?\d+)$/
+        );
 
-    addHistory(
-        `Guess ${guess}`,
-        false
-    );
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it greater than ${value}?`,
+
+            secretNumber > value
+
+        );
+
+    }
+
+    /*----------------------------------
+        Less Than
+    ----------------------------------*/
+
+    match =
+        input.match(
+            /^<(-?\d+)$/
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it less than ${value}?`,
+
+            secretNumber < value
+
+        );
+
+    }
+
+    /*----------------------------------
+        Greater / Less Than Or Equal
+    ----------------------------------*/
+
+    match =
+        input.match(
+            /^>=(\-?\d+)$/
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it at least ${value}?`,
+
+            secretNumber >= value
+
+        );
+
+    }
+
+    match =
+        input.match(
+            /^<=(\-?\d+)$/
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it at most ${value}?`,
+
+            secretNumber <= value
+
+        );
+
+    }
+
+    /*----------------------------------
+        Between
+    ----------------------------------*/
+
+    match =
+        input.match(
+            /^between(-?\d+)and(-?\d+)$/
+        );
+
+    if (match) {
+
+        const a =
+            Number(match[1]);
+
+        const b =
+            Number(match[2]);
+
+        const low =
+            Math.min(a,b);
+
+        const high =
+            Math.max(a,b);
+
+        return buildQuestion(
+
+            `Is it between ${low} and ${high}?`,
+
+            secretNumber >= low &&
+            secretNumber <= high
+
+        );
+
+    }
+
+    /*----------------------------------
+        Even / Odd
+    ----------------------------------*/
+
+    if (input === "even") {
+
+        return buildQuestion(
+            "Is it even?",
+            isEven(secretNumber)
+        );
+
+    }
+
+    if (input === "odd") {
+
+        return buildQuestion(
+            "Is it odd?",
+            isOdd(secretNumber)
+        );
+
+    }
+
+    /*----------------------------------
+        Prime
+    ----------------------------------*/
+
+    if (input === "prime") {
+
+        return buildQuestion(
+            "Is it prime?",
+            isPrime(secretNumber)
+        );
+
+    }
+
+    /*----------------------------------
+        Square
+    ----------------------------------*/
+
+    if (input === "square") {
+
+        return buildQuestion(
+            "Is it a square number?",
+            isSquare(secretNumber)
+        );
+
+    }
+
+    /*----------------------------------
+        Cube
+    ----------------------------------*/
+
+    if (input === "cube") {
+
+        return buildQuestion(
+            "Is it a cube number?",
+            isCube(secretNumber)
+        );
+
+    }
+
+    /*----------------------------------
+        Triangular
+    ----------------------------------*/
+
+    if (input === "triangular") {
+
+        return buildQuestion(
+            "Is it a triangular number?",
+            isTriangular(secretNumber)
+        );
+
+    }
+
+    /*----------------------------------
+        Fibonacci
+    ----------------------------------*/
+
+    if (input === "fibonacci") {
+
+        return buildQuestion(
+            "Is it a Fibonacci number?",
+            isFibonacci(secretNumber)
+        );
+
+    }
+
+    /*----------------------------------
+        Multiple
+    ----------------------------------*/
+
+    match =
+        input.match(
+            /^multiple(-?\d+)$/
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it a multiple of ${value}?`,
+
+            isMultiple(secretNumber,value)
+
+        );
+
+    }
+
+    /*----------------------------------
+        Factor
+    ----------------------------------*/
+
+    match =
+        input.match(
+            /^factor(-?\d+)$/
+        );
+
+    if (match) {
+
+        const value =
+            Number(match[1]);
+
+        return buildQuestion(
+
+            `Is it a factor of ${value}?`,
+
+            value % secretNumber === 0
+
+        );
+
+    }
+
+    return null;
+
 }
 
-/* ============================================================
-   PART 3
-   MATHEMATICAL PROPERTY FUNCTIONS
-   ============================================================ */
+/*==========================================================
+    INPUT NORMALISATION
+==========================================================*/
 
-function isPrime(number)
-{
-    if (!Number.isInteger(number))
-    {
+function normaliseInput(text) {
+
+    let input =
+        text
+        .toLowerCase()
+        .trim();
+
+    input =
+        input.replace(/[?.,]/g,"");
+
+    input =
+        input.replace(/\s+/g," ");
+
+    /*------------------------
+        GREATER THAN
+    ------------------------*/
+
+    input =
+        input.replace(
+            /greater than|more than|larger than|bigger than|above|over/g,
+            ">"
+        );
+
+    /*------------------------
+        LESS THAN
+    ------------------------*/
+
+    input =
+        input.replace(
+            /less than|smaller than|below|under/g,
+            "<"
+        );
+
+    /*------------------------
+        AT LEAST
+    ------------------------*/
+
+    input =
+        input.replace(
+            /at least|minimum of|minimum/g,
+            ">="
+        );
+
+    /*------------------------
+        AT MOST
+    ------------------------*/
+
+    input =
+        input.replace(
+            /at most|maximum of|maximum/g,
+            "<="
+        );
+
+    /*------------------------
+        BETWEEN
+    ------------------------*/
+
+    input =
+        input.replace(
+            /from/g,
+            "between"
+        );
+
+    input =
+        input.replace(
+            /to/g,
+            "and"
+        );
+
+    /*------------------------
+        MULTIPLE
+    ------------------------*/
+
+    input =
+        input.replace(
+            /divisible by|divisible|times table|timestable|times|x/g,
+            "multiple"
+        );
+
+    input =
+        input.replace(
+            /multiple of/g,
+            "multiple"
+        );
+
+    /*------------------------
+        FACTOR
+    ------------------------*/
+
+    input =
+        input.replace(
+            /factor of/g,
+            "factor"
+        );
+
+    /*------------------------
+        SQUARE
+    ------------------------*/
+
+    input =
+        input.replace(
+            /square number/g,
+            "square"
+        );
+
+    /*------------------------
+        CUBE
+    ------------------------*/
+
+    input =
+        input.replace(
+            /cube number|cubic/g,
+            "cube"
+        );
+
+    /*------------------------
+        FIBONACCI
+    ------------------------*/
+
+    input =
+        input.replace(
+            /fib/g,
+            "fibonacci"
+        );
+
+    input =
+        input.replace(/\s+/g,"");
+
+    return input;
+
+}
+
+/*==========================================================
+    QUESTION HANDLERS
+==========================================================*/
+
+function isEven(n) {
+    return n % 2 === 0;
+}
+
+function isOdd(n) {
+    return n % 2 !== 0;
+}
+
+function isMultiple(n, divisor) {
+
+    if (divisor === 0) {
         return false;
     }
 
-    if (number < 2)
-    {
+    return n % divisor === 0;
+
+}
+
+function isPrime(n) {
+
+    if (n < 2) {
         return false;
     }
 
-    if (number === 2)
-    {
-        return true;
-    }
+    for (let i = 2; i * i <= n; i++) {
 
-    if (number % 2 === 0)
-    {
-        return false;
-    }
-
-    const limit =
-        Math.floor(Math.sqrt(number));
-
-    for (
-        let i = 3;
-        i <= limit;
-        i += 2
-    )
-    {
-        if (number % i === 0)
-        {
+        if (n % i === 0) {
             return false;
         }
+
     }
 
     return true;
+
 }
 
-/* ============================================================ */
+function isSquare(n) {
 
-function isSquare(number)
-{
-    if (!Number.isInteger(number))
-    {
+    if (n < 0) {
         return false;
     }
 
-    if (number < 0)
-    {
-        return false;
-    }
+    return Number.isInteger(
+        Math.sqrt(n)
+    );
 
-    const root =
-        Math.sqrt(number);
-
-    return Number.isInteger(root);
 }
 
-/* ============================================================ */
-
-function isCube(number)
-{
-    if (!Number.isInteger(number))
-    {
-        return false;
-    }
+function isCube(n) {
 
     const root =
-        Math.cbrt(number);
+        Math.cbrt(n);
 
     return Math.abs(
-        Math.round(root) - root
+        root - Math.round(root)
     ) < 1e-10;
+
 }
 
-/* ============================================================ */
+function isTriangular(n) {
 
-function isTriangular(number)
-{
-    if (
-        !Number.isInteger(number) ||
-        number < 0
-    )
-    {
+    if (n < 0) {
         return false;
     }
 
-    const n =
-        (Math.sqrt(
-            8 * number + 1
-        ) - 1) / 2;
+    const test =
+        (Math.sqrt(8 * n + 1) - 1) / 2;
 
-    return Number.isInteger(n);
+    return Number.isInteger(test);
+
 }
 
-/* ============================================================ */
+function isFibonacci(n) {
 
-function isFibonacci(number)
-{
-    if (
-        !Number.isInteger(number) ||
-        number < 0
-    )
-    {
+    if (n < 0) {
         return false;
     }
 
-    return (
-        isSquare(
-            5 * number * number + 4
-        ) ||
-        isSquare(
-            5 * number * number - 4
-        )
+    return isSquare(
+        5 * n * n + 4
+    ) ||
+    isSquare(
+        5 * n * n - 4
     );
+
 }
 
-/* ============================================================ */
+/*==========================================================
+    DIGITS
+==========================================================*/
 
-function isFactorial(number)
-{
-    if (
-        !Number.isInteger(number) ||
-        number < 1
-    )
-    {
-        return false;
-    }
+function digitSum(n) {
 
-    let value = number;
-
-    let divisor = 2;
-
-    while (value > 1)
-    {
-        if (value % divisor !== 0)
-        {
-            return false;
-        }
-
-        value /= divisor;
-
-        divisor++;
-    }
-
-    return true;
-}
-
-/* ============================================================ */
-
-function digitSum(number)
-{
-    return Math.abs(number)
+    return Math.abs(n)
         .toString()
         .split("")
         .reduce(
-            (sum, digit) =>
-                sum + Number(digit),
+            (a,b)=>a+Number(b),
             0
         );
+
 }
 
-/* ============================================================ */
+function digitProduct(n) {
 
-function digitProduct(number)
-{
-    return Math.abs(number)
+    return Math.abs(n)
         .toString()
         .split("")
         .reduce(
-            (product, digit) =>
-                product * Number(digit),
+            (a,b)=>a*Number(b),
             1
         );
+
 }
-
-/* ============================================================ */
-
-function digitCount(number)
-{
-    return Math.abs(number)
-        .toString()
-        .length;
-}
-
-/* ============================================================ */
-
-function containsDigit(
-    number,
-    digit
-)
-{
-    return Math.abs(number)
-        .toString()
-        .includes(
-            String(digit)
-        );
-}
-
-/* ============================================================ */
 
 function startsWithDigit(
-    number,
+    n,
     digit
-)
-{
-    return Math.abs(number)
+) {
+
+    return Math.abs(n)
         .toString()
         .startsWith(
             String(digit)
         );
+
 }
 
-/* ============================================================ */
-
 function endsWithDigit(
-    number,
+    n,
     digit
-)
-{
-    return Math.abs(number)
+) {
+
+    return Math.abs(n)
         .toString()
         .endsWith(
             String(digit)
         );
+
 }
 
-/* ============================================================ */
+function containsDigit(
+    n,
+    digit
+) {
 
-function isPalindrome(number)
-{
+    return Math.abs(n)
+        .toString()
+        .includes(
+            String(digit)
+        );
+
+}
+
+function digitCount(n) {
+
+    return Math.abs(n)
+        .toString()
+        .length;
+
+}
+
+function isPalindrome(n) {
+
     const text =
-        Math.abs(number)
+        Math.abs(n)
         .toString();
 
-    return (
-        text ===
+    return text ===
         text
-            .split("")
-            .reverse()
-            .join("")
-    );
+        .split("")
+        .reverse()
+        .join("");
+
 }
 
-/* ============================================================ */
+/*==========================================================
+    NUMBER WORDS
+==========================================================*/
 
-function reverseNumber(number)
-{
-    return Number(
-        Math.abs(number)
-            .toString()
-            .split("")
-            .reverse()
-            .join("")
-    );
-}
+const NUMBER_WORDS = [
 
-/* ============================================================ */
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen",
+    "twenty"
 
-function isPowerOf(base, number)
-{
-    if (
-        base <= 1 ||
-        number < 1
-    )
-    {
-        return false;
-    }
-
-    let value = 1;
-
-    while (value < number)
-    {
-        value *= base;
-    }
-
-    return value === number;
-}
-
-/* ============================================================ */
-
-function gcd(a, b)
-{
-    a = Math.abs(a);
-    b = Math.abs(b);
-
-    while (b !== 0)
-    {
-        const temp = b;
-        b = a % b;
-        a = temp;
-    }
-
-    return a;
-}
-
-/* ============================================================ */
-
-function lcm(a, b)
-{
-    return Math.abs(a * b) / gcd(a, b);
-}
-
-/* ============================================================
-   PART 4
-   QUESTION PARSER
-   ============================================================ */
-
-const QUESTION_TYPES =
-[
-    {
-        patterns:
-        [
-            /^even$/,
-            /^is ?it ?even$/,
-            /^2x$/,
-            /^multiple2$/,
-            /^divisible2$/
-        ],
-
-        question:
-            "Is it even?",
-
-        test:
-            n => n % 2 === 0
-    },
-
-    {
-        patterns:
-        [
-            /^odd$/,
-            /^is ?it ?odd$/
-        ],
-
-        question:
-            "Is it odd?",
-
-        test:
-            n => Math.abs(n % 2) === 1
-    },
-
-    {
-        patterns:
-        [
-            /^prime$/,
-            /^is ?it ?prime$/
-        ],
-
-        question:
-            "Is it prime?",
-
-        test:
-            n => isPrime(n)
-    },
-
-    {
-        patterns:
-        [
-            /^square$/,
-            /^perfect ?square$/
-        ],
-
-        question:
-            "Is it a square number?",
-
-        test:
-            n => isSquare(n)
-    },
-
-    {
-        patterns:
-        [
-            /^cube$/,
-            /^perfect ?cube$/
-        ],
-
-        question:
-            "Is it a cube number?",
-
-        test:
-            n => isCube(n)
-    },
-
-    {
-        patterns:
-        [
-            /^triangular$/,
-            /^triangle$/
-        ],
-
-        question:
-            "Is it triangular?",
-
-        test:
-            n => isTriangular(n)
-    },
-
-    {
-        patterns:
-        [
-            /^fibonacci$/,
-            /^fib$/
-        ],
-
-        question:
-            "Is it a Fibonacci number?",
-
-        test:
-            n => isFibonacci(n)
-    },
-
-    {
-        patterns:
-        [
-            /^factorial$/
-        ],
-
-        question:
-            "Is it a factorial?",
-
-        test:
-            n => isFactorial(n)
-    }
 ];
 
-function parseQuestion(input)
-{
-    input =
-        input
-        .trim()
-        .toLowerCase();
+/*==========================================================
+    NUMBER TO WORDS
+==========================================================*/
 
-    // Static questions
+const ONES = [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen"
+];
 
-    for (const type of QUESTION_TYPES)
-    {
-        for (const pattern of type.patterns)
-        {
-            if (pattern.test(input))
-            {
-                return {
+const TENS = [
+    "",
+    "",
+    "twenty",
+    "thirty",
+    "forty",
+    "fifty",
+    "sixty",
+    "seventy",
+    "eighty",
+    "ninety"
+];
 
-                    question:
-                        type.question,
+function numberWord(number) {
 
-                    answer:
-                        type.test(
-                            state.secretNumber
-                        )
+    number = Math.trunc(number);
 
-                };
-            }
+    if (number < 0) {
+
+        return (
+            "minus " +
+            numberWord(-number)
+        );
+
+    }
+
+    if (number < 20) {
+
+        return ONES[number];
+
+    }
+
+    if (number < 100) {
+
+        const tens =
+            Math.floor(number / 10);
+
+        const ones =
+            number % 10;
+
+        return ones === 0
+            ? TENS[tens]
+            : TENS[tens] +
+              "-" +
+              ONES[ones];
+
+    }
+
+    if (number < 1000) {
+
+        const hundreds =
+            Math.floor(number / 100);
+
+        const remainder =
+            number % 100;
+
+        let text =
+            ONES[hundreds] +
+            " hundred";
+
+        if (remainder > 0) {
+
+            text +=
+                " and " +
+                numberWord(remainder);
+
         }
+
+        return text;
+
     }
 
-    // Dynamic ones
+    if (number < 1000000) {
 
-    let result;
+        const thousands =
+            Math.floor(number / 1000);
 
-    result =
-        parseComparison(input);
+        const remainder =
+            number % 1000;
 
-    if (result)
-        return result;
+        let text =
+            numberWord(thousands) +
+            " thousand";
 
-    result =
-        parseMultiple(input);
+        if (remainder > 0) {
 
-    if (result)
-        return result;
+            if (remainder < 100) {
 
-    result =
-        parseFactor(input);
+                text +=
+                    " and ";
 
-    if (result)
-        return result;
+            } else {
 
-    result =
-        parseBetween(input);
+                text +=
+                    " ";
 
-    if (result)
-        return result;
+            }
 
-    return null;
+            text +=
+                numberWord(remainder);
+
+        }
+
+        return text;
+
+    }
+
+    return number.toLocaleString();
+
 }
 
-function parseGuess(input)
-{
-    input =
-        input.trim();
 
-    if (/^-?\d+$/.test(input))
-    {
-        return Number(input);
-    }
 
-    const match =
-        input.match(
-            /^guess\s*(-?\d+)$/i
+function normalisedNumberWord(number) {
+
+    return numberWord(number)
+        .toLowerCase()
+        .replace(/[^a-z]/g, "");
+
+}
+
+function startsWithText(
+    number,
+    text
+) {
+
+    return normalisedNumberWord(number)
+        .startsWith(
+            text
+                .toLowerCase()
+                .replace(/[^a-z]/g, "")
         );
 
-    if (match)
-    {
-        return Number(match[1]);
-    }
-
-    return null;
 }
 
-function parseComparison(input)
-{
-    let match;
+function endsWithText(
+    number,
+    text
+) {
 
-    match =
-        input.match(/^>\s*(-?\d+)$/);
-
-    if (match)
-    {
-        const x =
-            Number(match[1]);
-
-        return {
-
-            question:
-                `Is it greater than ${x}?`,
-
-            answer:
-                state.secretNumber > x
-
-        };
-    }
-
-    match =
-        input.match(/^>=\s*(-?\d+)$/);
-
-    if (match)
-    {
-        const x =
-            Number(match[1]);
-
-        return {
-
-            question:
-                `Is it at least ${x}?`,
-
-            answer:
-                state.secretNumber >= x
-
-        };
-    }
-
-    match =
-        input.match(/^<\s*(-?\d+)$/);
-
-    if (match)
-    {
-        const x =
-            Number(match[1]);
-
-        return {
-
-            question:
-                `Is it less than ${x}?`,
-
-            answer:
-                state.secretNumber < x
-
-        };
-    }
-
-    match =
-        input.match(/^<=\s*(-?\d+)$/);
-
-    if (match)
-    {
-        const x =
-            Number(match[1]);
-
-        return {
-
-            question:
-                `Is it at most ${x}?`,
-
-            answer:
-                state.secretNumber <= x
-
-        };
-    }
-
-    return null;
-}
-
-function parseMultiple(input)
-{
-    let match =
-        input.match(
-            /^multiple\s*(\d+)$/
+    return normalisedNumberWord(number)
+        .endsWith(
+            text
+                .toLowerCase()
+                .replace(/[^a-z]/g, "")
         );
 
-    if (!match)
-        match =
-            input.match(/^(\d+)x$/);
+}
 
-    if (!match)
-        match =
-            input.match(
-                /^(\d+)times$/
-            );
+function containsText(
+    number,
+    text
+) {
 
-    if (!match)
-        match =
-            input.match(
-                /^divisible\s*(\d+)$/
-            );
+    return normalisedNumberWord(number)
+        .includes(
+            text
+                .toLowerCase()
+                .replace(/[^a-z]/g, "")
+        );
 
-    if (!match)
-        return null;
+}
 
-    const value =
-        Number(match[1]);
+/*==========================================================
+    HELPERS
+==========================================================*/
+
+function buildQuestion(
+    question,
+    answer
+) {
 
     return {
 
-        question:
-            `Is it a multiple of ${value}?`,
+        type: "question",
 
-        answer:
-            state.secretNumber % value === 0
+        question,
 
-    };
-}
-
-function parseFactor(input)
-{
-    const match =
-        input.match(
-            /^factor\s*(\d+)$/
-        );
-
-    if (!match)
-        return null;
-
-    const value =
-        Number(match[1]);
-
-    return {
-
-        question:
-            `Is ${value} a factor?`,
-
-        answer:
-            state.secretNumber % value === 0
+        answer
 
     };
+
 }
 
-function parseBetween(input)
-{
-    const match =
-        input.match(
-            /^between\s*(-?\d+)\s*[-, ]\s*(-?\d+)$/
-        );
+function clamp(
+    value,
+    minimum,
+    maximum
+) {
 
-    if (!match)
-        return null;
+    return Math.max(
+        minimum,
+        Math.min(
+            maximum,
+            value
+        )
+    );
 
-    let a =
-        Number(match[1]);
-
-    let b =
-        Number(match[2]);
-
-    if (a > b)
-    {
-        [a, b] = [b, a];
-    }
-
-    return {
-
-        question:
-            `Is it between ${a} and ${b}?`,
-
-        answer:
-            state.secretNumber >= a &&
-            state.secretNumber <= b
-
-    };
 }
-

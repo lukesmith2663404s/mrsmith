@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Secret Number Settings</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/secret-number.css">
+</head>
+
+<body>
+
+<header class="game-header">
+
+    <button
+        class="back-button"
+        onclick="location.href='../../index.html'"
+    >
+        ← Back
+    </button>
+
+    <h1>Secret Number</h1>
+
+</header>
+
+<main class="settings-page">
+
+    <section class="settings-card">
+
+        <h2>Secret Number</h2>
+
+        <label class="radio-option">
+
+            <input
+                type="radio"
+                name="mode"
+                value="manual"
+                checked
+            >
+
+            Enter Number
+
+        </label>
+
+        <label class="radio-option">
+
+            <input
+                type="radio"
+                name="mode"
+                value="random"
+            >
+
+            Random Number
+
+        </label>
+
+        <div id="manualSection">
+
+            <label>
+
+                Secret Number
+
+                <input
+                    id="manualNumber"
+                    type="password"
+                    inputmode="numeric"
+                >
+
+            </label>
+
+        </div>
+
+    </section>
+
+    <section class="settings-card">
+
+        <h2>Random Number</h2>
+
+        <label>
+
+            Minimum
+
+            <input
+                id="minimumNumber"
+                type="number"
+                value="1"
+            >
+
+        </label>
+
+        <label>
+
+            Maximum
+
+            <input
+                id="maximumNumber"
+                type="number"
+                value="100"
+            >
+
+        </label>
+
+        <label class="checkbox-option">
+
+            <input
+                id="allowNegative"
+                type="checkbox"
+            >
+
+            Allow negative numbers
+
+        </label>
+
+        <label class="checkbox-option">
+
+            <input
+                id="allowDecimals"
+                type="checkbox"
+                disabled
+            >
+
+            Allow decimals (Coming Soon)
+
+        </label>
+
+    </section>
+
+    <section class="settings-card">
+
+        <h2>Game</h2>
+
+        <label>
+
+            Difficulty
+
+            <select id="difficulty">
+
+                <option value="easy">
+                    Easy (1–20)
+                </option>
+
+                <option
+                    value="medium"
+                    selected
+                >
+                    Medium (1–100)
+                </option>
+
+                <option value="hard">
+                    Hard (1–1000)
+                </option>
+
+                <option value="custom">
+                    Custom Range
+                </option>
+
+            </select>
+
+        </label>
+
+        <label class="checkbox-option">
+
+            <input
+                id="revealAnswer"
+                type="checkbox"
+                checked
+            >
+
+            Reveal answer when guessed
+
+        </label>
+
+    </section>
+
+    <section class="settings-card">
+
+        <h2>Appearance</h2>
+
+        <label>
+
+            Theme
+
+            <select id="theme">
+
+                <option selected>
+                    Green CRT
+                </option>
+
+                <option>
+                    Amber CRT
+                </option>
+
+                <option>
+                    Blue Terminal
+                </option>
+
+            </select>
+
+        </label>
+
+    </section>
+
+</main>
+
+<footer class="settings-footer">
+
+    <button
+        id="startButton"
+        class="primary-button"
+    >
+
+        Start Game
+
+    </button>
+
+</footer>
+
+<script src="settings.js"></script>
+
+</body>
+</html>
