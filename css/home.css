@@ -1992,3 +1992,78 @@ body {
     0 0 5px rgba(0, 255, 120, 0.8),
     0 0 15px rgba(0, 255, 120, 0.45);
 }
+
+/* ==========================================================
+   SECRET NUMBER TILE - FINAL OVERRIDE
+   ========================================================== */
+
+.game-tile.secret-number-tile {
+  position: relative !important;
+  overflow: hidden !important;
+
+  background: #F6F0FE !important;
+  color: #7030A0 !important;
+
+  box-shadow: none !important;
+}
+
+.game-tile.secret-number-tile .tile-secret-screen {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0 !important;
+
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      #14321d 0%,
+      #07160b 58%,
+      #010401 100%
+    ) !important;
+
+  transition: opacity 0.3s ease;
+}
+
+.game-tile.secret-number-tile .tile-secret-scanlines {
+  opacity: 0.18;
+}
+
+/* HOVER */
+
+.game-tile.secret-number-tile:hover,
+.game-tile.secret-number-tile:focus-visible {
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      #14321d 0%,
+      #07160b 58%,
+      #010401 100%
+    ) !important;
+
+  color: #66ff99 !important;
+
+  box-shadow:
+    inset 0 0 0 2px rgba(102, 255, 153, 0.3),
+    0 0 20px rgba(0, 255, 120, 0.25) !important;
+}
+
+.game-tile.secret-number-tile:hover .tile-secret-screen,
+.game-tile.secret-number-tile:focus-visible .tile-secret-screen {
+  opacity: 1 !important;
+}
+
+.game-tile.secret-number-tile h2 {
+  position: relative;
+  z-index: 2;
+
+  color: #7030A0 !important;
+}
+
+.game-tile.secret-number-tile:hover h2,
+.game-tile.secret-number-tile:focus-visible h2 {
+  color: #66ff99 !important;
+
+  text-shadow:
+    0 0 5px rgba(0, 255, 120, 0.8),
+    0 0 15px rgba(0, 255, 120, 0.45);
+}
