@@ -1201,14 +1201,108 @@ function renderScoreboard() {
         ? "Score"
         : `Team ${teamIndex + 1}`;
 
+    const scoreValue =
+      document.createElement("div");
+
+    scoreValue.className =
+      "wheel-score-value";
+
     const value =
       document.createElement("strong");
 
+    value.className =
+      "wheel-score-number";
     value.textContent = String(score);
 
-    scoreCard.append(name, value);
+    scoreValue.appendChild(value);
+
+    if (settings.playerCount > 1) {
+      const controls =
+        document.createElement("div");
+
+      controls.className =
+        "wheel-score-controls";
+
+      const increaseButton =
+        document.createElement("button");
+
+      increaseButton.type = "button";
+      increaseButton.className =
+        "wheel-score-adjust";
+      increaseButton.textContent = "▲";
+      increaseButton.setAttribute(
+        "aria-label",
+        `Add 1 point to Team ${teamIndex + 1}`
+      );
+      increaseButton.addEventListener(
+        "click",
+        (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          adjustTeamScore(teamIndex, 1);
+        }
+      );
+
+      const decreaseButton =
+        document.createElement("button");
+
+      decreaseButton.type = "button";
+      decreaseButton.className =
+        "wheel-score-adjust";
+      decreaseButton.textContent = "▼";
+      decreaseButton.setAttribute(
+        "aria-label",
+        `Remove 1 point from Team ${teamIndex + 1}`
+      );
+      decreaseButton.addEventListener(
+        "click",
+        (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          adjustTeamScore(teamIndex, -1);
+        }
+      );
+
+      controls.append(
+        increaseButton,
+        decreaseButton
+      );
+
+      scoreValue.appendChild(controls);
+    }
+
+    scoreCard.append(name, scoreValue);
     scoreboard.appendChild(scoreCard);
   });
+}
+
+function adjustTeamScore(teamIndex, amount) {
+  if (
+    settings.playerCount <= 1 ||
+    gameComplete ||
+    teamIndex < 0 ||
+    teamIndex >= scores.length
+  ) {
+    return;
+  }
+
+  const currentScore =
+    scores[teamIndex];
+
+  const newScore =
+    Math.max(
+      0,
+      currentScore + amount
+    );
+
+  if (newScore === currentScore) {
+    return;
+  }
+
+  scores[teamIndex] = newScore;
+
+  renderScoreboard();
+  renderRoundInformation();
 }
 
 function applyCurrentTableTheme() {

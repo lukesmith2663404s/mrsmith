@@ -1904,3 +1904,119 @@
   min-width: min(100%, 260px);
   font-size: 1.1rem;
 }
+
+
+/* ==========================================================
+   MANUAL TEAM SCORE CONTROLS
+   ========================================================== */
+
+.wheel-score-card {
+  position: relative;
+}
+
+.wheel-score-value {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  min-width: 100%;
+  min-height: 2.1rem;
+}
+
+.wheel-score-number {
+  display: block;
+
+  position: relative;
+  z-index: 1;
+
+  text-align: center;
+}
+
+.wheel-score-controls {
+  position: absolute;
+  top: 50%;
+  right: 0.15rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+
+  width: 1.65rem;
+
+  transform: translateY(-50%);
+
+  z-index: 5;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.16s ease;
+}
+
+.wheel-score-adjust {
+  width: 1.65rem;
+  height: 1.15rem;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  color: #ffffff;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--score-colour) 82%,
+      #05070c
+    );
+
+  border:
+    2px solid
+    color-mix(
+      in srgb,
+      var(--score-colour) 80%,
+      #ffffff
+    );
+
+  border-radius: 6px;
+
+  font-size: 0.62rem;
+  font-weight: 900;
+  line-height: 1;
+
+  cursor: pointer;
+
+  touch-action: manipulation;
+
+  transition:
+    transform 0.16s ease,
+    filter 0.16s ease;
+}
+
+.wheel-score-card:hover .wheel-score-controls,
+.wheel-score-card:focus-within .wheel-score-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.wheel-score-adjust:hover,
+.wheel-score-adjust:focus-visible {
+  filter: brightness(1.28);
+  transform: scale(1.08);
+
+  outline: none;
+}
+
+.wheel-score-adjust:active {
+  transform: scale(0.96);
+  filter: brightness(0.95);
+}
+
+@media (max-width: 650px) {
+  .wheel-score-controls {
+    right: 0.05rem;
+  }
+}
+
