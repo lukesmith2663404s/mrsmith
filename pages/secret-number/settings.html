@@ -14,212 +14,130 @@
     <link rel="stylesheet" href="../../css/secret-number.css">
 </head>
 
-<body>
+<body class="secret-number-settings-body">
 
-<header class="game-header">
+<header class="top-bar">
 
-    <button
+    <a
         class="back-button"
-        onclick="location.href='../../index.html'"
+        href="../../index.html"
     >
-        ← Back
-    </button>
+        ← Back to Games
+    </a>
 
-    <h1>Secret Number</h1>
+    <h1>
+        Secret Number
+    </h1>
 
 </header>
 
-<main class="settings-page">
+<main class="secret-number-settings">
 
-    <section class="settings-card">
+    <section class="secret-number-settings-card">
 
-        <h2>Secret Number</h2>
+        <div class="secret-number-mode">
 
-        <label class="radio-option">
+            <label class="secret-number-mode-option">
 
-            <input
-                type="radio"
-                name="mode"
-                value="manual"
-                checked
+                <input
+                    type="radio"
+                    name="mode"
+                    value="manual"
+                    checked
+                >
+
+                <span>Enter Number</span>
+
+            </label>
+
+            <label class="secret-number-mode-option">
+
+                <input
+                    type="radio"
+                    name="mode"
+                    value="random"
+                >
+
+                <span>Random Number</span>
+
+            </label>
+
+        </div>
+
+        <div
+            id="manualSection"
+            class="secret-number-setting-section"
+        >
+
+            <label
+                class="secret-number-field"
+                for="manualNumber"
             >
-
-            Enter Number
-
-        </label>
-
-        <label class="radio-option">
-
-            <input
-                type="radio"
-                name="mode"
-                value="random"
-            >
-
-            Random Number
-
-        </label>
-
-        <div id="manualSection">
-
-            <label>
-
                 Secret Number
 
                 <input
                     id="manualNumber"
                     type="password"
                     inputmode="numeric"
+                    autocomplete="off"
+                    placeholder="Enter secret number"
                 >
-
             </label>
 
         </div>
 
-    </section>
+        <div
+            id="randomSection"
+            class="secret-number-setting-section hidden"
+        >
 
-    <section class="settings-card">
+            <div class="secret-number-range">
 
-        <h2>Random Number</h2>
-
-        <label>
-
-            Minimum
-
-            <input
-                id="minimumNumber"
-                type="number"
-                value="1"
-            >
-
-        </label>
-
-        <label>
-
-            Maximum
-
-            <input
-                id="maximumNumber"
-                type="number"
-                value="100"
-            >
-
-        </label>
-
-        <label class="checkbox-option">
-
-            <input
-                id="allowNegative"
-                type="checkbox"
-            >
-
-            Allow negative numbers
-
-        </label>
-
-        <label class="checkbox-option">
-
-            <input
-                id="allowDecimals"
-                type="checkbox"
-                disabled
-            >
-
-            Allow decimals (Coming Soon)
-
-        </label>
-
-    </section>
-
-    <section class="settings-card">
-
-        <h2>Game</h2>
-
-        <label>
-
-            Difficulty
-
-            <select id="difficulty">
-
-                <option value="easy">
-                    Easy (1–20)
-                </option>
-
-                <option
-                    value="medium"
-                    selected
+                <label
+                    class="secret-number-field"
+                    for="minimumNumber"
                 >
-                    Medium (1–100)
-                </option>
+                    Minimum
 
-                <option value="hard">
-                    Hard (1–1000)
-                </option>
+                    <input
+                        id="minimumNumber"
+                        type="number"
+                        value="1"
+                        step="1"
+                    >
 
-                <option value="custom">
-                    Custom Range
-                </option>
+                </label>
 
-            </select>
+                <label
+                    class="secret-number-field"
+                    for="maximumNumber"
+                >
+                    Maximum
 
-        </label>
+                    <input
+                        id="maximumNumber"
+                        type="number"
+                        value="100"
+                        step="1"
+                    >
 
-        <label class="checkbox-option">
+                </label>
 
-            <input
-                id="revealAnswer"
-                type="checkbox"
-                checked
-            >
+            </div>
 
-            Reveal answer when guessed
+        </div>
 
-        </label>
-
-    </section>
-
-    <section class="settings-card">
-
-        <h2>Appearance</h2>
-
-        <label>
-
-            Theme
-
-            <select id="theme">
-
-                <option selected>
-                    Green CRT
-                </option>
-
-                <option>
-                    Amber CRT
-                </option>
-
-                <option>
-                    Blue Terminal
-                </option>
-
-            </select>
-
-        </label>
+        <button
+            id="startButton"
+            class="primary-button secret-number-start-button"
+            type="button"
+        >
+            Start Game
+        </button>
 
     </section>
 
 </main>
-
-<footer class="settings-footer">
-
-    <button
-        id="startButton"
-        class="primary-button"
-    >
-
-        Start Game
-
-    </button>
-
-</footer>
 
 <script src="settings.js"></script>
 

@@ -4,6 +4,9 @@
    SECRET NUMBER SETTINGS
    ========================================================== */
 
+const SETTINGS_KEY =
+    "secretNumberSettings";
+
 const modeRadios =
     document.querySelectorAll(
         "input[name='mode']"
@@ -12,6 +15,11 @@ const modeRadios =
 const manualSection =
     document.getElementById(
         "manualSection"
+    );
+
+const randomSection =
+    document.getElementById(
+        "randomSection"
     );
 
 const manualNumber =
@@ -29,31 +37,6 @@ const maximumNumber =
         "maximumNumber"
     );
 
-const difficulty =
-    document.getElementById(
-        "difficulty"
-    );
-
-const allowNegative =
-    document.getElementById(
-        "allowNegative"
-    );
-
-const allowDecimals =
-    document.getElementById(
-        "allowDecimals"
-    );
-
-const revealAnswer =
-    document.getElementById(
-        "revealAnswer"
-    );
-
-const theme =
-    document.getElementById(
-        "theme"
-    );
-
 const startButton =
     document.getElementById(
         "startButton"
@@ -65,21 +48,17 @@ const startButton =
 
 initialise();
 
-function initialise()
-{
+function initialise() {
+
     modeRadios.forEach(
-        radio =>
-        {
+        (radio) => {
+
             radio.addEventListener(
                 "change",
                 updateMode
             );
-        }
-    );
 
-    difficulty.addEventListener(
-        "change",
-        updateDifficulty
+        }
     );
 
     startButton.addEventListener(
@@ -88,72 +67,112 @@ function initialise()
     );
 
     updateMode();
-    updateDifficulty();
+
 }
 
 /* ==========================================================
    MODE
    ========================================================== */
 
-function updateMode()
-{
-    const manual =
-        getMode() === "manual";
+function updateMode() {
+
+    const mode =
+        getMode();
+
+    const isManual =
+        mode === "manual";
 
     manualSection.classList.toggle(
         "hidden",
-        !manual
+        !isManual
     );
+
+    randomSection.classList.toggle(
+        "hidden",
+        isManual
+    );
+
+    if (isManual) {
+        manualNumber.focus();
+    } else {
+        minimumNumber.focus();
+    }
+
 }
 
 /* ==========================================================
-   DIFFICULTY
+   START GAME
    ========================================================== */
 
-function updateDifficulty()
-{
-    const custom =
-        difficulty.value === "custom";
+function startGame() {
 
-    minimumNumber.disabled = !custom;
-    maximumNumber.disabled = !custom;
+    const mode =
+        getMode();
 
-    if (custom)
-    {
+    if (mode === "manual") {
+
+        startManualGame();
+
         return;
     }
 
-    switch (difficulty.value)
-    {
-        case "easy":
+    startRandomGame();
 
-            minimumNumber.value = 1;
-            maximumNumber.value = 20;
-
-            break;
-
-        case "medium":
-
-            minimumNumber.value = 1;
-            maximumNumber.value = 100;
-
-            break;
-
-        case "hard":
-
-            minimumNumber.value = 1;
-            maximumNumber.value = 1000;
-
-            break;
-    }
 }
 
 /* ==========================================================
-   START
+   MANUAL GAME
    ========================================================== */
 
-function startGame()
-{
+function startManualGame() {
+
+    const rawValue =
+        manualNumber.value.trim();
+
+    if (!rawValue) {
+
+        manualNumber.focus();
+
+        return;
+    }
+
+    const secret =
+        Number(rawValue);
+
+    if (
+        !Number.isInteger(secret)
+    ) {
+
+        manualNumber.focus();
+
+        return;
+    }
+
+    const settings = {
+
+        mode: "manual",
+
+        manualNumber: secret,
+
+        minimum: 1,
+
+        maximum: 100
+
+    };
+
+    saveSettings(settings);
+
+    window.location.href =
+        "game.html";
+
+}
+
+/* ==========================================================
+   RANDOM GAME
+   ========================================================== */
+
+function startRandomGame() {
+
     let minimum =
         Number(
             minimumNumber.value
@@ -164,61 +183,73 @@ function startGame()
             maximumNumber.value
         );
 
-    if (minimum > maximum)
-    {
-        [minimum, maximum] =
+    if (
+        !Number.isInteger(minimum) ||
+        !Number.isInteger(maximum)
+    ) {
+
+        minimumNumber.focus();
+
+        return;
+    }
+
+    if (minimum > maximum) {
+
         [
+            minimum,
+            maximum
+        ] = [
             maximum,
             minimum
         ];
+
     }
 
-    const settings =
-    {
-        mode:
-            getMode(),
+    const settings = {
 
-        manualNumber:
-            Number(
-                manualNumber.value
-            ),
+        mode: "random",
+
+        manualNumber: null,
 
         minimum,
 
-        maximum,
+        maximum
 
-        allowNegative:
-            allowNegative.checked,
-
-        allowDecimals:
-            allowDecimals.checked,
-
-        revealAnswer:
-            revealAnswer.checked,
-
-        difficulty:
-            difficulty.value,
-
-        theme:
-            theme.value
     };
 
+    saveSettings(settings);
+
+    window.location.href =
+        "game.html";
+
+}
+
+/* ==========================================================
+   SAVE
+   ========================================================== */
+
+function saveSettings(settings) {
+
     localStorage.setItem(
-        "secretNumberSettings",
+        SETTINGS_KEY,
         JSON.stringify(settings)
     );
 
-    location.href =
-        "game.html";
 }
 
 /* ==========================================================
    HELPERS
    ========================================================== */
 
-function getMode()
-{
-    return document.querySelector(
-        "input[name='mode']:checked"
-    ).value;
+function getMode() {
+
+    const selected =
+        document.querySelector(
+            "input[name='mode']:checked"
+        );
+
+    return selected
+        ? selected.value
+        : "manual";
+
 }

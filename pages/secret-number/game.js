@@ -848,6 +848,8 @@ function interpretInput(text) {
 
     }
 
+
+
     /*----------------------------------
         CONTAINS
 
@@ -877,6 +879,7 @@ function interpretInput(text) {
         );
 
     }
+
 
     return null;
 
@@ -908,6 +911,23 @@ function buildQuestion(
 ==========================================================*/
 
 function interpretInput(rawText) {
+
+        const digitCountValue =
+        parseDigitCountQuestion(rawText);
+
+    if (digitCountValue !== null) {
+
+        return buildQuestion(
+            `Does it have ${digitCountValue} digit${
+                digitCountValue === 1
+                    ? ""
+                    : "s"
+            }?`,
+            digitCount(secretNumber) ===
+                digitCountValue
+        );
+
+    }
 
     const original = rawText.trim();
 
@@ -1762,4 +1782,111 @@ function clamp(
         )
     );
 
+}
+
+function digitCount(number) {
+
+    return Math.abs(number)
+        .toString()
+        .length;
+
+}
+
+function parseDigitCountQuestion(text) {
+
+    const input =
+        String(text)
+            .trim()
+            .toLowerCase()
+            .replace(/\?+$/, "");
+
+    const digitWords = {
+        zero: 0,
+        one: 1,
+        two: 2,
+        three: 3,
+        four: 4,
+        five: 5,
+        six: 6,
+        seven: 7,
+        eight: 8,
+        nine: 9,
+        ten: 10
+    };
+
+    let match;
+
+    /*
+        3 digits
+        3 digit
+    */
+    match = input.match(
+        /^(\d+)\s+digits?$/
+    );
+
+    if (match) {
+        return Number(match[1]);
+    }
+
+    /*
+        has 3 digits
+        has 3 digit
+    */
+    match = input.match(
+        /^has\s+(\d+)\s+digits?$/
+    );
+
+    if (match) {
+        return Number(match[1]);
+    }
+
+    /*
+        digits3
+        digit3
+    */
+    match = input.match(
+        /^digits?(\d+)$/
+    );
+
+    if (match) {
+        return Number(match[1]);
+    }
+
+    /*
+        three digits
+        three digit
+    */
+    match = input.match(
+        /^([a-z]+)\s+digits?$/
+    );
+
+    if (
+        match &&
+        Object.prototype.hasOwnProperty.call(
+            digitWords,
+            match[1]
+        )
+    ) {
+        return digitWords[match[1]];
+    }
+
+    /*
+        has three digits
+        has three digit
+    */
+    match = input.match(
+        /^has\s+([a-z]+)\s+digits?$/
+    );
+
+    if (
+        match &&
+        Object.prototype.hasOwnProperty.call(
+            digitWords,
+            match[1]
+        )
+    ) {
+        return digitWords[match[1]];
+    }
+
+    return null;
 }
